@@ -1,0 +1,4 @@
+
+HUSK:
+For å gjøre unity kompatibel med revision control:
+Edit->Project Settings->Editor, sett valget under "Revision control" til Metafiles
