@@ -25,7 +25,7 @@ public class Control: MonoBehaviour {
 	private Sound sound;
 	
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		sound = (Sound)FindObjectOfType(typeof(Sound));
 		if (sound == null){
 			Debug.LogError("sound-object not found");
