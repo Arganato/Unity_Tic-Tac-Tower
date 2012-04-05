@@ -12,15 +12,15 @@ public class Control: MonoBehaviour {
 	public bool playerDone = false; //Is true when player has placed a piece. Allows user to "End Turn".
 	
 	public int turn = 1; //1-indexed
-	public int firstPlayer = 0; //player 1 starting; changed to 0-indexing
-	public int skillInUse; // skil used by firstPlayer. 0 = no skill, 1 = shoot, 2 = build, etc
+	public int currPlayer = 0; //player 1 starting; changed to 0-indexing
+	public int skillInUse; // skil used by currPlayer. 0 = no skill, 1 = shoot, 2 = build, etc
 	
 	//Skills:
 	public SkillContainer[] playerSkill = new SkillContainer[2];
 
-	public Score[] playerScore = new Score[2];
+	public Player[] player = new Player[2];
 	
-	public SkillContainer skillsUsed; //skill used this turn by firstPlayer
+	public SkillContainer skillsUsed; //skill used this turn by currPlayer
 	
 	private Sound sound;
 	
@@ -52,7 +52,7 @@ public class Control: MonoBehaviour {
 		}
 	}
 	
-	private void CheckCluster(FieldIndex index){
+	private bool CheckCluster(FieldIndex index){
 		//Finds a cluster from a field index recursively
 		//calls appropriate FindTower-functions on this cluster
 		//reports found towers
@@ -64,28 +64,32 @@ public class Control: MonoBehaviour {
 			cluster = FindClusterRecurse(index,cluster);
 			clusterDiag = FindDiagClusterRecurse(index,clusterDiag);
 			List<Tower> tower = Tower.FindTower(cluster, clusterDiag);
-			playerScore[firstPlayer].Add(tower.Count);
-			foreach( Tower t in tower){
-				//coloring the towers:
-				if(t.towerType == TowerType.five){
-					playerScore[firstPlayer].score += 1000;
-					// *DEBUG* lage game-over screen her
-					sound.PlaySound(SoundType.victory);
-				}
-				foreach(FieldIndex i in t.GetList()){ 
-					
-					// **DEBUG** lage GetDarkColor-funksjon
-					if( firstPlayer == 0){
-						playField[i] = Route.redBuilt;
-					}else{
-						playField[i] = Route.blueBuilt;
+			Debug.Log(currPlayer + " silenced: " + player[currPlayer].silenced);
+			if(!player[currPlayer].silenced || tower.Count == 0){
+				player[currPlayer].AddScore(tower.Count);
+				foreach( Tower t in tower){
+					//coloring the towers:
+					if(t.towerType == TowerType.five){
+						player[currPlayer].score += 1000;
+						// *DEBUG* lage game-over screen her
+						sound.PlaySound(SoundType.victory);
 					}
+					foreach(FieldIndex i in t.GetList()){ 
+						
+						// **DEBUG** lage GetDarkColor-funksjon
+						if( currPlayer == 0){
+							playField[i] = Route.redBuilt;
+						}else{
+							playField[i] = Route.blueBuilt;
+						}
+					}
+					//reporting the towers:
+					ReportTower(t);
 				}
-				//reporting the towers:
-				ReportTower(t);
-			}
+			}else{return false;}
 		}
 		BroadcastMessage("UpdateField");
+		return true;
 	}
 	
 	public int UseSkill(int skill){
@@ -96,8 +100,8 @@ public class Control: MonoBehaviour {
 				return 0;
 			case 1: //shoot
 				Debug.Log("shoot selected");
-				if (playerSkill[firstPlayer].shoot > 0){
-					if( skillsUsed.shoot <= playerSkill[firstPlayer].square + extraSkillCap){
+				if (playerSkill[currPlayer].shoot > 0){
+					if( skillsUsed.shoot <= playerSkill[currPlayer].square + extraSkillCap){
 						skillInUse = 1;
 						return 0;
 						//no error
@@ -112,8 +116,8 @@ public class Control: MonoBehaviour {
 			case 2: //build
 				Debug.Log("build selected");
 				
-				if ( playerSkill[firstPlayer].build > 0){
-					if ( skillsUsed.build <= playerSkill[firstPlayer].square + extraSkillCap){
+				if ( playerSkill[currPlayer].build > 0){
+					if ( skillsUsed.build <= playerSkill[currPlayer].square + extraSkillCap){
 						skillInUse = 2;
 						return 0;
 					}else{
@@ -128,7 +132,7 @@ public class Control: MonoBehaviour {
 			case 3:
 				Debug.Log("emp selected");
 				if (skillsUsed.emp < 1){
-					if (playerSkill[firstPlayer].emp > 0){
+					if (playerSkill[currPlayer].emp > 0){
 						EMP();
 						return 0;
 					}else{
@@ -158,15 +162,18 @@ public class Control: MonoBehaviour {
 	
 	private void PlacePiece(FieldIndex index){ //placing piece in a normal turn
 		if (playerDone == false && playField.At(index) == Route.empty){
-			if(firstPlayer == 0){
+			if(currPlayer == 0){
 				playField[index] = Route.red;
 			}else{
 				playField[index] = Route.blue;
 			}
-			CheckCluster(index);
-			IncPieceCount();
-			playerDone = true;
-			sound.PlaySound(SoundType.onClick);
+			if(CheckCluster(index)){
+				IncPieceCount();
+				playerDone = true;
+			}else{
+				playField[index] = Route.empty;
+			}
+				sound.PlaySound(SoundType.onClick);
 		}else{
 			Debug.Log("invalid move");
 			sound.PlaySound(SoundType.error);
@@ -177,8 +184,8 @@ public class Control: MonoBehaviour {
 	private void ExtraBuild(FieldIndex index){ //placing an extra piece with the build-skill
 		if (playField.At(index) == Route.empty){
 		
-			playField[index] = Field<int>.GetPlayerColor(firstPlayer);
-			playerSkill[firstPlayer].build--;
+			playField[index] = Field<int>.GetPlayerColor(currPlayer);
+			playerSkill[currPlayer].build--;
 			skillsUsed.build++;
 			
 			CheckCluster(index);
@@ -195,9 +202,9 @@ public class Control: MonoBehaviour {
 	
 	private void Shoot(FieldIndex index){ //select an enemy piece to destroy it
 	
-		if (playField[index] == Field<int>.GetPlayerColor( (firstPlayer+1)%2 ) ){
+		if (playField[index] == Field<int>.GetPlayerColor( (currPlayer+1)%2 ) ){
 			playField[index] = Route.destroyed;
-			playerSkill[firstPlayer].shoot--;
+			playerSkill[currPlayer].shoot--;
 			skillsUsed.shoot++;
 			skillInUse = 0;
 			BroadcastMessage("UpdateField");
@@ -211,16 +218,17 @@ public class Control: MonoBehaviour {
 	}
 	
 	private void EMP(){
-		Debug.Log("player "+firstPlayer+" has used EMP");
+		Debug.Log("player "+currPlayer+" has used EMP");
 		skillsUsed.emp++;
-		playerSkill[firstPlayer].emp--;
+		playerSkill[currPlayer].emp--;
+		player[(currPlayer+1)%2].silenced = true;
 		sound.PlaySound(SoundType.emp);
 		}
 	
 	
 	private void DebugRemovePiece(FieldIndex index){ //removes a piece. should only be availible in debug mode
 		if (playField.At(index) == Route.empty){		
-			playField[index] = Field<int>.GetPlayerColor(firstPlayer);
+			playField[index] = Field<int>.GetPlayerColor(currPlayer);
 		}else{
 			//Debug.Log("changing field "+index.x+","+index.y+"to "+Route.empty);
 			playField[index] = Route.empty;
@@ -230,26 +238,26 @@ public class Control: MonoBehaviour {
 	private void ReportTower(Tower t){
 		switch(t.towerType){
 			case TowerType.shoot:
-				playerSkill[firstPlayer].shoot++;
+				playerSkill[currPlayer].shoot++;
 				break;
 			case TowerType.build:
-				playerSkill[firstPlayer].build++;
+				playerSkill[currPlayer].build++;
 				break;
 			case TowerType.emp:
-				playerSkill[firstPlayer].emp++;
+				playerSkill[currPlayer].emp++;
 				break;
 			case TowerType.square:
-				playerSkill[firstPlayer].square++;
+				playerSkill[currPlayer].square++;
 				break;
 		}
 	}
 	
-	public void ChangeFirstPlayer(){
-		playerScore[firstPlayer].EndTurn(playerSkill[firstPlayer].square);
-		if(firstPlayer == 1){
+	public void ChangeCurrPlayer(){
+		player[currPlayer].EndTurn(playerSkill[currPlayer].square);
+		if(currPlayer == 1){
 			turn++;
 		}
-		firstPlayer = (firstPlayer+1)%2;
+		currPlayer = (currPlayer+1)%2;
 		skillInUse = 0;
 		skillsUsed.Reset();
 		playerDone = false;
@@ -262,14 +270,14 @@ public class Control: MonoBehaviour {
 		}
 		
 		totalArea = Stats.fieldSize*Stats.fieldSize;
-		//firstPlayer = tmp.startingPlayer;
-		firstPlayer = 0;
+		//currPlayer = tmp.startingPlayer;
+		currPlayer = 0;
 		playField = new Field<Route>(tmp.field);
 		playerSkill[0] = tmp.player0Skills;
 		playerSkill[1] = tmp.player1Skills;
 		
-		playerScore[0] = tmp.player0Score;
-		playerScore[1] = tmp.player1Score;
+		player[0] = tmp.player0Score;
+		player[1] = tmp.player1Score;
 
 		extraSkillCap = tmp.globalSkillCap;
 		placedPieces = tmp.placedPieces;

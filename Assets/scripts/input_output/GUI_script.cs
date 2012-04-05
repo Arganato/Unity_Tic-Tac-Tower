@@ -51,20 +51,20 @@ public class GUI_script : MonoBehaviour {
 		GUI.Box(new Rect(0,0,90,100), p1SkillInfo);
 		GUI.Box(new Rect(Screen.width - 90,0,90,100), p2SkillInfo);
 		
-		GUI.Box(new Rect(0,110,90,45), "Player 1 \n score: " +control.playerScore[0].score);
-		GUI.Box(new Rect(Screen.width-90,110,90,45), "Player 2 \nscore: " +control.playerScore[1].score);
+		GUI.Box(new Rect(0,110,90,45), "Player 1 \n score: " +control.player[0].score);
+		GUI.Box(new Rect(Screen.width-90,110,90,45), "Player 2 \nscore: " +control.player[1].score);
 		
 		//Turns until skill cap increase.
 		if(control.placedPieces <= control.totalArea/3){
-			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.firstPlayer+1) + "'s turn.  " 
+			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.currPlayer+1) + "'s turn.  " 
 					+ "Skill cap: " + (int)(1+control.extraSkillCap) + ".   Skill cap increase after: " 
 					+ (int)(control.totalArea/3+1-control.placedPieces) + " tiles.");
 		}else if(control.placedPieces <= 2*control.totalArea/3){
-			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.firstPlayer+1) + "'s turn.  " 
+			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.currPlayer+1) + "'s turn.  " 
 					+ "Skill cap: " + (int)(1+control.extraSkillCap) + ".   Skill cap increase after: " 
 					+ (int)(control.totalArea*2/3+1-control.placedPieces) + " tiles.");
 		}else{
-			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.firstPlayer+1) + "'s turn.  " 
+			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.currPlayer+1) + "'s turn.  " 
 					+ "Skill cap: " + (int)(1+control.extraSkillCap) + ".   Total skill cap increases reached");
 		}
 		
@@ -72,11 +72,11 @@ public class GUI_script : MonoBehaviour {
 		//GUI.Box(new Rect(Screen.width/2-50, 10, 100, 40), "Skill cap:\n" + (int)(1+control.extraSkillCap));
 		
 		//Player turn.
-		//GUI.Box( new Rect(Screen.width/2-200,20, 100, 25), "Player " +control.firstPlayer + "'s turn.  " + "Skill cap:\n" + (int)(1+control.extraSkillCap));
+		//GUI.Box( new Rect(Screen.width/2-200,20, 100, 25), "Player " +control.currPlayer + "'s turn.  " + "Skill cap:\n" + (int)(1+control.extraSkillCap));
 		
 		//End Turn.
 		if(control.playerDone && GUI.Button( new Rect(8, Screen.height-40,100, 40), "End Turn")){
-			control.ChangeFirstPlayer();
+			control.ChangeCurrPlayer();
 		}
 		
 		//Skill overview.
@@ -164,7 +164,19 @@ public class GUI_script : MonoBehaviour {
 		return i;
 	}
 	
-	private void UseSkillError(int errorCode, Rect pos){ //no worky (only shows for one frame)
+	/*
+	private void PlacePieceError(int errorCode, Rect pos){
+		switch(errorCode){
+			case 3:
+				if(Time.time < errorStartTime + errorDisplayTime){
+					GUI.Box(pos, "Cannot build towers while being silenced", darkTextBoxes);
+				}
+				return;	
+		}
+		return;
+	*/
+	
+	private void UseSkillError(int errorCode, Rect pos){
 		switch(errorCode){
 			case 0:
 				//no error
