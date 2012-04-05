@@ -27,6 +27,7 @@ public class Grid : MonoBehaviour {
 		playFieldTransforms = new Field<GridUnit>(Stats.fieldSize, null);
 	}
 	
+	// User input
 	void Update () {
 		if( Input.GetButtonDown("mouse1") ){
 			//Debug.Log(Input.mousePosition);
@@ -73,6 +74,9 @@ public class Grid : MonoBehaviour {
 	public void InitField(){
 		for( int i = 0; i < Stats.fieldSize*Stats.fieldSize; i++){
 			//create new transform 
+			if( playFieldTransforms[i] != null ){
+				Destroy(playFieldTransforms[i].gameObject);
+			}
 			PlaceTransform(control.playField[i],new FieldIndex(i,Stats.fieldSize));
 		}		
 	}
