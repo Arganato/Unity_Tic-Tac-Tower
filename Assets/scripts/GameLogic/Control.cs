@@ -27,12 +27,10 @@ public class Control: MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		sound = (Sound)FindObjectOfType(typeof(Sound));
+		if (sound == null){
+			Debug.LogError("sound-object not found");
+		}
 
-		
-		//Temporary defaulting. Move to meny in future:
-		//Stats.SetDefaultSettings();
-		
-		StartNewGame();
 	}
 	
 	public void UserFieldSelect(FieldIndex index){
@@ -259,6 +257,9 @@ public class Control: MonoBehaviour {
 	
 	public void StartNewGame(){
 		GameState tmp = Stats.startState;
+		if (tmp == null){
+			tmp = new GameState();
+		}
 		
 		totalArea = Stats.fieldSize*Stats.fieldSize;
 		//firstPlayer = tmp.startingPlayer;

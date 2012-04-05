@@ -14,6 +14,9 @@ public class GUI_script : MonoBehaviour {
 	public GUIStyle darkTextBoxes;
 	public GUIStyle toggleTowerDisplay;
 	
+	public bool enable;
+	public bool lockGUI;
+	
 	private string buildText = "Build Tower: \nAllows the player to place one more piece on the board.\nThis will not, however, reset the amount of skills used, as if starting a new round.";
 	private string shootText = "Shoot Tower: \nThe player may destroy another unused, hostile piece on the board.\nThe piece is ruined, and the tile cannot be built upon.";
 	private string empText = "EMP Tower: \nThe opponent is rendered unable to place a piece where he/she would normally be able to build a tower. Also, the opponent will not benefit from any abilities next turn.";
@@ -29,9 +32,15 @@ public class GUI_script : MonoBehaviour {
 	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
+		enable = true;
+		lockGUI = false;
 	}
 	
 	void OnGUI() {
+		if(!enable){
+			return;
+		}
+		GUI.enabled = !lockGUI;
 		string p1SkillInfo = "Player 1 skills\nShoot: "+control.playerSkill[0].shoot+
 				"\nBuild: "+control.playerSkill[0].build+"\nEMP: "+control.playerSkill[0].emp+
 				"\nSkill cap: "+(int)(1+control.playerSkill[0].square+control.extraSkillCap);
@@ -141,6 +150,8 @@ public class GUI_script : MonoBehaviour {
 				confirmNewGame = false;
 			}
 		}
+		GUI.enabled = true;
+
 	}
 	
 	private int Bool2Int(bool b){

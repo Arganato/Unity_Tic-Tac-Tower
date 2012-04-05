@@ -37,7 +37,7 @@ public static class Stats{
 	public static int fieldSize = 9;
 	public static GameState startState;
 	public static SkillEnabled skillEnabled;
-
+	
 	public static void SetDefaultSettings(){
 		fieldSize = 9;
 		startState = new GameState();
