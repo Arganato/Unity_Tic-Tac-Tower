@@ -23,28 +23,28 @@ public class Sound : MonoBehaviour {
 		// plays an audio clip after its id
 		switch(id){
 		case SoundType.background:
-			gameObject.audio.PlayOneShot(backgroudMusic);
+			if( backgroudMusic != null)	gameObject.audio.PlayOneShot(backgroudMusic);
 			break;
 		case SoundType.onClick:
-			gameObject.audio.PlayOneShot(onButtonPress);
+			if( onButtonPress != null)	gameObject.audio.PlayOneShot(onButtonPress);
 			break;
 		case SoundType.build:
-			gameObject.audio.PlayOneShot(onButtonPress);
+			if( onBuild != null)	gameObject.audio.PlayOneShot(onBuild);
 			break;
 		case SoundType.shoot:
-			gameObject.audio.PlayOneShot(onButtonPress);
+			if( onShoot != null)	gameObject.audio.PlayOneShot(onShoot);
 			break;
 		case SoundType.emp:
-			gameObject.audio.PlayOneShot(onButtonPress);
+			if( onEmp != null)	gameObject.audio.PlayOneShot(onEmp);
 			break;
 		case SoundType.error:
-			gameObject.audio.PlayOneShot(onButtonPress);
+			if( onError != null)	gameObject.audio.PlayOneShot(onError);
 			break;
 		case SoundType.victory:
-			gameObject.audio.PlayOneShot(onButtonPress);
+			if( onVictory != null)	gameObject.audio.PlayOneShot(onVictory);
 			break;
 		case SoundType.defeat:
-			gameObject.audio.PlayOneShot(onButtonPress);
+			if( onDefeat != null)	gameObject.audio.PlayOneShot(onDefeat);
 			break;
 		}
 	}
