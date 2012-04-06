@@ -14,7 +14,7 @@ public class UserInputs : MonoBehaviour {
 	void Update () {
 		
 		if(Input.GetButton("End Turn") && control.playerDone){
-			control.ChangeFirstPlayer();
+			control.ChangeCurrPlayer();
 		}
 		if(Input.GetButton("shoot")){
 			control.UseSkill(1);

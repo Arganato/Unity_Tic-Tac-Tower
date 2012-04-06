@@ -10,8 +10,8 @@ public class GameState {
 	public int placedPieces; //??
 	public SkillContainer player0Skills;
 	public SkillContainer player1Skills;
-	public Score player0Score;
-	public Score player1Score;
+	public Player player0Score;
+	public Player player1Score;
 	
 	public GameState(){
 		field = new Field<Route>(Stats.fieldSize, Route.empty);
@@ -21,8 +21,8 @@ public class GameState {
 		globalSkillCap = 0;
 		player0Skills = new SkillContainer();
 		player1Skills = new SkillContainer();
-		player0Score = new Score();
-		player1Score = new Score();
+		player0Score = new Player();
+		player1Score = new Player();
 	}
 				
 }
