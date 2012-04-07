@@ -148,6 +148,37 @@ public class Control: MonoBehaviour {
 		//unknown error
 	}
 	
+	public void ExecuteOrder(Order o){
+		// Executes an order from the order-format
+		// TODO: make all orders go through this by having a wrapper class
+		if (o.player == currPlayer){
+			switch(o.skill){
+			case -1:
+				if(o.endTurn){
+					ChangeCurrPlayer();
+				}
+				break;
+			case 0:
+				PlacePiece(o.position);
+				break;
+			case 1:
+				Shoot(o.position);
+				break;
+			case 2:
+				ExtraBuild(o.position);
+				break;
+			case 3:
+				EMP();
+				break;
+			}
+			if(o.endTurn){
+				ChangeCurrPlayer();
+			}
+		}else{
+			Debug.LogWarning("ExecuteOrder Called with wrong player");
+		}
+	}
+	
 	private void IncPieceCount(){
 		// first skill cap increase: after piece nr. 28
 		// second skill cap increase: after piece nr. 54

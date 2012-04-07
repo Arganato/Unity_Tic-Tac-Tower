@@ -32,8 +32,8 @@ public class GUI_script : MonoBehaviour {
 	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
-		enable = true;
-		lockGUI = false;
+		//enable = true;
+		//lockGUI = false;
 	}
 	
 	void OnGUI() {

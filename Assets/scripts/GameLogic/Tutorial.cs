@@ -50,27 +50,24 @@ public class Tutorial : MonoBehaviour {
 		case 2:
 			break;
 		}
+		if(chapter < 2 && !changeChapter && GUI.Button(new Rect(menuWidth-100,600,100,25),"Next")){
+			StartCoroutine(ChangeChapter());
+		}
 	}
 	
 
 	private void PrintTextWindow(){
-		if(GUI.Button(new Rect(200,600,100,25),"Next")){
-			Debug.Log("stufffff..");
-			//SimpleChangeChapter();
-			StartCoroutine(ChangeChapter());
-		}
 
 		GUI.BeginScrollView(new Rect(0,100,menuWidth, 500),scrollPos, new Rect(0,0,menuWidth,800));
 		GUI.Box(new Rect(0,0,menuWidth,800),introText,textBox);
 		GUI.EndScrollView();
 	}
 	private void PrintSkillInfoWindow(){
-		GUI.BeginScrollView(new Rect(0,100,200, 500),scrollPos, new Rect(0,0,200,800));
-		GUI.Box(new Rect(0,0,200,100),towerExpl[0],textBox);
-		GUI.Box(new Rect(0,100,100,100),towerTextures[0]);
-		GUI.EndScrollView();
-		if(GUI.Button(new Rect(100,700,100,25),"Next")){
-			ChangeChapter();
+		if(!changeChapter){
+			GUI.BeginScrollView(new Rect(0,100,200, 500),scrollPos, new Rect(0,0,200,800));
+			GUI.Box(new Rect(0,0,200,100),towerExpl[0],textBox);
+			GUI.Box(new Rect(0,100,100,100),towerTextures[0]);
+			GUI.EndScrollView();
 		}
 	}
 
@@ -91,8 +88,11 @@ public class Tutorial : MonoBehaviour {
 			break;
 		case 1:
 			camera.animation.Play("anim2");	
+			GUI_script guis = (GUI_script)gameObject.GetComponent(typeof(GUI_script));
+			guis.enable = true;
 			break;
 		case 2:
+
 			break;
 		}
 
