@@ -10,9 +10,8 @@ public class UserInputs : MonoBehaviour {
 	
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		
+		//keyboard input
 		if(Input.GetButton("End Turn") && control.playerDone){
 			control.ChangeCurrPlayer();
 		}

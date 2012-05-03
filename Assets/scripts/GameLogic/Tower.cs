@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 //Class Tower:
-// [insert meaningful information here]
+// Contains static function for finding towers
+// A tower-instance stores the position of a tower
 
 public class Tower {
 	
@@ -14,7 +15,7 @@ public class Tower {
 		list = new List<FieldIndex>();
 	}
 	
-	public TowerType towerType{
+	public TowerType towerType{ //remove due to uselessness
 		get{return type;}
 		set{type = value;}
 	}

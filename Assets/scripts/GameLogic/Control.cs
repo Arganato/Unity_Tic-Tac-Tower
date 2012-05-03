@@ -13,7 +13,7 @@ public class Control: MonoBehaviour {
 	
 	public int turn = 1; //1-indexed
 	public int currPlayer = 0; //player 1 starting; changed to 0-indexing
-	public int skillInUse; // skil used by currPlayer. 0 = no skill, 1 = shoot, 2 = build, etc
+	public int skillInUse; // skill used by currPlayer. 0 = no skill, 1 = shoot, 2 = build, etc
 	
 	//Skills:
 	public SkillContainer[] playerSkill = new SkillContainer[2];
@@ -24,7 +24,6 @@ public class Control: MonoBehaviour {
 	
 	private Sound sound;
 	
-	// Use this for initialization
 	void Awake () {
 		sound = (Sound)FindObjectOfType(typeof(Sound));
 		if (sound == null){
@@ -52,7 +51,7 @@ public class Control: MonoBehaviour {
 		}
 	}
 	
-	private bool CheckCluster(FieldIndex index){
+	private bool CheckCluster(FieldIndex index){ //rename?
 		//Finds a cluster from a field index recursively
 		//calls appropriate FindTower-functions on this cluster
 		//reports found towers
@@ -91,9 +90,9 @@ public class Control: MonoBehaviour {
 		BroadcastMessage("UpdateField");
 		return true;
 	}
-	
+	// move to Skill-class
 	public int UseSkill(int skill){
-		//Returns an error message 
+		//Returns an error code 
 		switch (skill){
 			case 0: //no skill
 				skillInUse = 0;
@@ -150,7 +149,7 @@ public class Control: MonoBehaviour {
 	
 	public void ExecuteOrder(Order o){
 		// Executes an order from the order-format
-		// TODO: make all orders go through this by having a wrapper class
+		// TODO: make all orders go through this by having a wrapper function
 		if (o.player == currPlayer){
 			switch(o.skill){
 			case -1:
@@ -191,6 +190,8 @@ public class Control: MonoBehaviour {
 		}
 	}
 	
+	
+	//Move to Skill-class
 	private void PlacePiece(FieldIndex index){ //placing piece in a normal turn
 		if (playerDone == false && playField.At(index) == Route.empty){
 			if(currPlayer == 0){
@@ -211,7 +212,7 @@ public class Control: MonoBehaviour {
 			// **DEBUG** write this out somehow
 		}
 	}
-	
+	//Move to Skill-class
 	private void ExtraBuild(FieldIndex index){ //placing an extra piece with the build-skill
 		if (playField.At(index) == Route.empty){
 		
@@ -230,7 +231,7 @@ public class Control: MonoBehaviour {
 		}		
 		//do not change first player
 	}
-	
+	//Move to Skill-class
 	private void Shoot(FieldIndex index){ //select an enemy piece to destroy it
 	
 		if (playField[index] == Field<int>.GetPlayerColor( (currPlayer+1)%2 ) ){
@@ -247,7 +248,7 @@ public class Control: MonoBehaviour {
 		}
 		
 	}
-	
+	//Move to Skill-class
 	private void EMP(){
 		Debug.Log("player "+currPlayer+" has used EMP");
 		skillsUsed.emp++;
@@ -255,16 +256,6 @@ public class Control: MonoBehaviour {
 		player[(currPlayer+1)%2].silenced = true;
 		sound.PlaySound(SoundType.emp);
 		}
-	
-	
-	private void DebugRemovePiece(FieldIndex index){ //removes a piece. should only be availible in debug mode
-		if (playField.At(index) == Route.empty){		
-			playField[index] = Field<int>.GetPlayerColor(currPlayer);
-		}else{
-			//Debug.Log("changing field "+index.x+","+index.y+"to "+Route.empty);
-			playField[index] = Route.empty;
-		}
-	}
 	
 	private void ReportTower(Tower t){
 		switch(t.towerType){
@@ -322,7 +313,7 @@ public class Control: MonoBehaviour {
 	}
 		
 		
-	
+	//merge findCluster-functions (as in android)
 	private Field<bool> FindClusterRecurse( FieldIndex ind, Field<bool> taken){
 		taken[ind] = true;
 		//Debug.Log("FindCluster, NB's: "+ind.LogStraightNeighbours());
@@ -344,13 +335,6 @@ public class Control: MonoBehaviour {
 		}
 		return takenDiag;
 	}
-	
-
 
 	
 }
-
-
-
-
-

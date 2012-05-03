@@ -51,11 +51,6 @@ public class Grid : MonoBehaviour {
 				//Debug.Log("index "+gu.index.index+" found");
 				return gu.index;
 			}
-			//int y_tmp = Mathf.RoundToInt(hit.point.x/10f) + 4;
-			//int x_tmp = Mathf.RoundToInt(hit.point.z/10f) + 4;
-			//if (x_tmp >= 0 && x_tmp < Stats.fieldSize && y_tmp >= 0 && y_tmp < Stats.fieldSize ){
-			//	index.Set(x_tmp,y_tmp);
-			//}
 		}else{
 			//Debug.Log ("raycast does not intersect any objects");
 		}
