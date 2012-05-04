@@ -77,6 +77,30 @@ public class Tower {
 	
 	//****STATIC FIND-TOWER-FUNCTIONS****
 	
+	
+		public static Field<bool> FindClusterRecurse( FieldIndex ind, Field<bool> taken){
+		taken[ind] = true;
+		//Debug.Log("FindCluster, NB's: "+ind.LogStraightNeighbours());
+		foreach( FieldIndex i in ind.GetStraightNeighbours() ){
+			if( playField[i] == playField[ind] && taken[i] == false ){
+				//Debug.Log("calling FCR from "+i.x+", "+i.y+"...");
+				taken = FindClusterRecurse(i, taken);
+			}
+		}
+		return taken;
+	}
+	
+	public static Field<bool> FindDiagClusterRecurse( FieldIndex ind, Field<bool> takenDiag){
+		takenDiag[ind] = true;
+		foreach( FieldIndex i in ind.GetDiagNeighbours() ){
+			if( playField[i] == playField[ind] && takenDiag[i] == false ){
+				takenDiag = FindDiagClusterRecurse(i, takenDiag);
+			}
+		}
+		return takenDiag;
+	}
+
+	
 	public static void FindBuildTower(Shape s, FieldIndex ind, Field<bool> taken, ref List<Tower> buildList){
 		//Debug.Log("Finding 2nd piece forward on "+tmp.ToString());
 		Tower newTower = new Tower();
