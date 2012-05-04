@@ -41,12 +41,12 @@ public class GUI_script : MonoBehaviour {
 			return;
 		}
 		GUI.enabled = !lockGUI;
-		string p1SkillInfo = "Player 1 skills\nShoot: "+control.playerSkill[0].shoot+
-				"\nBuild: "+control.playerSkill[0].build+"\nEMP: "+control.playerSkill[0].emp+
-				"\nSkill cap: "+(int)(1+control.playerSkill[0].square+control.extraSkillCap);
-		string p2SkillInfo = "Player 2 skills\nShoot: "+control.playerSkill[1].shoot+
-				"\nBuild: "+control.playerSkill[1].build+"\nEMP: "+control.playerSkill[1].emp+
-				"\nSkill cap: "+(int)(1+control.playerSkill[1].square+control.extraSkillCap);
+		string p1SkillInfo = "Player 1 skills\nShoot: "+control.player[0].playerSkill.shoot+
+				"\nBuild: "+control.player[0].playerSkill.build+"\nEMP: "+control.player[0].playerSkill.emp+
+				"\nSkill cap: "+(int)(1+control.player[0].playerSkill.square+Skill.extraSkillCap);
+		string p2SkillInfo = "Player 2 skills\nShoot: "+control.player[1].playerSkill.shoot+
+				"\nBuild: "+control.player[1].playerSkill.build+"\nEMP: "+control.player[1].playerSkill.emp+
+				"\nSkill cap: "+(int)(1+control.player[1].playerSkill.square+Skill.extraSkillCap);
 		
 		GUI.Box(new Rect(0,0,90,100), p1SkillInfo);
 		GUI.Box(new Rect(Screen.width - 90,0,90,100), p2SkillInfo);
@@ -56,23 +56,23 @@ public class GUI_script : MonoBehaviour {
 		
 		//Turns until skill cap increase.
 		if(control.placedPieces <= control.totalArea/3){
-			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.currPlayer+1) + "'s turn.  " 
-					+ "Skill cap: " + (int)(1+control.extraSkillCap) + ".   Skill cap increase after: " 
+			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.activePlayer+1) + "'s turn.  " 
+					+ "Skill cap: " + (int)(1+Skill.extraSkillCap) + ".   Skill cap increase after: " 
 					+ (int)(control.totalArea/3+1-control.placedPieces) + " tiles.");
 		}else if(control.placedPieces <= 2*control.totalArea/3){
-			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.currPlayer+1) + "'s turn.  " 
-					+ "Skill cap: " + (int)(1+control.extraSkillCap) + ".   Skill cap increase after: " 
+			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.activePlayer+1) + "'s turn.  " 
+					+ "Skill cap: " + (int)(1+Skill.extraSkillCap) + ".   Skill cap increase after: " 
 					+ (int)(control.totalArea*2/3+1-control.placedPieces) + " tiles.");
 		}else{
-			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.currPlayer+1) + "'s turn.  " 
-					+ "Skill cap: " + (int)(1+control.extraSkillCap) + ".   Total skill cap increases reached");
+			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.activePlayer+1) + "'s turn.  " 
+					+ "Skill cap: " + (int)(1+Skill.extraSkillCap) + ".   Total skill cap increases reached");
 		}
 		
 		//Global skill cap.
 		//GUI.Box(new Rect(Screen.width/2-50, 10, 100, 40), "Skill cap:\n" + (int)(1+control.extraSkillCap));
 		
 		//Player turn.
-		//GUI.Box( new Rect(Screen.width/2-200,20, 100, 25), "Player " +control.currPlayer + "'s turn.  " + "Skill cap:\n" + (int)(1+control.extraSkillCap));
+		//GUI.Box( new Rect(Screen.width/2-200,20, 100, 25), "Player " +control.activePlayer + "'s turn.  " + "Skill cap:\n" + (int)(1+control.extraSkillCap));
 		
 		//End Turn.
 		if(control.playerDone && GUI.Button( new Rect(8, Screen.height-40,100, 40), "End Turn")){
@@ -86,24 +86,24 @@ public class GUI_script : MonoBehaviour {
 		//legge til 4 på telleren, og deretter håndtere skillinuse
 		//kan caste boolen til en int og gange med 4 for å lage generell formel
 		for(int i = 0; i<3; i++){
-			if(control.skillInUse != (i+1) && GUI.Button(new Rect(Screen.width/2-200+i*100, 30, 100, 100),tSkills[i+Bool2Int(towerRow)*5]) ){
+			if(Skill.skillInUse != (i+1) && GUI.Button(new Rect(Screen.width/2-200+i*100, 30, 100, 100),tSkills[i+Bool2Int(towerRow)*5]) ){
 				//the user has pressed a skill-button
-				skillError = control.UseSkill(i+1);
+				skillError = Skill.UseSkill(i+1);
 				if(skillError!=0){
 					errorStartTime = Time.time;
 				}
-			}else if( control.skillInUse == i+1 ){
+			}else if( Skill.skillInUse == i+1 ){
 				GUI.Box(new Rect(Screen.width/2-200+i*100, 30, 100, 100),tSkills[i+Bool2Int(towerRow)*5]);
 			}
 		}
 		
 		UseSkillError(skillError,new Rect(Screen.width/2-100,Screen.height/2,250,25));
 		
-		if(control.skillInUse == 0){
+		if(Skill.skillInUse == 0){
 			GUI.Box(new Rect(Screen.width/2+100, 30, 100, 100), tSkills[3+Bool2Int(towerRow)*5]);
 		}else{
 			if(GUI.Button(new Rect(Screen.width/2+100, 30, 100, 100), tSkills[4])){
-				control.UseSkill(0);
+				Skill.UseSkill(0);
 			}
 		}
 		towerRow = GUI.Toggle(new Rect(Screen.width/2-225,105,25,25),towerRow, "",toggleTowerDisplay);
