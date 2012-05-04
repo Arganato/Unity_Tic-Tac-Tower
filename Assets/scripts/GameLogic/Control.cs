@@ -8,7 +8,7 @@ public class Control: MonoBehaviour {
 	public int totalArea;
 	public int extraSkillCap = 0;
 	
-	public Field<Route> playField;
+	public static Field<Route> playField;
 	public bool playerDone = false; //Is true when player has placed a piece. Allows user to "End Turn".
 	
 	public int turn = 1; //1-indexed
