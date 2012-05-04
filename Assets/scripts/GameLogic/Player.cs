@@ -2,12 +2,13 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public struct Player {
-	public int score;
-	public int currPlayer;
+public class Player {
+	public int score;		//Player score.
+	public int activePlayer;	//Current active player.
 	
-	public bool silenced;
+	public bool silenced;	//Status saying whether players is silenced or not.
 	
+	public SkillContainer playerSkill = new SkillContainer();
 	
 	public void AddScore(int numbOfTowers){
 		score += 100*numbOfTowers;

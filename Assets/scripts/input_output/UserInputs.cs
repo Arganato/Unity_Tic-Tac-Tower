@@ -16,11 +16,11 @@ public class UserInputs : MonoBehaviour {
 			control.ChangeCurrPlayer();
 		}
 		if(Input.GetButton("shoot")){
-			control.UseSkill(1);
+			Skill.UseSkill(1);
 		}if(Input.GetButton("build")){
-			control.UseSkill(2);
+			Skill.UseSkill(2);
 		}if(Input.GetButton("emp")){
-			control.UseSkill(3);
+			Skill.UseSkill(3);
 		}
 	
 	}
