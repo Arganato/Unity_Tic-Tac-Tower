@@ -11,7 +11,7 @@ public static class Skill {
 	
 	
 	
-	public static void initSkill(Control c){
+	public static void Init(Control c){
 		control = c;
 	}
 	

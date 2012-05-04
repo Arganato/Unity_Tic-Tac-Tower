@@ -23,10 +23,14 @@ public class Control: MonoBehaviour {
 		if (sound == null){
 			Debug.LogError("sound-object not found");
 		}
-		Skill.initSkill(this);
+		Skill.Init(this);
 		player[0] = new Player();
 		player[1] = new Player();
 
+	}
+	
+	void Start(){
+		StartNewGame();
 	}
 	
 	public void UserFieldSelect(FieldIndex index){
