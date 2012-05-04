@@ -14,7 +14,7 @@ public class GameState {
 	public Player player1Score;
 	
 	public GameState(){
-		field = new Field<Route>(Stats.fieldSize, Route.empty);
+		field = new Field<Route>(Route.empty);
 		turn = 1;
 		startingPlayer = 0;
 		placedPieces = 0;

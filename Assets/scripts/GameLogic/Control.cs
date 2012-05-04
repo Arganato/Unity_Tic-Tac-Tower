@@ -58,29 +58,29 @@ public class Control: MonoBehaviour {
 		
 		// **DEBUG** tilpasse funksjonalitet til silence
 		if(playField[index] != Route.empty){
-			Field<bool> cluster = new Field<bool>(9,false); 
-			Field<bool> clusterDiag = new Field<bool>(9,false); 
-			cluster = FindClusterRecurse(index,cluster);
-			clusterDiag = FindDiagClusterRecurse(index,clusterDiag);
-			List<Tower> tower = Tower.FindTower(cluster, clusterDiag);
-			Debug.Log(currPlayer + " silenced: " + player[currPlayer].silenced);
+			Field<bool> cluster = new Field<bool>(false); 
+
+			cluster = Tower.FindAllClusterRecurse(index,cluster);
+			List<Tower> tower = Tower.FindTower(cluster);
+			//Debug.Log(currPlayer + " silenced: " + player[currPlayer].silenced);
+			
+			
+			//Coloring towers, and adding skills and score to players
 			if(!player[currPlayer].silenced || tower.Count == 0){
 				player[currPlayer].AddScore(tower.Count);
 				foreach( Tower t in tower){
-					//coloring the towers:
+					//Checking for victory
 					if(t.towerType == TowerType.five){
 						player[currPlayer].score += 1000;
 						// *DEBUG* lage game-over screen her
 						sound.PlaySound(SoundType.victory);
 					}
+					//Coloring the towers:
 					foreach(FieldIndex i in t.GetList()){ 
 						
 						// **DEBUG** lage GetDarkColor-funksjon
-						if( currPlayer == 0){
-							playField[i] = Route.redBuilt;
-						}else{
-							playField[i] = Route.blueBuilt;
-						}
+						playField[i] = Field<int>.GetDarkRoute(playField[i]);
+						
 					}
 					//reporting the towers:
 					ReportTower(t);
@@ -193,7 +193,7 @@ public class Control: MonoBehaviour {
 	
 	//Move to Skill-class
 	private void PlacePiece(FieldIndex index){ //placing piece in a normal turn
-		if (playerDone == false && playField.At(index) == Route.empty){
+		if (playerDone == false && playField[index] == Route.empty){
 			if(currPlayer == 0){
 				playField[index] = Route.red;
 			}else{
@@ -214,7 +214,7 @@ public class Control: MonoBehaviour {
 	}
 	//Move to Skill-class
 	private void ExtraBuild(FieldIndex index){ //placing an extra piece with the build-skill
-		if (playField.At(index) == Route.empty){
+		if (playField[index] == Route.empty){
 		
 			playField[index] = Field<int>.GetPlayerColor(currPlayer);
 			playerSkill[currPlayer].build--;

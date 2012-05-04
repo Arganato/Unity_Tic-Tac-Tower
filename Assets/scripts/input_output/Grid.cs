@@ -20,11 +20,11 @@ public class Grid : MonoBehaviour {
 	//private int gridLength = 90;
 	private int red_pieceHeigth = 1;
 	
-	private Field<GridUnit> playFieldTransforms = new Field<GridUnit>(9);
+	private Field<GridUnit> playFieldTransforms = new Field<GridUnit>();
 	
 	void Awake () {
 		control = (Control)FindObjectOfType(typeof(Control));
-		playFieldTransforms = new Field<GridUnit>(Stats.fieldSize, null);
+		playFieldTransforms = new Field<GridUnit>((GridUnit)null);
 	}
 	
 	// User input
@@ -42,7 +42,7 @@ public class Grid : MonoBehaviour {
 	private FieldIndex ScreenPointToBoard( Vector3 pos){
 		Ray ray = Camera.main.ScreenPointToRay (pos);
 		RaycastHit hit;
-		FieldIndex index = new FieldIndex(Stats.fieldSize);
+		FieldIndex index = new FieldIndex();
 		if (Physics.Raycast (ray, out hit, 100)) {
 			GridUnit gu = hit.transform.GetComponent<GridUnit>();
 			if(gu == null){
@@ -72,7 +72,7 @@ public class Grid : MonoBehaviour {
 			if( playFieldTransforms[i] != null ){
 				Destroy(playFieldTransforms[i].gameObject);
 			}
-			PlaceTransform(Control.playField[i],new FieldIndex(i,Stats.fieldSize));
+			PlaceTransform(Control.playField[i],new FieldIndex(i));
 		}		
 	}
 	
@@ -84,7 +84,7 @@ public class Grid : MonoBehaviour {
 				//destroy old prefab
 				Destroy(playFieldTransforms[i].gameObject);
 				//create new transform 
-				PlaceTransform(Control.playField[i],new FieldIndex(i,Stats.fieldSize));
+				PlaceTransform(Control.playField[i],new FieldIndex(i));
 			}
 		}
 	}
