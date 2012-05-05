@@ -17,6 +17,8 @@ public class GUI_script : MonoBehaviour {
 	public bool enable;
 	public bool lockGUI;
 	
+	public bool guiMouseEvent;
+	
 	private string buildText = "Build Tower: \nAllows the player to place one more piece on the board.\nThis will not, however, reset the amount of skills used, as if starting a new round.";
 	private string shootText = "Shoot Tower: \nThe player may destroy another unused, hostile piece on the board.\nThe piece is ruined, and the tile cannot be built upon.";
 	private string empText = "EMP Tower: \nThe opponent is rendered unable to place a piece where he/she would normally be able to build a tower. Also, the opponent will not benefit from any abilities next turn.";
@@ -37,10 +39,42 @@ public class GUI_script : MonoBehaviour {
 	}
 	
 	void OnGUI() {
+		if(Event.current.type == EventType.MouseDown){
+			guiMouseEvent = true;
+		}else{
+			guiMouseEvent = false;
+		}
 		if(!enable){
 			return;
 		}
 		GUI.enabled = !lockGUI;
+
+		TextInfo();
+		
+		EndTurn();
+		
+		SkillOverview();
+		
+		SkillDescrDropdown();
+		
+		NewGameMenu();
+
+		GUI.enabled = true;
+		if(Event.current.type == EventType.Used){
+			if(guiMouseEvent){
+				Debug.Log("GUI-mouse-event");
+			}
+		}
+	}
+	
+	private void EndTurn(){
+		//End Turn.
+		if(control.playerDone && GUI.Button( new Rect(8, Screen.height-40,100, 40), "End Turn")){
+			control.ChangeCurrPlayer();
+		}	
+	}
+	
+	private void TextInfo(){
 		string p1SkillInfo = "Player 1 skills\nShoot: "+control.player[0].playerSkill.shoot+
 				"\nBuild: "+control.player[0].playerSkill.build+"\nEMP: "+control.player[0].playerSkill.emp+
 				"\nSkill cap: "+(int)(1+control.player[0].playerSkill.square+Skill.extraSkillCap);
@@ -66,24 +100,14 @@ public class GUI_script : MonoBehaviour {
 		}else{
 			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.activePlayer+1) + "'s turn.  " 
 					+ "Skill cap: " + (int)(1+Skill.extraSkillCap) + ".   Total skill cap increases reached");
-		}
-		
-		//Global skill cap.
-		//GUI.Box(new Rect(Screen.width/2-50, 10, 100, 40), "Skill cap:\n" + (int)(1+control.extraSkillCap));
-		
-		//Player turn.
-		//GUI.Box( new Rect(Screen.width/2-200,20, 100, 25), "Player " +control.activePlayer + "'s turn.  " + "Skill cap:\n" + (int)(1+control.extraSkillCap));
-		
-		//End Turn.
-		if(control.playerDone && GUI.Button( new Rect(8, Screen.height-40,100, 40), "End Turn")){
-			control.ChangeCurrPlayer();
-		}
-		
-		//Skill overview.
+		}	
+	}
+	
+	private void SkillOverview(){
 		GUI.Box(new Rect(Screen.width/2-200, 30, 400, 100), "");
 
 		//tanke for å switche bilder:
-		//legge til 4 på telleren, og deretter håndtere skillinuse
+		//legge til 4 på telleren, og deretter håndtere skillInUse
 		//kan caste boolen til en int og gange med 4 for å lage generell formel
 		for(int i = 0; i<3; i++){
 			if(Skill.skillInUse != (i+1) && GUI.Button(new Rect(Screen.width/2-200+i*100, 30, 100, 100),tSkills[i+Bool2Int(towerRow)*5]) ){
@@ -108,24 +132,26 @@ public class GUI_script : MonoBehaviour {
 		}
 		towerRow = GUI.Toggle(new Rect(Screen.width/2-225,105,25,25),towerRow, "",toggleTowerDisplay);
 		
-	switch(showSkillInfo){
-		case 0:
-			break;
-		case 1:
-			GUI.Box(new Rect(Screen.width/2-225, 145, 450, 70),shootText, darkTextBoxes);
-			break;
-		case 2:
-			GUI.Box(new Rect(Screen.width/2-225, 145, 450, 70),buildText, darkTextBoxes);
-			break;
-		case 3:
-			GUI.Box(new Rect(Screen.width/2-225, 145, 450, 70),empText, darkTextBoxes);
-			break;
-		case 4:
-			GUI.Box(new Rect(Screen.width/2-225, 145, 450, 70),squareText, darkTextBoxes);
-			break;
-		}
+		switch(showSkillInfo){
+			case 0:
+				break;
+			case 1:
+				GUI.Box(new Rect(Screen.width/2-225, 145, 450, 70),shootText, darkTextBoxes);
+				break;
+			case 2:
+				GUI.Box(new Rect(Screen.width/2-225, 145, 450, 70),buildText, darkTextBoxes);
+				break;
+			case 3:
+				GUI.Box(new Rect(Screen.width/2-225, 145, 450, 70),empText, darkTextBoxes);
+				break;
+			case 4:
+				GUI.Box(new Rect(Screen.width/2-225, 145, 450, 70),squareText, darkTextBoxes);
+				break;
+		}		
 		
-		//dropdown-menu for skill description:
+	}
+	
+	private void SkillDescrDropdown(){
 		for(int i = 1;i<5;i++){
 			if(showSkillInfo != i){ 
 				if(GUI.Button(new Rect(Screen.width/2-270+i*100, 130, 40, 15),smallArrowDown)){
@@ -136,9 +162,10 @@ public class GUI_script : MonoBehaviour {
 				showSkillInfo = 0;
 				}
 			}
-		}
-		
-		//new game menu
+		}		
+	}
+	
+	private void NewGameMenu(){
 		if( !confirmNewGame && GUI.Button(new Rect(Screen.width - 100, Screen.height - 280, 100, 40), "NEW GAME")){
 			confirmNewGame = true;
 		}else if(confirmNewGame){
@@ -149,9 +176,7 @@ public class GUI_script : MonoBehaviour {
 			}else if(GUI.Button(new Rect(Screen.width - 55, Screen.height - 240, 55, 25), "cancel")){
 				confirmNewGame = false;
 			}
-		}
-		GUI.enabled = true;
-
+		}		
 	}
 	
 	private int Bool2Int(bool b){

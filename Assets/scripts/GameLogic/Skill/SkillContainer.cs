@@ -2,14 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-
-//Contains:
-//-Shape
-//-Tower
-//-SkillContainer
-public enum TowerType {build, shoot, emp, square, five};
-
-
 // Struct SkillContainer:
 // -stores the availible skills for each player
 
