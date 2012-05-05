@@ -75,7 +75,7 @@ public class Control: MonoBehaviour {
 				player[activePlayer].AddScore(tower.Count);
 				foreach( Tower t in tower){
 					//Checking for victory
-					if(t.towerType == TowerType.five){
+					if(t.type == TowerType.five){
 						player[activePlayer].score += 1000;
 						// *DEBUG* lage game-over screen her
 						sound.PlaySound(SoundType.victory);
@@ -143,6 +143,7 @@ public class Control: MonoBehaviour {
 	//Move to Skill-class
 	private void PlacePiece(FieldIndex index){ //placing piece in a normal turn
 		if (playerDone == false && playField[index] == Route.empty){
+			Debug.Log("Index: " + index);
 			if(activePlayer == 0){
 				playField[index] = Route.red;
 			}else{
@@ -207,7 +208,7 @@ public class Control: MonoBehaviour {
 	}
 	
 	private void ReportTower(Tower t){
-		switch(t.towerType){
+		switch(t.type){
 			case TowerType.shoot:
 				player[activePlayer].playerSkill.shoot++;
 				break;

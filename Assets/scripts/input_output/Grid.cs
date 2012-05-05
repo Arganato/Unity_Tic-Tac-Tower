@@ -43,16 +43,18 @@ public class Grid : MonoBehaviour {
 		Ray ray = Camera.main.ScreenPointToRay (pos);
 		RaycastHit hit;
 		FieldIndex index = new FieldIndex();
+		index.index = -1;
+		Debug.Log("Looking for planet");
 		if (Physics.Raycast (ray, out hit, 100)) {
 			GridUnit gu = hit.transform.GetComponent<GridUnit>();
 			if(gu == null){
 				Debug.Log("component GridUnit not found on mouseclick-target");
 			}else{
-				//Debug.Log("index "+gu.index.index+" found");
+				Debug.Log("index "+gu.index.index+" found");
 				return gu.index;
 			}
 		}else{
-			//Debug.Log ("raycast does not intersect any objects");
+			Debug.Log ("raycast does not intersect any objects");
 		}
 		return index;
 	}

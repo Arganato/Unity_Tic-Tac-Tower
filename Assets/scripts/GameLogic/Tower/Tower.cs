@@ -9,15 +9,10 @@ using System.Collections.Generic;
 public class Tower {
 	
 	private List<FieldIndex> list;
-	private TowerType type;
+	public TowerType type;
 	
 	public Tower(){
 		list = new List<FieldIndex>();
-	}
-	
-	public TowerType towerType{ //remove due to uselessness
-		get{return type;}
-		set{type = value;}
 	}
 	
 	public List<FieldIndex> GetList(){
@@ -116,7 +111,7 @@ public class Tower {
 		FieldIndex tmp = ind.Up(direction);
 		newTower.Add(ind);
 		newTower.Add(tmp);
-		newTower.towerType = TowerType.build;						
+		newTower.type = TowerType.build;						
 		ind = tmp;
 		tmp = ind.Up(direction);
 		
@@ -154,7 +149,7 @@ public class Tower {
 		FieldIndex tmp = ind.Up(direction);
 		newTower.Add(ind);
 		newTower.Add(tmp);
-		newTower.towerType = TowerType.shoot;						
+		newTower.type = TowerType.shoot;						
 		ind = tmp;
 		FieldIndex left = ind.Left(direction);
 		FieldIndex right = ind.Right(direction);
@@ -174,7 +169,7 @@ public class Tower {
 		FieldIndex tmp = ind.Up(direction);
 		newTower.Add(ind);
 		newTower.Add(tmp);
-		newTower.towerType = TowerType.emp;						
+		newTower.type = TowerType.emp;						
 		ind = tmp;
 		FieldIndex right = ind.Right(direction);
 		FieldIndex left = ind.Left(direction);
@@ -227,7 +222,7 @@ public class Tower {
 	
 	public static void FindSquareTower(int direction, FieldIndex ind, Field<bool> taken, ref List<Tower> buildList){
 		Tower newTower = new Tower();
-		newTower.towerType = TowerType.square;
+		newTower.type = TowerType.square;
 		//Debug.Log("Found 2nd piece forward on "+ind.ToString());
 		newTower.Add(ind);
 		FieldIndex tmp = ind.Up(direction);
@@ -254,7 +249,7 @@ public class Tower {
 		FieldIndex tmp = ind.Up(direction);
 		newTower.Add(ind);
 		newTower.Add(tmp);
-		newTower.towerType = TowerType.five;
+		newTower.type = TowerType.five;
 		ind = tmp;
 		tmp = ind.Up(direction);
 		
