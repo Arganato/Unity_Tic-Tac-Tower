@@ -56,18 +56,6 @@ public class Field<T>{
 			a[i] = defaultValue;
 		}
 	}
-//	public void Set(T element, int index){
-//		a[index] = element;
-//	}
-//	public void Set(T element, FieldIndex x){
-//			a[x.index] = element;
-//	}
-//	public T At(int index){
-//		return a[index];
-//	}	
-//	public T At(FieldIndex x){
-//		return a[x.index];
-//	}
 
 	// properties for array-like calls
 	public T this[FieldIndex ind]{

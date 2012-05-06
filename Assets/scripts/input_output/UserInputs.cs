@@ -13,7 +13,7 @@ public class UserInputs : MonoBehaviour {
 	void Update () {
 		//keyboard input
 		if(Input.GetButton("End Turn") && control.playerDone){
-			control.ChangeCurrPlayer();
+			control.EndTurn();
 		}
 		if(Input.GetButton("shoot")){
 			Skill.UseSkill(1);

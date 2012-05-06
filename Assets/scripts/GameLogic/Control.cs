@@ -101,29 +101,39 @@ public class Control: MonoBehaviour {
 		// TODO: make all orders go through this by having a wrapper function
 		if (o.player == activePlayer){
 			switch(o.skill){
-			case -1:
+			case SkillType.noSkill:
 				if(o.endTurn){
-					ChangeCurrPlayer();
+					EndTurn();
 				}
 				break;
-			case 0:
+			case SkillType.place:
 				PlacePiece(o.position);
 				break;
-			case 1:
+			case SkillType.shoot:
 				Shoot(o.position);
 				break;
-			case 2:
+			case SkillType.build:
 				ExtraBuild(o.position);
 				break;
-			case 3:
+			case SkillType.emp:
 				EMP();
 				break;
 			}
 			if(o.endTurn){
-				ChangeCurrPlayer();
+				EndTurn();
 			}
 		}else{
 			Debug.LogWarning("ExecuteOrder Called with wrong player");
+		}
+	}
+	
+	public void ExecuteTurn(Turn t){
+		if(t.IsValid()){
+			foreach( Order o in t.GetOrderList()){
+				ExecuteOrder(o);
+			}
+		}else{
+			Debug.LogError("invalid turn-code");
 		}
 	}
 	
@@ -224,7 +234,15 @@ public class Control: MonoBehaviour {
 		}
 	}
 	
-	public void ChangeCurrPlayer(){
+	public void EndTurn(){
+		//ADD:
+		// report moves to console
+		ChangeActivePlayer();
+		//ADD:
+		// set undo-point
+	}
+	
+	private void ChangeActivePlayer(){
 		player[activePlayer].EndTurn(player[activePlayer].playerSkill.square);
 		if(activePlayer == 1){
 			turn++;

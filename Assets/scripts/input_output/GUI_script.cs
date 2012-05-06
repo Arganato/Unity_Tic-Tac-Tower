@@ -23,6 +23,10 @@ public class GUI_script : MonoBehaviour {
 	private string empText = "EMP Tower: \nThe opponent is rendered unable to place a piece where he/she would normally be able to build a tower. Also, the opponent will not benefit from any abilities next turn.";
 	private string squareText = "Square Tower: \nIncreases the skill cap by one for the player who builds it, allowing\n the player to use the same skill one more time during the same round.\nIn addition, the player will gain five score points at the end of each turn.";
 	
+	private Rect consoleWindowRect = new Rect(20,Screen.height-60,400,60);
+	private string consoleString = "Welcome to the console";
+	private string consoleEditable = "";
+	
 	private bool towerRow; // whether the straight or diagonal towers shall be shown
 	
 	private bool confirmNewGame = false;
@@ -53,7 +57,11 @@ public class GUI_script : MonoBehaviour {
 		SkillDescrDropdown();
 		
 		NewGameMenu();
-
+		
+		consoleWindowRect = GUI.Window(0,consoleWindowRect,ConsoleWindow,"Console");
+			
+		
+		//----Framework to handle mouse-input etc----//
 		GUI.enabled = true;
 
 		if(Event.current.type == EventType.MouseDown){
@@ -69,7 +77,7 @@ public class GUI_script : MonoBehaviour {
 	private void EndTurn(){
 		//End Turn.
 		if(control.playerDone && GUI.Button( new Rect(8, Screen.height-40,100, 40), "End Turn")){
-			control.ChangeCurrPlayer();
+			control.EndTurn();
 		}	
 	}
 	
@@ -224,6 +232,16 @@ public class GUI_script : MonoBehaviour {
 				return;
 		}
 		return;
+	}
+	
+	private void ConsoleWindow(int windowID){
+		GUI.Box(new Rect(0,0,consoleWindowRect.width,consoleWindowRect.height-20),consoleString);
+		consoleEditable = GUI.TextField(new Rect(20,40,consoleWindowRect.width-40,20),consoleEditable);
+		if(GUI.Button(new Rect(consoleWindowRect.width-20,consoleWindowRect.height-20,20,20),"Send")){
+			Debug.Log("string recieved: "+consoleEditable);
+			consoleString += consoleEditable+"\n";
+		}
+		GUI.DragWindow(new Rect(0,0,consoleWindowRect.width,consoleWindowRect.height));
 	}
 	
 }
