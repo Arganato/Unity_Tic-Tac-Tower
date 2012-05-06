@@ -27,36 +27,30 @@ public class Grid : MonoBehaviour {
 		playFieldTransforms = new Field<GridUnit>((GridUnit)null);
 	}
 	
-	// User input
-	void Update () {
-		if( Input.GetButtonDown("mouse1") ){
-			//Debug.Log(Input.mousePosition);
-			//Debug.Log("calling ScreenPointToBoard");
-			FieldIndex ind = ScreenPointToBoard(Input.mousePosition);
-			if ( ind.index != -1){
-				control.UserFieldSelect(ind);
-			}
+	
+	public void MouseDown(Vector3 mousePosition){
+		FieldIndex ind = ScreenPointToBoard(mousePosition);
+		if ( ind.index != -1){
+			control.UserFieldSelect(ind);
 		}
 	}
 	
 	private FieldIndex ScreenPointToBoard( Vector3 pos){
 		Ray ray = Camera.main.ScreenPointToRay (pos);
 		RaycastHit hit;
-		FieldIndex index = new FieldIndex();
-		index.index = -1;
-		Debug.Log("Looking for planet");
+		//Debug.Log("Looking for planet");
 		if (Physics.Raycast (ray, out hit, 100)) {
 			GridUnit gu = hit.transform.GetComponent<GridUnit>();
 			if(gu == null){
 				Debug.Log("component GridUnit not found on mouseclick-target");
 			}else{
-				Debug.Log("index "+gu.index.index+" found");
+				//Debug.Log("index "+gu.index.index+" found");
 				return gu.index;
 			}
 		}else{
-			Debug.Log ("raycast does not intersect any objects");
+			//Debug.Log ("raycast does not intersect any objects");
 		}
-		return index;
+		return new FieldIndex(-1);
 	}
 	
 	private Vector3 BoardToWorldPoint(FieldIndex ind){

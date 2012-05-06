@@ -5,6 +5,7 @@ public class GUI_script : MonoBehaviour {
 
 	
 	private Control control;
+	private Grid grid;
 	//private string[] skillNames =new string[4] {"cancel", "shoot", "build", "emp"};
 	
 	public Texture[] tSkills;
@@ -16,8 +17,6 @@ public class GUI_script : MonoBehaviour {
 	
 	public bool enable;
 	public bool lockGUI;
-	
-	public bool guiMouseEvent;
 	
 	private string buildText = "Build Tower: \nAllows the player to place one more piece on the board.\nThis will not, however, reset the amount of skills used, as if starting a new round.";
 	private string shootText = "Shoot Tower: \nThe player may destroy another unused, hostile piece on the board.\nThe piece is ruined, and the tile cannot be built upon.";
@@ -34,16 +33,12 @@ public class GUI_script : MonoBehaviour {
 	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
+		grid = (Grid)FindObjectOfType(typeof(Grid));
 		//enable = true;
 		//lockGUI = false;
 	}
 	
 	void OnGUI() {
-		if(Event.current.type == EventType.MouseDown){
-			guiMouseEvent = true;
-		}else{
-			guiMouseEvent = false;
-		}
 		if(!enable){
 			return;
 		}
@@ -60,9 +55,13 @@ public class GUI_script : MonoBehaviour {
 		NewGameMenu();
 
 		GUI.enabled = true;
-		if(Event.current.type == EventType.Used){
-			if(guiMouseEvent){
+
+		if(Event.current.type == EventType.MouseDown){
+			if(Event.current.type == EventType.Used){
 				Debug.Log("GUI-mouse-event");
+			}else{
+				Debug.Log("sending the click to grid");
+				grid.MouseDown(Input.mousePosition);
 			}
 		}
 	}
