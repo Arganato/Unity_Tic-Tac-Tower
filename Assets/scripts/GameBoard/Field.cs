@@ -2,13 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-//Contains:
-//-FieldIndex
-//-Field
-
-public enum Route {empty, red, blue, redBuilt, blueBuilt, destroyed, outOfBounds};
-
-
 public class Field<T>{
 	
 	private T[] a; 
@@ -86,5 +79,3 @@ public class Field<T>{
 	}
 	
 }
-
-

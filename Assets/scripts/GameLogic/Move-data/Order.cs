@@ -5,7 +5,6 @@ using System.Collections;
 public struct Order{
 	public SkillType skill;
 	public FieldIndex position;
-	public int player;
 	public bool endTurn;
 	
 	public override string ToString ()
@@ -30,7 +29,7 @@ public struct Order{
 		if(endTurn){
 			s += ".";
 		}else{
-			s += ",";
+			s += ";";
 		}
 		return s;
 	}

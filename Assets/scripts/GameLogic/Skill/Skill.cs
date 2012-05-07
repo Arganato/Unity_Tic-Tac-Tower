@@ -15,62 +15,52 @@ public static class Skill {
 		control = c;
 	}
 	
-	// move to Skill-class
-	public static int UseSkill(int skill){
-		int activePlayer = control.activePlayer;
-		//Returns an error code 
-		switch (skill){
-			case 0: //no skill
-				skillInUse = 0;
-				return 0;
-			case 1: //shoot
-				Debug.Log("shoot selected");
-				if (control.player[activePlayer].playerSkill.shoot > 0){
-					if( skillsUsed.shoot <= control.player[activePlayer].playerSkill.square + extraSkillCap){
-						skillInUse = 1;
-						return 0;
-						//no error
-					}else{
-						return 2;
-						//"not enough squares"-error
-					}
-				}else{
-					return 1;
-					//"not enough skill-ammo"-error
-				}
-			case 2: //build
-				Debug.Log("build selected");
-				
-				if ( control.player[activePlayer].playerSkill.build > 0){
-					if ( skillsUsed.build <= control.player[activePlayer].playerSkill.square + extraSkillCap){
-						skillInUse = 2;
-						return 0;
-					}else{
-						return 2;
-						//"not enough squares"-error
-					}
-				}else{
-					return 1;
-					//"not enough skill-ammo"-error
-				}
-
-			case 3:
-				Debug.Log("emp selected");
-				if (skillsUsed.emp < 1){
-					if (control.player[activePlayer].playerSkill.emp > 0){
-						control.EMP();
-						return 0;
-					}else{
-						return 1;
-						//"not enough skill-ammo"-error
-					}
-				}else{
-					return 2;
-					//"not enough squares"-error
-				}
+	public static SkillSelectError UseSkill(int skill){
+		SkillSelectError ret = CanUseSkill((SkillType)skill);
+		if( ret == SkillSelectError.NO_ERROR){
+			skillInUse = skill;
 		}
-		return 3;
-		//unknown error
+		return ret;
+	}
+
+	
+	public static SkillSelectError CanUseSkill(SkillType skill){
+		switch(skill){
+		case SkillType.noSkill:
+			return SkillSelectError.NO_ERROR;
+		case SkillType.place:
+			return SkillSelectError.NO_ERROR;
+		case SkillType.shoot:
+			return CanUseShoot();
+		case SkillType.build:
+			return CanUseBuild();
+		case SkillType.emp:
+			return CanUseSilence();
+		}
+		return SkillSelectError.UNKNOWN_ERROR;
+	}
+	public static SkillSelectError CanUseShoot(){
+		if ( !(skillsUsed.shoot <= control.player[control.activePlayer].playerSkill.square + extraSkillCap) ) 
+			return SkillSelectError.SKILL_CAP_ERROR;
+		if(!(control.player[control.activePlayer].playerSkill.shoot > 0))
+			return SkillSelectError.SKILL_AMMO_ERROR;
+		return SkillSelectError.NO_ERROR;
+	}
+	
+	public static SkillSelectError CanUseBuild(){
+		if ( !(skillsUsed.build <= control.player[control.activePlayer].playerSkill.square + extraSkillCap)) 
+			return SkillSelectError.SKILL_CAP_ERROR;
+		if( !(control.player[control.activePlayer].playerSkill.build > 0) )
+			return SkillSelectError.SKILL_AMMO_ERROR;
+		return SkillSelectError.NO_ERROR;
+	}
+	
+	public static SkillSelectError CanUseSilence(){
+		if( !(skillsUsed.emp < 1) )
+			return SkillSelectError.SKILL_CAP_ERROR;
+		if( !(control.player[control.activePlayer].playerSkill.emp > 0) )
+			return SkillSelectError.SKILL_AMMO_ERROR;
+		return SkillSelectError.NO_ERROR;
 	}
 	
 }

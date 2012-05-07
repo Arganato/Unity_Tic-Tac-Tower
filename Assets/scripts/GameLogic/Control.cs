@@ -16,6 +16,7 @@ public class Control: MonoBehaviour {
 	
 	public Player[] player = new Player[2];
 	
+	private Turn activeTurn;
 	private Sound sound;
 	
 	void Awake () {
@@ -35,21 +36,33 @@ public class Control: MonoBehaviour {
 	
 	public void UserFieldSelect(FieldIndex index){
 		//Called when the user clicks on the field
+		Order o = new Order();
+		o.endTurn = false;
 		switch(Skill.skillInUse){
 			case 0:
-				PlacePiece(index);
+				o.skill = SkillType.place;
+				o.position = index;
 				break;
 			case 1:
-				Shoot(index);
+				o.skill = SkillType.shoot;
+				o.position = index;
 				break;
 			case 2:
-				ExtraBuild(index);
+				o.skill = SkillType.build;
+				o.position = index;
 				break;
 			case 3:
-				//Silence should not be called like this **Debug** sjekk ut dette
-				Debug.LogError("emp should not be reported to Control");
+				o.skill = SkillType.emp;
 				break;
 		}
+		ExecuteOrder(o);
+	}
+	
+	public void UserEndTurn(){
+		Order o = new Order();
+		o.skill = SkillType.noSkill;
+		o.endTurn = true;
+		ExecuteOrder(o);
 	}
 	
 	private bool CheckCluster(FieldIndex index){ //rename?
@@ -63,8 +76,6 @@ public class Control: MonoBehaviour {
 
 			cluster = Tower.FindAllClusterRecurse(index,cluster);
 			List<Tower> tower = Tower.FindTower(cluster);
-			//Debug.Log(activePlayer + " silenced: " + player[activePlayer].silenced);
-			
 			
 			//Coloring towers, and adding skills and score to players
 			if(!player[activePlayer].silenced || tower.Count == 0){
@@ -76,9 +87,7 @@ public class Control: MonoBehaviour {
 				foreach( Tower t in tower){
 					//Checking for victory
 					if(t.type == TowerType.five){
-						player[activePlayer].score += 1000;
-						// *DEBUG* lage game-over screen her
-						sound.PlaySound(SoundType.victory);
+						Victory();
 					}
 					//Coloring the towers:
 					foreach(FieldIndex i in t.GetList()){ 
@@ -95,42 +104,60 @@ public class Control: MonoBehaviour {
 		return true;
 	}
 	
+	private void Victory(){
+		sound.PlaySound(SoundType.victory);
+		player[activePlayer].score += 1000;
+		//active player has won!
+		//TODO: stuff
+	}
 	
-	public void ExecuteOrder(Order o){
+	public bool ExecuteOrder(Order o){
 		// Executes an order from the order-format
 		// TODO: make all orders go through this by having a wrapper function
-		if (o.player == activePlayer){
-			switch(o.skill){
-			case SkillType.noSkill:
-				if(o.endTurn){
-					EndTurn();
-				}
-				break;
-			case SkillType.place:
-				PlacePiece(o.position);
-				break;
-			case SkillType.shoot:
-				Shoot(o.position);
-				break;
-			case SkillType.build:
-				ExtraBuild(o.position);
-				break;
-			case SkillType.emp:
-				EMP();
-				break;
+		bool validMove = false;
+		switch(o.skill){
+		case SkillType.noSkill:
+			validMove = true;
+			break;
+		case SkillType.place:
+			validMove = PlacePiece(o.position);
+			break;
+		case SkillType.shoot:
+			if(Skill.CanUseShoot() == SkillSelectError.NO_ERROR){
+				validMove = Shoot(o.position);
+			}else{
+				validMove = false;
 			}
+			break;
+		case SkillType.build:
+			if(Skill.CanUseBuild() == SkillSelectError.NO_ERROR){
+				validMove = ExtraBuild(o.position);
+			}else{
+				validMove = false;
+			}
+			break;
+		case SkillType.emp:
+			if(Skill.CanUseSilence() == SkillSelectError.NO_ERROR){
+				validMove = EMP();
+			}else{
+				validMove = false;
+			}
+			break;
+		}
+		if(validMove){
+			activeTurn.Add(o);
 			if(o.endTurn){
 				EndTurn();
 			}
-		}else{
-			Debug.LogWarning("ExecuteOrder Called with wrong player");
 		}
+		return validMove;
 	}
 	
 	public void ExecuteTurn(Turn t){
 		if(t.IsValid()){
 			foreach( Order o in t.GetOrderList()){
-				ExecuteOrder(o);
+				if(!ExecuteOrder(o))
+					break;
 			}
 		}else{
 			Debug.LogError("invalid turn-code");
@@ -150,10 +177,10 @@ public class Control: MonoBehaviour {
 	}
 	
 	
-	//Move to Skill-class
-	private void PlacePiece(FieldIndex index){ //placing piece in a normal turn
+	//Move to Skill-class?
+	private bool PlacePiece(FieldIndex index){ //placing piece in a normal turn
 		if (playerDone == false && playField[index] == Route.empty){
-			Debug.Log("Index: " + index);
+//			Debug.Log("Index: " + index);
 			if(activePlayer == 0){
 				playField[index] = Route.red;
 			}else{
@@ -165,15 +192,17 @@ public class Control: MonoBehaviour {
 			}else{
 				playField[index] = Route.empty;
 			}
-				sound.PlaySound(SoundType.onClick);
+			sound.PlaySound(SoundType.onClick);
+			return true;
 		}else{
 			Debug.Log("invalid move");
 			sound.PlaySound(SoundType.error);
 			// **DEBUG** write this out somehow
+			return false;
 		}
 	}
-	//Move to Skill-class
-	private void ExtraBuild(FieldIndex index){ //placing an extra piece with the build-skill
+	//Move to Skill-class?
+	private bool ExtraBuild(FieldIndex index){ //placing an extra piece with the build-skill
 		if (playField[index] == Route.empty){
 		
 			playField[index] = Field<int>.GetPlayerColor(activePlayer);
@@ -184,15 +213,17 @@ public class Control: MonoBehaviour {
 			IncPieceCount();
 			Skill.skillInUse = 0;
 			sound.PlaySound(SoundType.build);
+			return true;
 		}else{
 			Debug.Log("invalid move");
 			sound.PlaySound(SoundType.error);
+			return false;
 			// **DEBUG** write this out somehow
 		}		
 		//do not change first player
 	}
-	//Move to Skill-class
-	private void Shoot(FieldIndex index){ //select an enemy piece to destroy it
+	//Move to Skill-class?
+	private bool Shoot(FieldIndex index){ //select an enemy piece to destroy it
 	
 		if (playField[index] == Field<int>.GetPlayerColor( (activePlayer+1)%2 ) ){
 			playField[index] = Route.destroyed;
@@ -201,20 +232,22 @@ public class Control: MonoBehaviour {
 			Skill.skillInUse = 0;
 			BroadcastMessage("UpdateField");
 			sound.PlaySound(SoundType.shoot);
+			return true;
 		}else{
 			Debug.Log("invalid move");
 			sound.PlaySound(SoundType.error);
+			return false;
 			//write this out somehow
 		}
-	}
-		
-	//Move to Skill-class
-	public void EMP(){
+	}	
+	//Move to Skill-class?
+	public bool EMP(){
 		Debug.Log("player "+activePlayer+" has used EMP");
 		Skill.skillsUsed.emp++;
 		player[activePlayer].playerSkill.emp--;
 		player[(activePlayer+1)%2].silenced = true;
 		sound.PlaySound(SoundType.emp);
+		return true;
 	}
 	
 	private void ReportTower(Tower t){
@@ -234,10 +267,10 @@ public class Control: MonoBehaviour {
 		}
 	}
 	
-	public void EndTurn(){
-		//ADD:
-		// report moves to console
+	private void EndTurn(){
 		ChangeActivePlayer();
+		BroadcastMessage("PrintToConsole",activeTurn.ToString());
+		activeTurn = new Turn();
 		//ADD:
 		// set undo-point
 	}
@@ -276,7 +309,7 @@ public class Control: MonoBehaviour {
 		Skill.skillsUsed = new SkillContainer();
 		playerDone = false;
 		sound.PlaySound(SoundType.background);
-
+		activeTurn = new Turn();
 		BroadcastMessage("InitField");
 	}
 }

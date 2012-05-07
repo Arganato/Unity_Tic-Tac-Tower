@@ -24,16 +24,16 @@ public class GUI_script : MonoBehaviour {
 	private string squareText = "Square Tower: \nIncreases the skill cap by one for the player who builds it, allowing\n the player to use the same skill one more time during the same round.\nIn addition, the player will gain five score points at the end of each turn.";
 	
 	private Rect consoleWindowRect = new Rect(20,Screen.height-60,400,60);
-	private string consoleString = "Welcome to the console";
+	private string consoleString = "";
 	private string consoleEditable = "";
 	
 	private bool towerRow; // whether the straight or diagonal towers shall be shown
 	
 	private bool confirmNewGame = false;
 	
-	int skillError;		//Case number for the specific error to be displayed on screen.
-	float errorStartTime;	//Time stamp for error display start.
-	static float errorDisplayTime = 3; //How many seconds an error is displayed on screen.
+	SkillSelectError skillError;		//Case number for the specific error to be displayed on screen.
+	float errorStartTime;				//Time stamp for error display start.
+	static float errorDisplayTime = 3; 	//How many seconds an error is displayed on screen.
 	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
@@ -65,10 +65,7 @@ public class GUI_script : MonoBehaviour {
 		GUI.enabled = true;
 
 		if(Event.current.type == EventType.MouseDown){
-			if(Event.current.type == EventType.Used){
-				Debug.Log("GUI-mouse-event");
-			}else{
-				Debug.Log("sending the click to grid");
+			if( Event.current.type != EventType.Used ){
 				grid.MouseDown(Input.mousePosition);
 			}
 		}
@@ -77,7 +74,7 @@ public class GUI_script : MonoBehaviour {
 	private void EndTurn(){
 		//End Turn.
 		if(control.playerDone && GUI.Button( new Rect(8, Screen.height-40,100, 40), "End Turn")){
-			control.EndTurn();
+			control.UserEndTurn();
 		}	
 	}
 	
@@ -120,7 +117,7 @@ public class GUI_script : MonoBehaviour {
 			if(Skill.skillInUse != (i+1) && GUI.Button(new Rect(Screen.width/2-200+i*100, 30, 100, 100),tSkills[i+Bool2Int(towerRow)*5]) ){
 				//the user has pressed a skill-button
 				skillError = Skill.UseSkill(i+1);
-				if(skillError!=0){
+				if(skillError != SkillSelectError.NO_ERROR){
 					errorStartTime = Time.time;
 				}
 			}else if( Skill.skillInUse == i+1 ){
@@ -208,24 +205,24 @@ public class GUI_script : MonoBehaviour {
 		return;
 	*/
 	
-	private void UseSkillError(int errorCode, Rect pos){
+	private void UseSkillError(SkillSelectError errorCode, Rect pos){
 		switch(errorCode){
-			case 0:
+			case SkillSelectError.NO_ERROR:
 				//no error
 				errorStartTime = 0;
 				return;
-			case 1: 
+			case SkillSelectError.SKILL_AMMO_ERROR: 
 				//no more skills
 				if(Time.time < errorStartTime + errorDisplayTime){
-					GUI.Box(pos, "You dont have that skill (biatch)", darkTextBoxes);
+					GUI.Box(pos, "You dont have towers for that skill", darkTextBoxes);
 				}
 				return;
-			case 2: //not enough squares
+			case SkillSelectError.SKILL_CAP_ERROR: //not enough skillCap
 				if(Time.time < errorStartTime + errorDisplayTime){
 					GUI.Box(pos, "Cannot use that skill that many times", darkTextBoxes);
 				}
 				return;
-			case 3:
+			case SkillSelectError.UNKNOWN_ERROR:
 				if(Time.time < errorStartTime + errorDisplayTime){
 					GUI.Box(pos, "Unknown error occured", darkTextBoxes);
 				}
@@ -239,9 +236,12 @@ public class GUI_script : MonoBehaviour {
 		consoleEditable = GUI.TextField(new Rect(20,40,consoleWindowRect.width-40,20),consoleEditable);
 		if(GUI.Button(new Rect(consoleWindowRect.width-20,consoleWindowRect.height-20,20,20),"Send")){
 			Debug.Log("string recieved: "+consoleEditable);
-			consoleString += consoleEditable+"\n";
+			control.ExecuteTurn(Turn.StringToTurn(consoleEditable));
 		}
 		GUI.DragWindow(new Rect(0,0,consoleWindowRect.width,consoleWindowRect.height));
 	}
 	
+	public void PrintToConsole(string s){
+		consoleString+= s+"\n";
+	}
 }
