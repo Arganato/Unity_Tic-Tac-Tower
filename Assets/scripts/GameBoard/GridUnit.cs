@@ -17,7 +17,7 @@ public class GridUnit : MonoBehaviour {
 	}
 	
 	void Update(){
-		transform.Rotate(speed);
+		//transform.Rotate(speed); //turning off the rotation until we get proper planets
 	}
 		
 }

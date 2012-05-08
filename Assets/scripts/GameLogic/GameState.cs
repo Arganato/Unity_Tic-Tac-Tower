@@ -15,6 +15,8 @@ public class GameState {
 	
 	public GameState(){
 		field = new Field<Route>(Route.empty);
+		field[5,4] = Route.red;
+		field[3,4] = Route.blue;
 		turn = 1;
 		startingPlayer = 0;
 		placedPieces = 0;
