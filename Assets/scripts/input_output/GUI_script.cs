@@ -3,7 +3,6 @@ using System.Collections;
 
 public class GUI_script : MonoBehaviour {
 
-	
 	private Control control;
 	private Grid grid;
 	//private string[] skillNames =new string[4] {"cancel", "shoot", "build", "emp"};
@@ -29,6 +28,7 @@ public class GUI_script : MonoBehaviour {
 	
 	private bool toggleConsole = false;
 	public Vector2 scrollPosition = Vector2.zero;
+	private int consoleTextHeight = 20;
 	
 	private bool towerRow; // whether the straight or diagonal towers shall be shown
 	
@@ -51,7 +51,7 @@ public class GUI_script : MonoBehaviour {
 		}
 		GUI.enabled = !lockGUI;
 		
-		toggleConsole = GUI.Toggle(new Rect(10, 180, 120, 30), toggleConsole, "Toggle Console", "box");
+		toggleConsole = GUI.Toggle(new Rect(10, 180, 100, 30), toggleConsole, "Toggle Console", "box");
 		
 		TextInfo();
 		
@@ -239,8 +239,8 @@ public class GUI_script : MonoBehaviour {
 	}
 	
 	private void ConsoleWindow(int windowID){
-		scrollPosition = GUI.BeginScrollView(new Rect(0, 15, consoleWindowRect.height-60, consoleWindowRect.width), scrollPosition, new Rect(0, 0, 220, 200));
-		GUI.TextArea(new Rect(0,15,consoleWindowRect.width,consoleWindowRect.height-20-15),consoleString);
+		scrollPosition = GUI.BeginScrollView(new Rect(0, 15, consoleWindowRect.width, consoleWindowRect.height-60), scrollPosition, new Rect(0, 0, consoleWindowRect.width,consoleTextHeight));
+		GUI.TextArea(new Rect(0,0,consoleWindowRect.width,consoleTextHeight),consoleString);
 		GUI.EndScrollView();
 		consoleEditable = GUI.TextField(new Rect(20,consoleWindowRect.height-20,consoleWindowRect.width-40,20),consoleEditable);
 	
@@ -252,6 +252,7 @@ public class GUI_script : MonoBehaviour {
 	}
 	
 	public void PrintToConsole(string s){
+		consoleTextHeight+=15;
 		consoleString+= s+"\n";
 	}
 }
