@@ -28,6 +28,7 @@ public class GUI_script : MonoBehaviour {
 	private string consoleEditable = "";
 	
 	private bool toggleConsole = false;
+	public Vector2 scrollPosition = Vector2.zero;
 	
 	private bool towerRow; // whether the straight or diagonal towers shall be shown
 	
@@ -238,11 +239,11 @@ public class GUI_script : MonoBehaviour {
 	}
 	
 	private void ConsoleWindow(int windowID){
+		scrollPosition = GUI.BeginScrollView(new Rect(0, 15, consoleWindowRect.height-60, consoleWindowRect.width), scrollPosition, new Rect(0, 0, 220, 200));
 		GUI.TextArea(new Rect(0,15,consoleWindowRect.width,consoleWindowRect.height-20-15),consoleString);
-		//GUILayout.BeginScrollView(20,40,consoleWindowRect.width-40,20);
+		GUI.EndScrollView();
 		consoleEditable = GUI.TextField(new Rect(20,consoleWindowRect.height-20,consoleWindowRect.width-40,20),consoleEditable);
-		//GUILayout.EndScrollView();
-		//sBarValue = GUI.VerticalScrollbar(Rect (20, 40, consoleWindowRect.width-40, 20), sBarValue, 1.0, 10.0, 0.0);
+	
 		if(GUI.Button(new Rect(consoleWindowRect.width-20,consoleWindowRect.height-20,20,20),"Send")){
 			Debug.Log("string recieved: "+consoleEditable);
 			control.ExecuteTurn(Turn.StringToTurn(consoleEditable));
