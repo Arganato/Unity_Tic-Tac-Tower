@@ -290,6 +290,8 @@ public class Control: MonoBehaviour {
 		GameState tmp = Stats.startState;
 		if (tmp == null){
 			tmp = new GameState();
+			Stats.SetDefaultSettings();
+			Debug.Log("No settings found. Using default settings");
 		}
 		
 		totalArea = Stats.fieldSize*Stats.fieldSize;
