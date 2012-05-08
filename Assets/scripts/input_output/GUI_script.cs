@@ -23,9 +23,11 @@ public class GUI_script : MonoBehaviour {
 	private string empText = "EMP Tower: \nThe opponent is rendered unable to place a piece where he/she would normally be able to build a tower. Also, the opponent will not benefit from any abilities next turn.";
 	private string squareText = "Square Tower: \nIncreases the skill cap by one for the player who builds it, allowing\n the player to use the same skill one more time during the same round.\nIn addition, the player will gain five score points at the end of each turn.";
 	
-	private Rect consoleWindowRect = new Rect(20,Screen.height-60,400,60);
+	private Rect consoleWindowRect = new Rect(20,Screen.height/2,400,150);
 	private string consoleString = "";
 	private string consoleEditable = "";
+	
+	private bool toggleConsole = false;
 	
 	private bool towerRow; // whether the straight or diagonal towers shall be shown
 	
@@ -47,7 +49,9 @@ public class GUI_script : MonoBehaviour {
 			return;
 		}
 		GUI.enabled = !lockGUI;
-
+		
+		toggleConsole = GUI.Toggle(new Rect(10, 180, 120, 30), toggleConsole, "Toggle Console", "box");
+		
 		TextInfo();
 		
 		EndTurn();
@@ -58,8 +62,10 @@ public class GUI_script : MonoBehaviour {
 		
 		NewGameMenu();
 		
-		consoleWindowRect = GUI.Window(0,consoleWindowRect,ConsoleWindow,"Console");
-			
+		if(toggleConsole){
+			consoleWindowRect = GUI.Window(0,consoleWindowRect,ConsoleWindow,"Console");
+		}
+		
 		
 		//----Framework to handle mouse-input etc----//
 		GUI.enabled = true;
@@ -232,13 +238,16 @@ public class GUI_script : MonoBehaviour {
 	}
 	
 	private void ConsoleWindow(int windowID){
-		GUI.Box(new Rect(0,0,consoleWindowRect.width,consoleWindowRect.height-20),consoleString);
-		consoleEditable = GUI.TextField(new Rect(20,40,consoleWindowRect.width-40,20),consoleEditable);
+		GUI.TextArea(new Rect(0,15,consoleWindowRect.width,consoleWindowRect.height-20-15),consoleString);
+		//GUILayout.BeginScrollView(20,40,consoleWindowRect.width-40,20);
+		consoleEditable = GUI.TextField(new Rect(20,consoleWindowRect.height-20,consoleWindowRect.width-40,20),consoleEditable);
+		//GUILayout.EndScrollView();
+		//sBarValue = GUI.VerticalScrollbar(Rect (20, 40, consoleWindowRect.width-40, 20), sBarValue, 1.0, 10.0, 0.0);
 		if(GUI.Button(new Rect(consoleWindowRect.width-20,consoleWindowRect.height-20,20,20),"Send")){
 			Debug.Log("string recieved: "+consoleEditable);
 			control.ExecuteTurn(Turn.StringToTurn(consoleEditable));
 		}
-		GUI.DragWindow(new Rect(0,0,consoleWindowRect.width,consoleWindowRect.height));
+		GUI.DragWindow(new Rect(0,0,consoleWindowRect.width,15));
 	}
 	
 	public void PrintToConsole(string s){
