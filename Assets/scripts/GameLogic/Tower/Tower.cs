@@ -81,6 +81,28 @@ public class Tower {
 		}
 		return taken;
 	}
+	
+	public static Field<bool> FindClusterRecurse( FieldIndex ind, Field<bool> taken){
+		taken[ind] = true;
+		//Debug.Log("FindCluster, NB's: "+ind.LogStraightNeighbours());
+		foreach( FieldIndex i in ind.GetStraightNeighbours() ){
+			if( Control.playField[i] == Control.playField[ind] && taken[i] == false ){
+				//Debug.Log("calling FCR from "+i.x+", "+i.y+"...");
+				taken = FindClusterRecurse(i, taken);
+			}
+		}
+		return taken;
+	}
+	
+	public static Field<bool> FindDiagClusterRecurse( FieldIndex ind, Field<bool> takenDiag){
+		takenDiag[ind] = true;
+		foreach( FieldIndex i in ind.GetDiagNeighbours() ){
+			if( Control.playField[i] == Control.playField[ind] && takenDiag[i] == false ){
+				takenDiag = FindDiagClusterRecurse(i, takenDiag);
+			}
+		}
+		return takenDiag;
+	}
 
 	
 	public static void FindBuildTower(int direction, FieldIndex ind, Field<bool> taken, ref List<Tower> buildList){
@@ -260,17 +282,17 @@ public class Tower {
 
 					if(tmp.index != -1 && taken[tmp]==true){ //If true; there might be towers.
 						//checks with Stats if the towers has been disabled:
-						if((j%2==1 && Stats.skillEnabled.diagBuild ) || (j%2==0 && Stats.skillEnabled.build)){ // build
+						if(Stats.skillEnabled.build){ // build
 							FindBuildTower(j, ind, taken, ref buildList);
-						}if((j%2==1 && Stats.skillEnabled.diagShoot) || ( j%2==0 && Stats.skillEnabled.shoot)){ // shoot
+						}if(Stats.skillEnabled.shoot){ // shoot
 							FindShootTower(j, ind, taken, ref buildList);
 						}if(j<4){
-							if((j%2==1 && Stats.skillEnabled.diagEmp) || ( j%2==0 && Stats.skillEnabled.emp)){ // emp
+							if(Stats.skillEnabled.emp){ // emp
 								FindEmpTower(j, ind, taken, ref buildList);
 							}
 							FindFiveTower(j, ind, taken, ref buildList);
 						}
-						if(j>5 && ((j%2==1 && Stats.skillEnabled.diagSquare) || (j%2==0 && Stats.skillEnabled.square))){ // square
+						if(j>5 && Stats.skillEnabled.square){ // square
 							FindSquareTower(j, ind, taken, ref buildList);
 						}
 						
