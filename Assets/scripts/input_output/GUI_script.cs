@@ -51,7 +51,7 @@ public class GUI_script : MonoBehaviour {
 		}
 		GUI.enabled = !lockGUI;
 		
-		toggleConsole = GUI.Toggle(new Rect(10, 180, 100, 30), toggleConsole, "Toggle Console", "box");
+		toggleConsole = GUI.Toggle(new Rect(5, 180, 100, 30), toggleConsole, "Toggle Console", "box");
 		
 		TextInfo();
 		
@@ -182,7 +182,7 @@ public class GUI_script : MonoBehaviour {
 		}else if(confirmNewGame){
 			GUI.Box(new Rect(Screen.width - 100, Screen.height - 280, 100, 40), "NEW GAME");
 			if(GUI.Button(new Rect(Screen.width - 110, Screen.height - 240, 55, 25), "confirm")){
-				control.StartNewGame();
+				Application.LoadLevel("mainMenu");
 				confirmNewGame = false;
 			}else if(GUI.Button(new Rect(Screen.width - 55, Screen.height - 240, 55, 25), "cancel")){
 				confirmNewGame = false;
@@ -239,12 +239,12 @@ public class GUI_script : MonoBehaviour {
 	}
 	
 	private void ConsoleWindow(int windowID){
-		scrollPosition = GUI.BeginScrollView(new Rect(0, 15, consoleWindowRect.width, consoleWindowRect.height-60), scrollPosition, new Rect(0, 0, consoleWindowRect.width,consoleTextHeight));
+		scrollPosition = GUI.BeginScrollView(new Rect(2, 15, consoleWindowRect.width-2, consoleWindowRect.height-35), scrollPosition, new Rect(0, 0, consoleWindowRect.width-20,consoleTextHeight));
 		GUI.TextArea(new Rect(0,0,consoleWindowRect.width,consoleTextHeight),consoleString);
 		GUI.EndScrollView();
-		consoleEditable = GUI.TextField(new Rect(20,consoleWindowRect.height-20,consoleWindowRect.width-40,20),consoleEditable);
+		consoleEditable = GUI.TextField(new Rect(2,consoleWindowRect.height-20,consoleWindowRect.width-52,20),consoleEditable);
 	
-		if(GUI.Button(new Rect(consoleWindowRect.width-20,consoleWindowRect.height-20,20,20),"Send")){
+		if(GUI.Button(new Rect(consoleWindowRect.width-50,consoleWindowRect.height-20,50,20),"Send")){
 			Debug.Log("string recieved: "+consoleEditable);
 			control.ExecuteTurn(Turn.StringToTurn(consoleEditable));
 		}
@@ -253,6 +253,7 @@ public class GUI_script : MonoBehaviour {
 	
 	public void PrintToConsole(string s){
 		consoleTextHeight+=15;
+		scrollPosition.y +=15;
 		consoleString+= s+"\n";
 	}
 }
