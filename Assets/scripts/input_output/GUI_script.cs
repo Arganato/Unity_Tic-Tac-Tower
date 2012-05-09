@@ -230,7 +230,7 @@ public class GUI_script : MonoBehaviour {
 	}
 	
 	
-	public void PrintToConsole(string s){
-		theConsole.PrintToConsole(s);
+	public void PrintToConsole(string s, Console.MessageType msgType){
+		theConsole.PrintToConsole(s, msgType);
 	}
 }

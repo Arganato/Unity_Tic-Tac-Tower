@@ -18,9 +18,11 @@ public class Control: MonoBehaviour {
 	
 	private Turn activeTurn;
 	private Sound sound;
+	private GUI_script guiScript;
 	
 	void Awake () {
 		sound = (Sound)FindObjectOfType(typeof(Sound));
+		guiScript = (GUI_script)FindObjectOfType(typeof(GUI_script));		
 		if (sound == null){
 			Debug.LogError("sound-object not found");
 		}
@@ -269,7 +271,7 @@ public class Control: MonoBehaviour {
 	
 	private void EndTurn(){
 		ChangeActivePlayer();
-		BroadcastMessage("PrintToConsole",activeTurn.ToString());
+		guiScript.PrintToConsole(activeTurn.ToString(),Console.MessageType.TURN);
 		activeTurn = new Turn();
 		//ADD:
 		// set undo-point

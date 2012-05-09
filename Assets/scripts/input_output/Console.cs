@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Console{
 	
+	public enum MessageType{ TURN, ORDER, ERROR, INFO};
+	
 	public string diplayedText = "";
 	public string editableText = "";
 	public int windowHeight = 6;
@@ -16,10 +18,28 @@ public class Console{
 		control = c;
 	}
 	
-	public void PrintToConsole(string s){
+	public void PrintToConsole(string s, MessageType m){
+		string code = "";
+		switch(m){
+		case MessageType.TURN:
+			code = "-t ";
+			break;
+		case MessageType.ORDER:
+			code = "-o ";
+			break;
+		case MessageType.ERROR:
+			code = "-e ";
+			break;
+		case MessageType.INFO:
+			code = "-i ";
+			break;
+		default:
+			code = "-i ";
+			break;
+		}
 		windowHeight+=15;
 		windowScrollPos.y +=15;
-		diplayedText+= s+"\n";
+		diplayedText += (code+s+"\n");
 	}
 	
 	public void PrintGUI(){
@@ -36,9 +56,28 @@ public class Console{
 		editableText = GUI.TextField(new Rect(2,windowRect.height-20,windowRect.width-52,20),editableText);
 	
 		if(GUI.Button(new Rect(windowRect.width-50,windowRect.height-20,50,20),"Send")){
-			Debug.Log("string recieved: "+editableText);
-			control.ExecuteTurn(Turn.StringToTurn(editableText));
+//			Debug.Log("string recieved: "+editableText);
+			HandleString(editableText);
 		}
 		GUI.DragWindow(new Rect(0,0,windowRect.width,15));
+	}
+	
+	private void HandleString(string s){
+		if(s.StartsWith("-")){
+			int endTypeCode = s.IndexOf(' ');
+			string code = s.Substring(1,endTypeCode-1);
+			string theRest = s.Substring(endTypeCode+1);
+//			Debug.Log("code: "+code+". The rest: "+theRest);
+			switch(code){
+			case "t":
+				control.ExecuteTurn(Turn.StringToTurn(theRest));
+				break;
+			case "o":
+				control.ExecuteOrder(Order.StringToOrder(theRest));
+				break;
+			default: 
+				break;
+			}
+		}
 	}
 }
