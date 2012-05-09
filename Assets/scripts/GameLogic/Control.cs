@@ -242,7 +242,7 @@ public class Control: MonoBehaviour {
 	}	
 	//Move to Skill-class?
 	public bool EMP(){
-		Debug.Log("player "+activePlayer+" has used EMP");
+		Debug.Log("player "+(activePlayer+1)+" has used EMP");
 		Skill.skillsUsed.emp++;
 		player[activePlayer].playerSkill.emp--;
 		player[(activePlayer+1)%2].silenced = true;

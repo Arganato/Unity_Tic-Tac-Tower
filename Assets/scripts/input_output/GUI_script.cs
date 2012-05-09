@@ -22,16 +22,9 @@ public class GUI_script : MonoBehaviour {
 	private string empText = "EMP Tower: \nThe opponent is rendered unable to place a piece where he/she would normally be able to build a tower. Also, the opponent will not benefit from any abilities next turn.";
 	private string squareText = "Square Tower: \nIncreases the skill cap by one for the player who builds it, allowing\n the player to use the same skill one more time during the same round.\nIn addition, the player will gain five score points at the end of each turn.";
 	
-	private Rect consoleWindowRect = new Rect(20,Screen.height/2,400,150);
-	private string consoleString = "";
-	private string consoleEditable = "";
+	private Console theConsole;
 	
-	private bool toggleConsole = false;
-	public Vector2 scrollPosition = Vector2.zero;
-	private int consoleTextHeight = 20;
-	
-	private bool towerRow; // whether the straight or diagonal towers shall be shown
-	
+	private bool towerRow; // whether the straight or diagonal towers shall be shown	
 	private bool confirmNewGame = false;
 	
 	SkillSelectError skillError;		//Case number for the specific error to be displayed on screen.
@@ -41,6 +34,7 @@ public class GUI_script : MonoBehaviour {
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
 		grid = (Grid)FindObjectOfType(typeof(Grid));
+		theConsole = new Console(control);
 		//enable = true;
 		//lockGUI = false;
 	}
@@ -51,7 +45,7 @@ public class GUI_script : MonoBehaviour {
 		}
 		GUI.enabled = !lockGUI;
 		
-		toggleConsole = GUI.Toggle(new Rect(5, 180, 100, 30), toggleConsole, "Toggle Console", "box");
+		theConsole.show = GUI.Toggle(new Rect(5, 180, 100, 30), theConsole.show, "Toggle Console", "button");
 		
 		TextInfo();
 		
@@ -62,11 +56,8 @@ public class GUI_script : MonoBehaviour {
 		SkillDescrDropdown();
 		
 		NewGameMenu();
-		
-		if(toggleConsole){
-			consoleWindowRect = GUI.Window(0,consoleWindowRect,ConsoleWindow,"Console");
-		}
-		
+				
+		theConsole.PrintGUI();
 		
 		//----Framework to handle mouse-input etc----//
 		GUI.enabled = true;
@@ -238,22 +229,8 @@ public class GUI_script : MonoBehaviour {
 		return;
 	}
 	
-	private void ConsoleWindow(int windowID){
-		scrollPosition = GUI.BeginScrollView(new Rect(2, 15, consoleWindowRect.width-2, consoleWindowRect.height-35), scrollPosition, new Rect(0, 0, consoleWindowRect.width-20,consoleTextHeight));
-		GUI.TextArea(new Rect(0,0,consoleWindowRect.width,consoleTextHeight),consoleString);
-		GUI.EndScrollView();
-		consoleEditable = GUI.TextField(new Rect(2,consoleWindowRect.height-20,consoleWindowRect.width-52,20),consoleEditable);
-	
-		if(GUI.Button(new Rect(consoleWindowRect.width-50,consoleWindowRect.height-20,50,20),"Send")){
-			Debug.Log("string recieved: "+consoleEditable);
-			control.ExecuteTurn(Turn.StringToTurn(consoleEditable));
-		}
-		GUI.DragWindow(new Rect(0,0,consoleWindowRect.width,15));
-	}
 	
 	public void PrintToConsole(string s){
-		consoleTextHeight+=15;
-		scrollPosition.y +=15;
-		consoleString+= s+"\n";
+		theConsole.PrintToConsole(s);
 	}
 }
