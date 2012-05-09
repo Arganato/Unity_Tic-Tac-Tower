@@ -18,15 +18,14 @@ public class Control: MonoBehaviour {
 	
 	private Turn activeTurn;
 	private Sound sound;
-	private GUI_script guiScript;
 	
 	void Awake () {
 		sound = (Sound)FindObjectOfType(typeof(Sound));
-		guiScript = (GUI_script)FindObjectOfType(typeof(GUI_script));		
 		if (sound == null){
 			Debug.LogError("sound-object not found");
 		}
 		Skill.Init(this);
+		Console.Init(this);
 		player[0] = new Player();
 		player[1] = new Player();
 
@@ -71,44 +70,44 @@ public class Control: MonoBehaviour {
 		//Finds a cluster from a field index recursively
 		//calls appropriate FindTower-functions on this cluster
 		//reports found towers
+		//returns true if a piece was placed
 		
 		// **DEBUG** tilpasse funksjonalitet til silence
-		if(playField[index] != Route.empty){
-			Field<bool> cluster = new Field<bool>(false); 
+		Field<bool> cluster = new Field<bool>(false); 
 
-			cluster = Tower.FindAllClusterRecurse(index,cluster);
-			List<Tower> tower = Tower.FindTower(cluster);
-			
-			//Coloring towers, and adding skills and score to players
-			if(!player[activePlayer].silenced || tower.Count == 0){
-				player[activePlayer].AddScore(tower.Count);
-			}
+		cluster = Tower.FindAllClusterRecurse(index,cluster);
+		List<Tower> tower = Tower.FindTower(cluster);
+		
+
 //			Debug.Log(activePlayer + " silenced: " + player[activePlayer].silenced);
-			if(!player[activePlayer].silenced || tower.Count == 0){
-				player[activePlayer].AddScore(tower.Count);
-				foreach( Tower t in tower){
-					//Checking for victory
-					if(t.type == TowerType.five){
-						Victory();
-					}
-					//Coloring the towers:
-					foreach(FieldIndex i in t.GetList()){ 
-						
-						// **DEBUG** lage GetDarkColor-funksjon
-						playField[i] = Field<int>.GetDarkRoute(playField[i]);						
-					}
-					//reporting the towers:
-					ReportTower(t);
+		if(!player[activePlayer].silenced){
+			player[activePlayer].AddScore(tower.Count);
+			foreach( Tower t in tower){
+				//Checking for victory
+				if(t.type == TowerType.five){
+					Victory();
 				}
-			}else{return false;}
+				//Coloring the towers:
+				foreach(FieldIndex i in t.GetList()){ 
+					
+					// **DEBUG** lage GetDarkColor-funksjon
+					playField[i] = Field<int>.GetDarkRoute(playField[i]);						
+				}
+				//reporting the towers:
+				ReportTower(t);
+			}
+		}else if(tower.Count > 0){ //if a tower was found that was blocked by Silence
+			return false;
 		}
 		BroadcastMessage("UpdateField");
 		return true;
+
 	}
 	
 	private void Victory(){
 		sound.PlaySound(SoundType.victory);
 		player[activePlayer].score += 1000;
+		Console.PrintToConsole("Player "+(activePlayer+1)+" has won!",Console.MessageType.INFO);
 		//active player has won!
 		//TODO: stuff
 	}
@@ -148,8 +147,10 @@ public class Control: MonoBehaviour {
 		}
 		if(validMove){
 			activeTurn.Add(o);
-			if(o.endTurn){
+			if(o.endTurn && playerDone){
 				EndTurn();
+			}else if(!playerDone){
+				Console.PrintToConsole("You are trying to end the turn without placing your piece",Console.MessageType.ERROR);	
 			}
 		}
 		return validMove;
@@ -183,6 +184,7 @@ public class Control: MonoBehaviour {
 	private bool PlacePiece(FieldIndex index){ //placing piece in a normal turn
 		if (playerDone == false && playField[index] == Route.empty){
 //			Debug.Log("Index: " + index);
+			sound.PlaySound(SoundType.onClick);
 			if(activePlayer == 0){
 				playField[index] = Route.red;
 			}else{
@@ -191,13 +193,18 @@ public class Control: MonoBehaviour {
 			if(CheckCluster(index)){
 				IncPieceCount();
 				playerDone = true;
-			}else{
+			}else{ //the move is illegal due to silence
 				playField[index] = Route.empty;
+				Console.PrintToConsole("You are silenced; You can't build towers",Console.MessageType.ERROR);
+				return false;
 			}
-			sound.PlaySound(SoundType.onClick);
 			return true;
 		}else{
-			Debug.Log("invalid move");
+			if(playerDone){
+				Console.PrintToConsole("Can only place one piece each turn",Console.MessageType.ERROR);
+			}else{
+				Console.PrintToConsole("Cannot place there",Console.MessageType.ERROR);
+			}
 			sound.PlaySound(SoundType.error);
 			// **DEBUG** write this out somehow
 			return false;
@@ -218,10 +225,11 @@ public class Control: MonoBehaviour {
 			return true;
 		}else{
 			Debug.Log("invalid move");
+			Console.PrintToConsole("Cannot place there",Console.MessageType.ERROR);
 			sound.PlaySound(SoundType.error);
 			return false;
 			// **DEBUG** write this out somehow
-		}		
+		}
 		//do not change first player
 	}
 	//Move to Skill-class?
@@ -236,6 +244,7 @@ public class Control: MonoBehaviour {
 			sound.PlaySound(SoundType.shoot);
 			return true;
 		}else{
+			Console.PrintToConsole("Can only shoot active enemy pieces",Console.MessageType.ERROR);
 			Debug.Log("invalid move");
 			sound.PlaySound(SoundType.error);
 			return false;
@@ -245,6 +254,7 @@ public class Control: MonoBehaviour {
 	//Move to Skill-class?
 	public bool EMP(){
 		Debug.Log("player "+(activePlayer+1)+" has used EMP");
+		Console.PrintToConsole("player "+(activePlayer+1)+" has used EMP!",Console.MessageType.INFO);
 		Skill.skillsUsed.emp++;
 		player[activePlayer].playerSkill.emp--;
 		player[(activePlayer+1)%2].silenced = true;
@@ -271,7 +281,7 @@ public class Control: MonoBehaviour {
 	
 	private void EndTurn(){
 		ChangeActivePlayer();
-		guiScript.PrintToConsole(activeTurn.ToString(),Console.MessageType.TURN);
+		Console.PrintToConsole(activeTurn.ToString(),Console.MessageType.TURN);
 		activeTurn = new Turn();
 		//ADD:
 		// set undo-point

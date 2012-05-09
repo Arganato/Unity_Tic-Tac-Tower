@@ -1,24 +1,24 @@
 using UnityEngine;
 using System.Collections;
 
-public class Console{
+public static class Console{
 	
 	public enum MessageType{ TURN, ORDER, ERROR, INFO};
 	
-	public string diplayedText = "";
-	public string editableText = "";
-	public int windowHeight = 6;
-	public Vector2 windowScrollPos = Vector2.zero;
-	public bool show = false;
+	public static string diplayedText = "";
+	public static string editableText = "";
+	public static int windowHeight = 6;
+	public static Vector2 windowScrollPos = Vector2.zero;
+	public static bool show = false;
 	
-	private Rect windowRect = new Rect(20,Screen.height/2,400,150);
-	private Control control;
+	private static Rect windowRect = new Rect(20,Screen.height/2,400,150);
+	private static Control control;
 	
-	public Console(Control c){
+	public static void Init(Control c){
 		control = c;
 	}
 	
-	public void PrintToConsole(string s, MessageType m){
+	public static void PrintToConsole(string s, MessageType m){
 		string code = "";
 		switch(m){
 		case MessageType.TURN:
@@ -42,14 +42,14 @@ public class Console{
 		diplayedText += (code+s+"\n");
 	}
 	
-	public void PrintGUI(){
+	public static void PrintGUI(){
 		if(show){
 			windowRect = GUI.Window(0,windowRect,TheWindow,"Console");
 		}
 		
 	}
 	
-	private void TheWindow(int windowID){
+	private static void TheWindow(int windowID){
 		windowScrollPos = GUI.BeginScrollView(new Rect(2, 15, windowRect.width-2, windowRect.height-35), windowScrollPos, new Rect(0, 0, windowRect.width-20,windowHeight));
 		GUI.TextArea(new Rect(0,0,windowRect.width,windowHeight),diplayedText);
 		GUI.EndScrollView();
@@ -62,7 +62,7 @@ public class Console{
 		GUI.DragWindow(new Rect(0,0,windowRect.width,15));
 	}
 	
-	private void HandleString(string s){
+	private static void HandleString(string s){
 		if(s.StartsWith("-")){
 			int endTypeCode = s.IndexOf(' ');
 			string code = s.Substring(1,endTypeCode-1);

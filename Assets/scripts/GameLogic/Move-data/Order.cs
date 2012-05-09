@@ -45,7 +45,7 @@ public struct Order{
 			ret.skill = SkillType.shoot;
 		}else if(splitStr[0] == "build"){
 			ret.skill = SkillType.build;
-		}else if(splitStr[0] == "silence"){
+		}else if(splitStr[0] == "silence" || splitStr[0] == "silence."){
 			ret.skill = SkillType.emp;
 		}
 		if(splitStr.Length > 1){ //it contains a field index

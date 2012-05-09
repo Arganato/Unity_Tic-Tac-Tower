@@ -22,7 +22,7 @@ public class GUI_script : MonoBehaviour {
 	private string empText = "EMP Tower: \nThe opponent is rendered unable to place a piece where he/she would normally be able to build a tower. Also, the opponent will not benefit from any abilities next turn.";
 	private string squareText = "Square Tower: \nIncreases the skill cap by one for the player who builds it, allowing\n the player to use the same skill one more time during the same round.\nIn addition, the player will gain five score points at the end of each turn.";
 	
-	private Console theConsole;
+//	private Console theConsole;
 	
 	private bool towerRow; // whether the straight or diagonal towers shall be shown	
 	private bool confirmNewGame = false;
@@ -34,7 +34,6 @@ public class GUI_script : MonoBehaviour {
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
 		grid = (Grid)FindObjectOfType(typeof(Grid));
-		theConsole = new Console(control);
 		//enable = true;
 		//lockGUI = false;
 	}
@@ -45,7 +44,7 @@ public class GUI_script : MonoBehaviour {
 		}
 		GUI.enabled = !lockGUI;
 		
-		theConsole.show = GUI.Toggle(new Rect(5, 180, 100, 30), theConsole.show, "Toggle Console", "button");
+		Console.show = GUI.Toggle(new Rect(5, 180, 100, 30), Console.show, "Toggle Console", "button");
 		
 		TextInfo();
 		
@@ -57,7 +56,7 @@ public class GUI_script : MonoBehaviour {
 		
 		NewGameMenu();
 				
-		theConsole.PrintGUI();
+		Console.PrintGUI();
 		
 		//----Framework to handle mouse-input etc----//
 		GUI.enabled = true;
@@ -230,7 +229,7 @@ public class GUI_script : MonoBehaviour {
 	}
 	
 	
-	public void PrintToConsole(string s, Console.MessageType msgType){
-		theConsole.PrintToConsole(s, msgType);
-	}
+//	public void PrintToConsole(string s, Console.MessageType msgType){
+//		theConsole.PrintToConsole(s, msgType);
+//	}
 }
