@@ -149,7 +149,7 @@ public class Control: MonoBehaviour {
 			activeTurn.Add(o);
 			if(o.endTurn && playerDone){
 				EndTurn();
-			}else if(!playerDone){
+			}else if(o.endTurn){
 				Console.PrintToConsole("You are trying to end the turn without placing your piece",Console.MessageType.ERROR);	
 			}
 		}
@@ -325,5 +325,10 @@ public class Control: MonoBehaviour {
 		sound.PlaySound(SoundType.background);
 		activeTurn = new Turn();
 		BroadcastMessage("InitField");
+	}
+	
+	private void UndoTurn(){
+		
+		
 	}
 }
