@@ -51,6 +51,12 @@ public class MainMenu : MonoBehaviour {
 			Application.LoadLevel("game");
 		}
 		
+		if(GUI.Button(new Rect(border+b1Start, Screen.height-200, buttonWidth-border, 50-border), "Tutorial")){
+			Stats.SetDefaultSettings();
+			Stats.SetTutorialBuild1();
+			Application.LoadLevel("tutorial");
+		}
+		
 		GUI.Box(new Rect(Screen.width/2+border, Screen.height-50, b1Start-border,50-border),"A game with all the towers:",emptyTextArea);
 		if(GUI.Button(new Rect(border+b2Start,Screen.height-50, buttonWidth-border, 50-border), "Start full Game")){
 			Stats.SetDefaultSettings();
