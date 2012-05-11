@@ -43,4 +43,11 @@ public static class Stats{
 		startState = new GameState();
 		skillEnabled.SetAll(true);
 	}
+	
+	public static void SetTutorialBuild1(){
+		fieldSize = 9;
+		startState.TutorialBuild1();
+		skillEnabled.SetAll(false);
+		skillEnabled.build = true;
+	}
 }
