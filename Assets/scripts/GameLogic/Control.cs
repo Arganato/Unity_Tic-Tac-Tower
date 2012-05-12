@@ -8,6 +8,8 @@ public class Control: MonoBehaviour {
 	public static GameState cState; //the current gamestate of the progressing game
 	public static GameState startOfTurn; //the undo-point
 	
+	public Transform towerBuildEffect;
+	
 	private Turn activeTurn;
 	private Sound sound;
 	
@@ -71,6 +73,7 @@ public class Control: MonoBehaviour {
 //			Debug.Log(activePlayer + " silenced: " + player[activePlayer].silenced);
 		if(!cState.player[cState.activePlayer].silenced){
 			cState.player[cState.activePlayer].AddScore(tower.Count);
+			Field<bool> coloredTowers = new Field<bool>(false);
 			foreach( Tower t in tower){
 				//Checking for victory
 				if(t.type == TowerType.five){
@@ -83,11 +86,17 @@ public class Control: MonoBehaviour {
 						cState.field[i] = Field<int>.GetDarkRoute(cState.field[i]);
 					}else if(Stats.rules == Stats.Rules.INVISIBLE_TOWERS){
 						cState.field[i] = Route.empty;
+						coloredTowers[i] = true;
 					}
 				}
 				//reporting the towers:
 				ReportTower(t);
 			}
+			if(tower.Count > 0){
+				Transform tmp = Instantiate(towerBuildEffect) as Transform;
+				tmp.GetComponent<BuildBuildingEffect>().Init(cluster);
+			}
+
 		}else if(tower.Count > 0){ //if a tower was found that was blocked by Silence
 			return false;
 		}
@@ -206,7 +215,6 @@ public class Control: MonoBehaviour {
 			Console.PrintToConsole("Cannot place there",Console.MessageType.ERROR);
 			sound.PlaySound(SoundType.error);
 			return false;
-			// **DEBUG** write this out somehow
 		}
 		//do not change first player
 	}
