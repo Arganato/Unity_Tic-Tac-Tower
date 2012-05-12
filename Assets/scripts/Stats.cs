@@ -52,7 +52,7 @@ public static class Stats{
 		startState = new GameState();
 		startState.SetDefault();
 		skillEnabled.SetAll(true);
-		rules = Rules.INVISIBLE_TOWERS;
+		rules = Rules.SOLID_TOWERS;
 	}
 	
 	public static void SetTutorialBuild1(){
