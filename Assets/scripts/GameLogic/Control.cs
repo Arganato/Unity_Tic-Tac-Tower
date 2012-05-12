@@ -4,17 +4,9 @@ using System.Collections.Generic;
 
 public class Control: MonoBehaviour {
 
-	public int placedPieces = 0;
-	public int totalArea;
-	
-	
-	public static Field<Route> playField;
-	public bool playerDone = false; //Is true when player has placed a piece. Allows user to "End Turn".
-	
-	public int turn = 1; //1-indexed
-	public int activePlayer = 0; //player 1 starting; changed to 0-indexing
-	
-	public Player[] player = new Player[2];
+	public bool playerDone = false; //Is true when player has placed a piece. Allows user to "End Turn".	
+	public static GameState cState; //the current gamestate of the progressing game
+	public static GameState startOfTurn; //the undo-point
 	
 	private Turn activeTurn;
 	private Sound sound;
@@ -24,10 +16,7 @@ public class Control: MonoBehaviour {
 		if (sound == null){
 			Debug.LogError("sound-object not found");
 		}
-		Skill.Init(this);
 		Console.Init(this);
-		player[0] = new Player();
-		player[1] = new Player();
 
 	}
 	
@@ -80,8 +69,8 @@ public class Control: MonoBehaviour {
 		
 
 //			Debug.Log(activePlayer + " silenced: " + player[activePlayer].silenced);
-		if(!player[activePlayer].silenced){
-			player[activePlayer].AddScore(tower.Count);
+		if(!cState.player[cState.activePlayer].silenced){
+			cState.player[cState.activePlayer].AddScore(tower.Count);
 			foreach( Tower t in tower){
 				//Checking for victory
 				if(t.type == TowerType.five){
@@ -90,8 +79,11 @@ public class Control: MonoBehaviour {
 				//Coloring the towers:
 				foreach(FieldIndex i in t.GetList()){ 
 					
-					// **DEBUG** lage GetDarkColor-funksjon
-					playField[i] = Field<int>.GetDarkRoute(playField[i]);						
+					if(Stats.rules == Stats.Rules.SOLID_TOWERS){
+						cState.field[i] = Field<int>.GetDarkRoute(cState.field[i]);
+					}else if(Stats.rules == Stats.Rules.INVISIBLE_TOWERS){
+						cState.field[i] = Route.empty;
+					}
 				}
 				//reporting the towers:
 				ReportTower(t);
@@ -106,15 +98,14 @@ public class Control: MonoBehaviour {
 	
 	private void Victory(){
 		sound.PlaySound(SoundType.victory);
-		player[activePlayer].score += 1000;
-		Console.PrintToConsole("Player "+(activePlayer+1)+" has won!",Console.MessageType.INFO);
+		cState.player[cState.activePlayer].score += 1000;
+		Console.PrintToConsole("Player "+(cState.activePlayer+1)+" has won!",Console.MessageType.INFO);
 		//active player has won!
-		//TODO: stuff
+		//TODO: victory-screen
 	}
 	
 	public bool ExecuteOrder(Order o){
 		// Executes an order from the order-format
-		// TODO: make all orders go through this by having a wrapper function
 		bool validMove = false;
 		switch(o.skill){
 		case SkillType.noSkill:
@@ -149,7 +140,7 @@ public class Control: MonoBehaviour {
 			activeTurn.Add(o);
 			if(o.endTurn && playerDone){
 				EndTurn();
-			}else if(!playerDone){
+			}else if(o.endTurn){
 				Console.PrintToConsole("You are trying to end the turn without placing your piece",Console.MessageType.ERROR);	
 			}
 		}
@@ -167,34 +158,21 @@ public class Control: MonoBehaviour {
 		}
 	}
 	
-	private void IncPieceCount(){
-		// first skill cap increase: after piece nr. 28
-		// second skill cap increase: after piece nr. 54
-		// (consistent with giving player 2 the first turn with extra cap)
-		placedPieces++;
-		if(placedPieces > 2*totalArea/3){
-			Skill.extraSkillCap = 2;
-		}else if(placedPieces > totalArea/3){
-			Skill.extraSkillCap = 1;
-		}
-	}
-	
-	
 	//Move to Skill-class?
 	private bool PlacePiece(FieldIndex index){ //placing piece in a normal turn
-		if (playerDone == false && playField[index] == Route.empty){
+		if (playerDone == false && cState.field[index] == Route.empty){
 //			Debug.Log("Index: " + index);
 			sound.PlaySound(SoundType.onClick);
-			if(activePlayer == 0){
-				playField[index] = Route.red;
+			if(cState.activePlayer == 0){
+				cState.field[index] = Route.red;
 			}else{
-				playField[index] = Route.blue;
+				cState.field[index] = Route.blue;
 			}
 			if(CheckCluster(index)){
-				IncPieceCount();
+				cState.IncPieceCount();
 				playerDone = true;
 			}else{ //the move is illegal due to silence
-				playField[index] = Route.empty;
+				cState.field[index] = Route.empty;
 				Console.PrintToConsole("You are silenced; You can't build towers",Console.MessageType.ERROR);
 				return false;
 			}
@@ -212,14 +190,14 @@ public class Control: MonoBehaviour {
 	}
 	//Move to Skill-class?
 	private bool ExtraBuild(FieldIndex index){ //placing an extra piece with the build-skill
-		if (playField[index] == Route.empty){
+		if (cState.field[index] == Route.empty){
 		
-			playField[index] = Field<int>.GetPlayerColor(activePlayer);
-			player[activePlayer].playerSkill.build--;
+			cState.field[index] = Field<int>.GetPlayerColor(cState.activePlayer);
+			cState.player[cState.activePlayer].playerSkill.build--;
 			Skill.skillsUsed.build++;
 			
 			CheckCluster(index);
-			IncPieceCount();
+			cState.IncPieceCount();
 			Skill.skillInUse = 0;
 			sound.PlaySound(SoundType.build);
 			return true;
@@ -235,9 +213,9 @@ public class Control: MonoBehaviour {
 	//Move to Skill-class?
 	private bool Shoot(FieldIndex index){ //select an enemy piece to destroy it
 	
-		if (playField[index] == Field<int>.GetPlayerColor( (activePlayer+1)%2 ) ){
-			playField[index] = Route.destroyed;
-			player[activePlayer].playerSkill.shoot--;
+		if (cState.field[index] == Field<int>.GetPlayerColor( (cState.activePlayer+1)%2 ) ){
+			cState.field[index] = Route.destroyed;
+			cState.player[cState.activePlayer].playerSkill.shoot--;
 			Skill.skillsUsed.shoot++;
 			Skill.skillInUse = 0;
 			BroadcastMessage("UpdateField");
@@ -253,77 +231,67 @@ public class Control: MonoBehaviour {
 	}	
 	//Move to Skill-class?
 	public bool EMP(){
-		Debug.Log("player "+(activePlayer+1)+" has used EMP");
-		Console.PrintToConsole("player "+(activePlayer+1)+" has used EMP!",Console.MessageType.INFO);
+		Debug.Log("player "+(cState.activePlayer+1)+" has used EMP");
+		Console.PrintToConsole("player "+(cState.activePlayer+1)+" has used EMP!",Console.MessageType.INFO);
 		Skill.skillsUsed.emp++;
-		player[activePlayer].playerSkill.emp--;
-		player[(activePlayer+1)%2].silenced = true;
+		cState.player[cState.activePlayer].playerSkill.emp--;
+		cState.player[(cState.activePlayer+1)%2].silenced = true;
 		sound.PlaySound(SoundType.emp);
+		Skill.skillInUse = 0;
 		return true;
 	}
 	
 	private void ReportTower(Tower t){
 		switch(t.type){
 			case TowerType.shoot:
-				player[activePlayer].playerSkill.shoot++;
+				cState.player[cState.activePlayer].playerSkill.shoot++;
 				break;
 			case TowerType.build:
-				player[activePlayer].playerSkill.build++;
+				cState.player[cState.activePlayer].playerSkill.build++;
 				break;
 			case TowerType.emp:
-				player[activePlayer].playerSkill.emp++;
+				cState.player[cState.activePlayer].playerSkill.emp++;
 				break;
 			case TowerType.square:
-				player[activePlayer].playerSkill.square++;
+				cState.player[cState.activePlayer].playerSkill.square++;
 				break;
 		}
 	}
 	
 	private void EndTurn(){
-		ChangeActivePlayer();
+		cState.ChangeActivePlayer();
 		Console.PrintToConsole(activeTurn.ToString(),Console.MessageType.TURN);
 		activeTurn = new Turn();
-		//ADD:
-		// set undo-point
-	}
-	
-	private void ChangeActivePlayer(){
-		player[activePlayer].EndTurn(player[activePlayer].playerSkill.square);
-		if(activePlayer == 1){
-			turn++;
-		}
-		activePlayer = (activePlayer+1)%2;
-		Skill.skillInUse = 0;
-		Skill.skillsUsed.Reset();
 		playerDone = false;
+		
+		startOfTurn = new GameState(cState);
 	}
 	
 	public void StartNewGame(){
 		GameState tmp = Stats.startState;
 		if (tmp == null){
 			tmp = new GameState();
+			tmp.SetDefault();
 			Stats.SetDefaultSettings();
 			Debug.Log("No settings found. Using default settings");
 		}
 		
-		totalArea = Stats.fieldSize*Stats.fieldSize;
-		//activePlayer = tmp.startingPlayer;
-		activePlayer = 0;
-		playField = new Field<Route>(tmp.field);
-		player[0].playerSkill = tmp.player0Skills;
-		player[1].playerSkill = tmp.player1Skills;
-		
-		player[0] = tmp.player0Score;
-		player[1] = tmp.player1Score;
-
-		Skill.extraSkillCap = tmp.globalSkillCap;
-		placedPieces = tmp.placedPieces;
+		cState = new GameState(tmp);
+		startOfTurn = new GameState(tmp);
 		
 		Skill.skillInUse = 0;
 		Skill.skillsUsed = new SkillContainer();
 		playerDone = false;
+		
 		sound.PlaySound(SoundType.background);
 		activeTurn = new Turn();
 		BroadcastMessage("InitField");
+	}
+	
+	public void UndoTurn(){
+		cState = new GameState(startOfTurn);
+		playerDone = false;
+		activeTurn = new Turn();
+		BroadcastMessage("UpdateField");
 	}
 }

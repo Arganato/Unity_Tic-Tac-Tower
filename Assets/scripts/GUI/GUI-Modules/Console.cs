@@ -11,7 +11,9 @@ public static class Console{
 	public static Vector2 windowScrollPos = Vector2.zero;
 	public static bool show = false;
 	
-	private static Rect windowRect = new Rect(20,Screen.height/2,400,150);
+	public static Rect windowRect = new Rect(20,Screen.height/2,400,150);
+	public static Rect buttonRect = new Rect(5, 180, 100, 30);
+	
 	private static Control control;
 	
 	public static void Init(Control c){
@@ -43,6 +45,8 @@ public static class Console{
 	}
 	
 	public static void PrintGUI(){
+		show = GUI.Toggle(buttonRect, show, "Toggle Console", "button");
+		
 		if(show){
 			windowRect = GUI.Window(0,windowRect,TheWindow,"Console");
 		}

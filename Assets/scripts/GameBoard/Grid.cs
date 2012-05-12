@@ -68,19 +68,19 @@ public class Grid : MonoBehaviour {
 			if( playFieldTransforms[i] != null ){
 				Destroy(playFieldTransforms[i].gameObject);
 			}
-			PlaceTransform(Control.playField[i],new FieldIndex(i));
+			PlaceTransform(Control.cState.field[i],new FieldIndex(i));
 		}		
 	}
 	
 	public void UpdateField(){
 
 		for( int i = 0; i < Stats.fieldSize*Stats.fieldSize; i++){
-			if( Control.playField[i] != playFieldTransforms[i].type ){
+			if( Control.cState.field[i] != playFieldTransforms[i].type ){
 				//a change has been found in the board
 				//destroy old prefab
 				Destroy(playFieldTransforms[i].gameObject);
 				//create new transform 
-				PlaceTransform(Control.playField[i],new FieldIndex(i));
+				PlaceTransform(Control.cState.field[i],new FieldIndex(i));
 			}
 		}
 	}

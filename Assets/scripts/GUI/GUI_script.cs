@@ -11,16 +11,16 @@ public class GUI_script : MonoBehaviour {
 	public Texture smallArrowUp;
 	public Texture smallArrowDown;
 	private int showSkillInfo = 0; //0 = Reveals no info.
-	public GUIStyle darkTextBoxes;
-	public GUIStyle toggleTowerDisplay;
+	
+	public GUISkin customSkin;
 	
 	public bool enable;
 	public bool lockGUI;
 	
-	private string buildText = "Build Tower: \nAllows the player to place one more piece on the board.\nThis will not, however, reset the amount of skills used, as if starting a new round.";
-	private string shootText = "Shoot Tower: \nThe player may destroy another unused, hostile piece on the board.\nThe piece is ruined, and the tile cannot be built upon.";
+	private string buildText = "Build Tower: \nAllows the player to place one more piece on the board. This will not, however, reset the amount of skills used, as if starting a new round.";
+	private string shootText = "Shoot Tower: \nThe player may destroy another unused, hostile piece on the board. The piece is ruined, and the tile cannot be built upon.";
 	private string empText = "EMP Tower: \nThe opponent is rendered unable to place a piece where he/she would normally be able to build a tower. Also, the opponent will not benefit from any abilities next turn.";
-	private string squareText = "Square Tower: \nIncreases the skill cap by one for the player who builds it, allowing\n the player to use the same skill one more time during the same round.\nIn addition, the player will gain five score points at the end of each turn.";
+	private string squareText = "Square Tower: \nIncreases the skill cap by one for the player who builds it, allowing the player to use the same skill one more time during the same round. In addition, the player will gain five score points at the end of each turn.";
 	
 //	private Console theConsole;
 	
@@ -31,9 +31,12 @@ public class GUI_script : MonoBehaviour {
 	float errorStartTime;				//Time stamp for error display start.
 	static float errorDisplayTime = 3; 	//How many seconds an error is displayed on screen.
 	
+	private UndoButton undobutton;
+	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
 		grid = (Grid)FindObjectOfType(typeof(Grid));
+		undobutton = new UndoButton(control);
 		//enable = true;
 		//lockGUI = false;
 	}
@@ -44,7 +47,7 @@ public class GUI_script : MonoBehaviour {
 		}
 		GUI.enabled = !lockGUI;
 		
-		Console.show = GUI.Toggle(new Rect(5, 180, 100, 30), Console.show, "Toggle Console", "button");
+		GUI.skin = customSkin;
 		
 		TextInfo();
 		
@@ -57,6 +60,8 @@ public class GUI_script : MonoBehaviour {
 		NewGameMenu();
 				
 		Console.PrintGUI();
+		
+		undobutton.PrintGUI();
 		
 		//----Framework to handle mouse-input etc----//
 		GUI.enabled = true;
@@ -76,31 +81,31 @@ public class GUI_script : MonoBehaviour {
 	}
 	
 	private void TextInfo(){
-		string p1SkillInfo = "Player 1 skills\nShoot: "+control.player[0].playerSkill.shoot+
-				"\nBuild: "+control.player[0].playerSkill.build+"\nEMP: "+control.player[0].playerSkill.emp+
-				"\nSkill cap: "+(int)(1+control.player[0].playerSkill.square+Skill.extraSkillCap);
-		string p2SkillInfo = "Player 2 skills\nShoot: "+control.player[1].playerSkill.shoot+
-				"\nBuild: "+control.player[1].playerSkill.build+"\nEMP: "+control.player[1].playerSkill.emp+
-				"\nSkill cap: "+(int)(1+control.player[1].playerSkill.square+Skill.extraSkillCap);
+		string p1SkillInfo = "Player 1 skills\nShoot: "+Control.cState.player[0].playerSkill.shoot+
+				"\nBuild: "+Control.cState.player[0].playerSkill.build+"\nEMP: "+Control.cState.player[0].playerSkill.emp+
+				"\nSkill cap: "+(int)(1+Control.cState.player[0].playerSkill.square+Control.cState.globalSkillCap);
+		string p2SkillInfo = "Player 2 skills\nShoot: "+Control.cState.player[1].playerSkill.shoot+
+				"\nBuild: "+Control.cState.player[1].playerSkill.build+"\nEMP: "+Control.cState.player[1].playerSkill.emp+
+				"\nSkill cap: "+(int)(1+Control.cState.player[1].playerSkill.square+Control.cState.globalSkillCap);
 		
 		GUI.Box(new Rect(0,0,90,100), p1SkillInfo);
 		GUI.Box(new Rect(Screen.width - 90,0,90,100), p2SkillInfo);
 		
-		GUI.Box(new Rect(0,110,90,45), "Player 1 \n score: " +control.player[0].score);
-		GUI.Box(new Rect(Screen.width-90,110,90,45), "Player 2 \nscore: " +control.player[1].score);
+		GUI.Box(new Rect(0,110,90,45), "Player 1 \n score: " +Control.cState.player[0].score);
+		GUI.Box(new Rect(Screen.width-90,110,90,45), "Player 2 \nscore: " +Control.cState.player[1].score);
 		
 		//Turns until skill cap increase.
-		if(control.placedPieces <= control.totalArea/3){
-			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.activePlayer+1) + "'s turn.  " 
-					+ "Skill cap: " + (int)(1+Skill.extraSkillCap) + ".   Skill cap increase after: " 
-					+ (int)(control.totalArea/3+1-control.placedPieces) + " tiles.");
-		}else if(control.placedPieces <= 2*control.totalArea/3){
-			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.activePlayer+1) + "'s turn.  " 
-					+ "Skill cap: " + (int)(1+Skill.extraSkillCap) + ".   Skill cap increase after: " 
-					+ (int)(control.totalArea*2/3+1-control.placedPieces) + " tiles.");
+		if(Control.cState.placedPieces <= Stats.totalArea/3){
+			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (Control.cState.activePlayer+1) + "'s turn.  " 
+					+ "Skill cap: " + (int)(1+Control.cState.globalSkillCap) + ".   Skill cap increase after: " 
+					+ (int)(Stats.totalArea/3+1-Control.cState.placedPieces) + " tiles.");
+		}else if(Control.cState.placedPieces <= 2*Stats.totalArea/3){
+			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (Control.cState.activePlayer+1) + "'s turn.  " 
+					+ "Skill cap: " + (int)(1+Control.cState.globalSkillCap) + ".   Skill cap increase after: " 
+					+ (int)(Stats.totalArea*2/3+1-Control.cState.placedPieces) + " tiles.");
 		}else{
-			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (control.activePlayer+1) + "'s turn.  " 
-					+ "Skill cap: " + (int)(1+Skill.extraSkillCap) + ".   Total skill cap increases reached");
+			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (Control.cState.activePlayer+1) + "'s turn.  " 
+					+ "Skill cap: " + (int)(1+Control.cState.globalSkillCap) + ".   Total skill cap increases reached");
 		}	
 	}
 	
@@ -131,22 +136,22 @@ public class GUI_script : MonoBehaviour {
 				Skill.UseSkill(0);
 			}
 		}
-		towerRow = GUI.Toggle(new Rect(Screen.width/2-225,105,25,25),towerRow, "",toggleTowerDisplay);
+		towerRow = GUI.Toggle(new Rect(Screen.width/2-225,105,25,25),towerRow, "","towerDispToggle");
 		
 		switch(showSkillInfo){
 			case 0:
 				break;
 			case 1:
-				GUI.Box(new Rect(Screen.width/2-225, 145, 450, 70),shootText, darkTextBoxes);
+				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),shootText, "darkBox");
 				break;
 			case 2:
-				GUI.Box(new Rect(Screen.width/2-225, 145, 450, 70),buildText, darkTextBoxes);
+				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),buildText, "darkBox");
 				break;
 			case 3:
-				GUI.Box(new Rect(Screen.width/2-225, 145, 450, 70),empText, darkTextBoxes);
+				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),empText, "darkBox");
 				break;
 			case 4:
-				GUI.Box(new Rect(Screen.width/2-225, 145, 450, 70),squareText, darkTextBoxes);
+				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),squareText, "darkBox");
 				break;
 		}		
 		
@@ -211,17 +216,17 @@ public class GUI_script : MonoBehaviour {
 			case SkillSelectError.SKILL_AMMO_ERROR: 
 				//no more skills
 				if(Time.time < errorStartTime + errorDisplayTime){
-					GUI.Box(pos, "You dont have towers for that skill", darkTextBoxes);
+					GUI.Box(pos, "You dont have towers for that skill", "darkBox");
 				}
 				return;
 			case SkillSelectError.SKILL_CAP_ERROR: //not enough skillCap
 				if(Time.time < errorStartTime + errorDisplayTime){
-					GUI.Box(pos, "Cannot use that skill that many times", darkTextBoxes);
+					GUI.Box(pos, "Cannot use that skill that many times", "darkBox");
 				}
 				return;
 			case SkillSelectError.UNKNOWN_ERROR:
 				if(Time.time < errorStartTime + errorDisplayTime){
-					GUI.Box(pos, "Unknown error occured", darkTextBoxes);
+					GUI.Box(pos, "Unknown error occured", "darkBox");
 				}
 				return;
 		}
