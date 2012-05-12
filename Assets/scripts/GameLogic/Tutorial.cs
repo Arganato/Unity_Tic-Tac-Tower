@@ -7,6 +7,7 @@ public class Tutorial : MonoBehaviour {
 	public GUIStyle textBox;
 	new public Transform camera;
 	public Texture[] towerTextures;
+	public int border = 0;
 
 	private Control control;
 	
@@ -53,6 +54,45 @@ public class Tutorial : MonoBehaviour {
 		if(chapter < 2 && !changeChapter && GUI.Button(new Rect(menuWidth-100,600,100,25),"Next")){
 			StartCoroutine(ChangeChapter());
 		}
+		
+		//deler skjermen i tre like deler:
+		int buttonWidth = 100;
+		int buttonHeight = 40;
+//		int b1Start = (Screen.width-2*buttonWidth)/3;
+//		int b2Start = 2*b1Start + buttonWidth;
+		//int b1Start = (Screen.width-buttonWidth)/2;
+		//int b2Start = Screen.width-buttonWidth;
+		
+		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, 200, buttonWidth, buttonHeight), "Build Tower")){
+			Stats.SetDefaultSettings();
+			Stats.SetTutorialBuild1();
+			Application.LoadLevel("tutorialBuild");
+		}
+		
+		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, 250, buttonWidth, buttonHeight), "Shoot Build")){
+			Stats.SetDefaultSettings();
+			Stats.SetTutorialBuild1();
+			Application.LoadLevel("tutorialShoot");
+		}
+		
+		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, 300, buttonWidth, buttonHeight), "Silence Build")){
+			Stats.SetDefaultSettings();
+			Stats.SetTutorialBuild1();
+			Application.LoadLevel("tutorialSilence");
+		}
+		
+		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, 350, buttonWidth, buttonHeight), "Skill Build")){
+			Stats.SetDefaultSettings();
+			Stats.SetTutorialBuild1();
+			Application.LoadLevel("tutorialSkill");
+		}
+		
+		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Main Menu")){
+			Stats.SetDefaultSettings();
+			Stats.SetTutorialBuild1();
+			Application.LoadLevel("mainMenu");
+		}
+		
 	}
 	
 
