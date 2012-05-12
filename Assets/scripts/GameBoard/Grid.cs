@@ -17,8 +17,6 @@ public class Grid : MonoBehaviour {
 
 	private Control control;
 	
-	//private int gridLength = 90;
-	private int red_pieceHeigth = 1;
 	
 	private Field<GridUnit> playFieldTransforms = new Field<GridUnit>();
 	
@@ -53,11 +51,11 @@ public class Grid : MonoBehaviour {
 		return new FieldIndex(-1);
 	}
 	
-	private Vector3 BoardToWorldPoint(FieldIndex ind){
+	public static Vector3 BoardToWorldPoint(FieldIndex ind){
 		// returns the point in the middle of the route for the given index
 		float x_new = 10f*(ind.x-4);
 		float z_new = 10f*(ind.y-4);
-		float y_new = red_pieceHeigth;
+		float y_new = 1;
 		return new Vector3(x_new, y_new, z_new);
 	}
 		
