@@ -42,6 +42,8 @@ public class TutorialBuild : MonoBehaviour {
 	
 	void OnGUI(){
 		
+		
+		
 		BuildDescrGUI();
 		
 		//deler skjermen i tre like deler:
