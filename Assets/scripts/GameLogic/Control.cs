@@ -300,6 +300,8 @@ public class Control: MonoBehaviour {
 		cState = new GameState(startOfTurn);
 		playerDone = false;
 		activeTurn = new Turn();
+		Skill.skillInUse = 0;
+		Skill.skillsUsed.Reset();
 		BroadcastMessage("UpdateField");
 	}
 }
