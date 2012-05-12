@@ -75,7 +75,7 @@ public class Tower {
 	public static Field<bool> FindAllClusterRecurse(FieldIndex ind, Field<bool> taken){
 		taken[ind] = true;
 		foreach( FieldIndex i in ind.GetNeighbours() ){
-			if( Control.playField[i] == Control.playField[ind] && taken[i] == false){
+			if( Control.cState.field[i] == Control.cState.field[ind] && taken[i] == false){
 				taken = FindAllClusterRecurse(i, taken);
 			}
 		}

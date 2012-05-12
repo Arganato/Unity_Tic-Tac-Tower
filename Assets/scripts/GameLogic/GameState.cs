@@ -5,40 +5,75 @@ public class GameState {
 
 	public Field<Route> field;
 	public int turn;
-	public int startingPlayer; // 0 or 1
+	public int activePlayer; // 0 or 1
 	public int globalSkillCap;
-	public int placedPieces; //??
-	public SkillContainer player0Skills;
-	public SkillContainer player1Skills;
-	public Player player0Score;
-	public Player player1Score;
+	public int placedPieces; 
+	public Player[] player = new Player[2];
 	
 	public GameState(){
 		field = new Field<Route>(Route.empty);
-		field[5,4] = Route.red;
-		field[3,4] = Route.blue;
 		turn = 1;
-		startingPlayer = 0;
+		activePlayer = 0;
 		placedPieces = 0;
 		globalSkillCap = 0;
-		player0Skills = new SkillContainer();
-		player1Skills = new SkillContainer();
-		player0Score = new Player();
-		player1Score = new Player();
+		player[0] = new Player();
+		player[1] = new Player();
 	}
 	
-	public void TutorialBuild1(){
-		field = new Field<Route>(Route.empty);
+	public GameState(GameState copy){
+		field = new Field<Route>(copy.field);
+		turn = copy.turn;
+		activePlayer = copy.activePlayer;
+		globalSkillCap = copy.globalSkillCap;
+		placedPieces = copy.placedPieces;
+		player[0] = new Player(copy.player[0]);
+		player[1] = new Player(copy.player[1]);
+	}
+	
+	public void SetDefault(){
 		field[5,4] = Route.red;
-		field[3,4] = Route.blue;
+		field[3,4] = Route.blue;		
+		placedPieces = 2;	
+	}
+	public void SetTutorialBuild1(){
+		//TODO
+	}	
+	public void Reset(){
+		field = new Field<Route>(Route.empty);
 		turn = 1;
-		startingPlayer = 0;
+		activePlayer = 0;
 		placedPieces = 0;
 		globalSkillCap = 0;
-		player0Skills = new SkillContainer();
-		player0Skills.build = 1;
-		player1Skills = new SkillContainer();
-		player0Score = new Player();
-		player1Score = new Player();
+		player[0].Reset();
+		player[1].Reset();
+		
 	}
+	
+
+	
+	
+	//----gameplay-related functions----//
+	
+	public void IncPieceCount(){
+		// first skill cap increase: after piece nr. 28
+		// second skill cap increase: after piece nr. 54
+		// (consistent with giving player 2 the first turn with extra cap)
+		placedPieces++;
+		if(placedPieces > 2*Stats.totalArea/3){
+			globalSkillCap = 2;
+		}else if(placedPieces > Stats.totalArea/3){
+			globalSkillCap = 1;
+		}
+	}
+	
+		public void ChangeActivePlayer(){
+		player[activePlayer].EndTurn(player[activePlayer].playerSkill.square);
+		if(activePlayer == 1){
+			turn++;
+		}
+		activePlayer = (activePlayer+1)%2;
+		Skill.skillInUse = 0;
+		Skill.skillsUsed.Reset();
+	}
+
 }
