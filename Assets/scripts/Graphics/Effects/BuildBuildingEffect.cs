@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BuildBuildingEffect : MonoBehaviour {
 
@@ -11,16 +12,21 @@ public class BuildBuildingEffect : MonoBehaviour {
 	public Transform lightTransform;
 	public bool lightsEnabled = false;
 	
-	private Field<bool> cluster;
+	private Color buildColor = Color.cyan;
+	private Color shootColor = Color.magenta;
+	private Color silenceColor = Color.green;
+	private Color skillCapColor = Color.yellow;
 	
-	private Field<Light> lights;
+	private List<Tower> cluster;
+	
+	private List<Light> lights;
 
 	
 	
-	public void Init(Field<bool> cluster){
-		this.cluster = cluster;
+	public void Init(List<Tower> tow){
+		this.cluster = tow;
 		endTime = Time.time+duration;
-		lights = new Field<UnityEngine.Light>();
+		lights = new List<Light>();
 		MakeLights();
 		lightsEnabled = true;
 	}
@@ -36,34 +42,52 @@ public class BuildBuildingEffect : MonoBehaviour {
 	}
 	
 	private void SelfDestruct(){
-		for(int i=0; i<Stats.totalArea;i++){
-			
-			if(lights[i] != null){
-				Destroy(lights[i].gameObject);
-			}
+		foreach(Light l in lights){
+			Destroy(l.gameObject);
 		}
 		Destroy(gameObject);		
 	}
 	
 	private void IncreaseIntensity(){
-		for(int i=0; i<Stats.totalArea;i++){
-			if(lights[i] != null){
-				lights[i].intensity += Time.deltaTime*(endIntensity - startIntensity)/duration;
-				
-			}
+		foreach(Light l in lights){
+			l.intensity += Time.deltaTime*(endIntensity - startIntensity)/duration;				
 		}
 	}
 	
 
 	private void MakeLights(){
 		lightTransform.light.intensity = startIntensity;
-		for(int i=0; i<Stats.totalArea;i++){
-			if(cluster[i]){
-				Transform tmp = Instantiate(lightTransform,Grid.BoardToWorldPoint(new FieldIndex(i)),Quaternion.identity) as Transform;
-				lights[i] = tmp.GetComponent<Light>();
-			}else{
-				lights[i] = null;	
+//		for(int i=0; i<Stats.totalArea;i++){
+//			if(cluster[i]){
+//				Transform tmp = Instantiate(lightTransform,Grid.BoardToWorldPoint(new FieldIndex(i)),Quaternion.identity) as Transform;
+//				lights[i] = tmp.GetComponent<Light>();
+//			}else{
+//				lights[i] = null;	
+//			}
+//		}
+		foreach( Tower t in cluster){
+			foreach(FieldIndex i in t.GetList()){
+				Transform tmp = Instantiate(lightTransform,Grid.BoardToWorldPoint(i),Quaternion.identity) as Transform;
+				Light aLight = tmp.GetComponent<Light>();
+				aLight.color = GetColor(t.type);
+				lights.Add(aLight);
 			}
+		}
+	}
+	
+	private Color GetColor(TowerType t){
+		
+		switch(t){
+		case TowerType.shoot:
+			return shootColor;
+		case TowerType.build:
+			return buildColor;
+		case TowerType.emp:
+			return silenceColor;
+		case TowerType.square:
+			return skillCapColor;
+		default:
+			return Color.white;
 		}
 	}
 }

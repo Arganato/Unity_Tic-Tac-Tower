@@ -94,7 +94,7 @@ public class Control: MonoBehaviour {
 			}
 			if(tower.Count > 0){
 				Transform tmp = Instantiate(towerBuildEffect) as Transform;
-				tmp.GetComponent<BuildBuildingEffect>().Init(cluster);
+				tmp.GetComponent<BuildBuildingEffect>().Init(tower);
 			}
 
 		}else if(tower.Count > 0){ //if a tower was found that was blocked by Silence
@@ -221,7 +221,7 @@ public class Control: MonoBehaviour {
 	//Move to Skill-class?
 	private bool Shoot(FieldIndex index){ //select an enemy piece to destroy it
 	
-		if (cState.field[index] == Field<int>.GetPlayerColor( (cState.activePlayer+1)%2 ) ){
+		if (cState.field[index] == Field<int>.GetPlayerColor( (cState.activePlayer+1)%2 ) || cState.field[index] == Field<int>.GetPlayerColor(cState.activePlayer) ){
 			cState.field[index] = Route.destroyed;
 			cState.player[cState.activePlayer].playerSkill.shoot--;
 			Skill.skillsUsed.shoot++;

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class SkillDescription : MonoBehaviour {
+public class SkillDescription{
 
 	public static Texture[] towerTextures = new Texture[8]; //fikse denne i en static-klasse
 	
@@ -63,11 +63,12 @@ public class SkillDescription : MonoBehaviour {
 		default:
 			Debug.LogWarning("TowerDescription not initialized with a valid tower");
 			break;
-		}		
+		}
+		if(!isLoaded){
+			LoadTextures();
+		}
 	}
 
-	
-	
 	public void PrintGUI(){
 		GUI.BeginGroup(position);
 		GUI.Box(new Rect(0,0,position.width,position.height),"");

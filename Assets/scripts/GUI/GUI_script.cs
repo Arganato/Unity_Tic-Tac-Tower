@@ -27,9 +27,9 @@ public class GUI_script : MonoBehaviour {
 	private bool towerRow; // whether the straight or diagonal towers shall be shown	
 	private bool confirmNewGame = false;
 	
-	SkillSelectError skillError;		//Case number for the specific error to be displayed on screen.
-	float errorStartTime;				//Time stamp for error display start.
-	static float errorDisplayTime = 3; 	//How many seconds an error is displayed on screen.
+	private SkillSelectError skillError;		//Case number for the specific error to be displayed on screen.
+	private float errorStartTime;				//Time stamp for error display start.
+	private static float errorDisplayTime = 3; 	//How many seconds an error is displayed on screen.
 	
 	private UndoButton undobutton;
 	
@@ -95,18 +95,23 @@ public class GUI_script : MonoBehaviour {
 		GUI.Box(new Rect(Screen.width-90,110,90,45), "Player 2 \nscore: " +Control.cState.player[1].score);
 		
 		//Turns until skill cap increase.
-		if(Control.cState.placedPieces <= Stats.totalArea/3){
+		if(Stats.rules == Stats.Rules.SOLID_TOWERS){
+			if(Control.cState.placedPieces <= Stats.totalArea/3){
+				GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (Control.cState.activePlayer+1) + "'s turn.  " 
+						+ "Skill cap: " + (int)(1+Control.cState.globalSkillCap) + ".   Skill cap increase after: " 
+						+ (int)(Stats.totalArea/3+1-Control.cState.placedPieces) + " tiles.");
+			}else if(Control.cState.placedPieces <= 2*Stats.totalArea/3){
+				GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (Control.cState.activePlayer+1) + "'s turn.  " 
+						+ "Skill cap: " + (int)(1+Control.cState.globalSkillCap) + ".   Skill cap increase after: " 
+						+ (int)(Stats.totalArea*2/3+1-Control.cState.placedPieces) + " tiles.");
+			}else{
+				GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (Control.cState.activePlayer+1) + "'s turn.  " 
+						+ "Skill cap: " + (int)(1+Control.cState.globalSkillCap) + ".   Total skill cap increases reached");
+			}	
+		}else if( Stats.rules == Stats.Rules.INVISIBLE_TOWERS){
 			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (Control.cState.activePlayer+1) + "'s turn.  " 
-					+ "Skill cap: " + (int)(1+Control.cState.globalSkillCap) + ".   Skill cap increase after: " 
-					+ (int)(Stats.totalArea/3+1-Control.cState.placedPieces) + " tiles.");
-		}else if(Control.cState.placedPieces <= 2*Stats.totalArea/3){
-			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (Control.cState.activePlayer+1) + "'s turn.  " 
-					+ "Skill cap: " + (int)(1+Control.cState.globalSkillCap) + ".   Skill cap increase after: " 
-					+ (int)(Stats.totalArea*2/3+1-Control.cState.placedPieces) + " tiles.");
-		}else{
-			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (Control.cState.activePlayer+1) + "'s turn.  " 
-					+ "Skill cap: " + (int)(1+Control.cState.globalSkillCap) + ".   Total skill cap increases reached");
-		}	
+						+ "Skill cap: " + (int)(1+Control.cState.globalSkillCap) + ".   Total skill cap increases reached");
+		}
 	}
 	
 	private void SkillOverview(){

@@ -49,9 +49,6 @@ public class GameState {
 		
 	}
 	
-
-	
-	
 	//----gameplay-related functions----//
 	
 	public void IncPieceCount(){
@@ -59,10 +56,12 @@ public class GameState {
 		// second skill cap increase: after piece nr. 54
 		// (consistent with giving player 2 the first turn with extra cap)
 		placedPieces++;
-		if(placedPieces > 2*Stats.totalArea/3){
-			globalSkillCap = 2;
-		}else if(placedPieces > Stats.totalArea/3){
-			globalSkillCap = 1;
+		if(Stats.rules == Stats.Rules.SOLID_TOWERS){
+			if(placedPieces > 2*Stats.totalArea/3){
+				globalSkillCap = 2;
+			}else if(placedPieces > Stats.totalArea/3){
+				globalSkillCap = 1;
+			}
 		}
 	}
 	
