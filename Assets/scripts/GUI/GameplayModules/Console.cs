@@ -12,7 +12,7 @@ public static class Console{
 	public static bool show = false;
 	
 	public static Rect windowRect = new Rect(20,Screen.height/2,400,150);
-	public static Rect buttonRect = new Rect(5, 180, 100, 30);
+	public static Rect buttonRect = new Rect(5, 270, 100, 25);
 	
 	private static Control control;
 	

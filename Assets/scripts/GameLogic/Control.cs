@@ -12,14 +12,18 @@ public class Control: MonoBehaviour {
 	
 	private Turn activeTurn;
 	private Sound sound;
+	private GraphicsCenter graphicsCenter;
 	
 	void Awake () {
 		sound = (Sound)FindObjectOfType(typeof(Sound));
+		graphicsCenter = (GraphicsCenter)FindObjectOfType(typeof(GraphicsCenter));
 		if (sound == null){
 			Debug.LogError("sound-object not found");
 		}
+		if (graphicsCenter == null){
+			Debug.LogError("graphicsCenter-object not found");
+		}
 		Console.Init(this);
-
 	}
 	
 	void Start(){
@@ -73,36 +77,30 @@ public class Control: MonoBehaviour {
 //			Debug.Log(activePlayer + " silenced: " + player[activePlayer].silenced);
 		if(!cState.player[cState.activePlayer].silenced){
 			cState.player[cState.activePlayer].AddScore(tower.Count);
-			Field<bool> coloredTowers = new Field<bool>(false);
 			foreach( Tower t in tower){
 				//Checking for victory
-				if(t.type == TowerType.five){
-					Victory();
-				}
+
 				//Coloring the towers:
 				foreach(FieldIndex i in t.GetList()){ 
 					
-					if(Stats.rules == Stats.Rules.SOLID_TOWERS){
+					if(Stats.rules == Stats.Rules.SOLID_TOWERS || t.type == TowerType.five){
 						cState.field[i] = Field<int>.GetDarkRoute(cState.field[i]);
 					}else if(Stats.rules == Stats.Rules.INVISIBLE_TOWERS){
 						cState.field[i] = Route.empty;
-						coloredTowers[i] = true;
 					}
 				}
-				//reporting the towers:
+				if(t.type == TowerType.five){
+					Victory();
+				}
+				//adding skills:
 				ReportTower(t);
 			}
-			if(tower.Count > 0){
-				Transform tmp = Instantiate(towerBuildEffect) as Transform;
-				tmp.GetComponent<BuildBuildingEffect>().Init(tower);
-			}
-
+			graphicsCenter.BuildingConstructionEffect(tower);
 		}else if(tower.Count > 0){ //if a tower was found that was blocked by Silence
 			return false;
 		}
 		BroadcastMessage("UpdateField");
 		return true;
-
 	}
 	
 	private void Victory(){

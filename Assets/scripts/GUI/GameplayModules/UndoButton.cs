@@ -4,7 +4,7 @@ using System.Collections;
 public class UndoButton{
 	
 	public bool enable = true;
-	public Rect position = new Rect(5,Screen.height-300,100,25);
+	public Rect position = new Rect(5,300,100,50);
 	
 	public int[] usedUndoCounter = new int[2];
 	
@@ -21,9 +21,18 @@ public class UndoButton{
 	}
 	
 	public void PrintGUI(){
-		if( enable && CanUndo() && GUI.Button(position,"Undo")){
-			usedUndoCounter[Control.cState.activePlayer]++;
-			control.UndoTurn();
+		if( enable ){
+			GUI.BeginGroup(position);
+			GUI.Box(new Rect(0,25,position.width,25),"P1: "+usedUndoCounter[0]+"  P2: "+usedUndoCounter[1]);
+			if( CanUndo() ){
+				if(GUI.Button(new Rect(0,0,position.width,25),"Undo")){
+				usedUndoCounter[Control.cState.activePlayer]++;
+				control.UndoTurn();
+				}
+			}else{
+				GUI.Box(new Rect(0,0,position.width,25),"Undo's used:");
+			}
+			GUI.EndGroup();
 		}
 	}
 	

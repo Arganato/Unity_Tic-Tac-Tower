@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class BuildBuildingEffect : MonoBehaviour {
+public class ConstructBuildingEffect : MonoBehaviour {
 
 	public float duration = 2f;
 	public float startIntensity = 0f;
