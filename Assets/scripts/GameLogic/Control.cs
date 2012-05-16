@@ -109,6 +109,7 @@ public class Control: MonoBehaviour {
 		Console.PrintToConsole("Player "+(cState.activePlayer+1)+" has won!",Console.MessageType.INFO);
 		Stats.gameRunning = false;
 		PopupMessage.DisplayMessage("Player "+(cState.activePlayer+1)+" has won!",10f);
+		EndTurn();
 		//TODO: victory-screen
 	}
 	
