@@ -26,11 +26,7 @@ public class GUI_script : MonoBehaviour {
 	
 	private bool towerRow; // whether the straight or diagonal towers shall be shown	
 	private bool confirmNewGame = false;
-	
-	private SkillSelectError skillError;		//Case number for the specific error to be displayed on screen.
-	private float errorStartTime;				//Time stamp for error display start.
-	private static float errorDisplayTime = 3; 	//How many seconds an error is displayed on screen.
-	
+		
 	private UndoButton undobutton;
 	
 	void Start () {
@@ -48,6 +44,8 @@ public class GUI_script : MonoBehaviour {
 		GUI.enabled = !lockGUI;
 		
 		GUI.skin = customSkin;
+		
+		PopupMessage.PrintGUI();
 		
 		TextInfo();
 		
@@ -75,7 +73,7 @@ public class GUI_script : MonoBehaviour {
 	
 	private void EndTurn(){
 		//End Turn.
-		if(control.playerDone && GUI.Button( new Rect(8, Screen.height-40,100, 40), "End Turn")){
+		if(control.playerDone && Stats.gameRunning && GUI.Button( new Rect(8, Screen.height-40,100, 40), "End Turn")){
 			control.UserEndTurn();
 		}	
 	}
@@ -123,16 +121,13 @@ public class GUI_script : MonoBehaviour {
 		for(int i = 0; i<3; i++){
 			if(Skill.skillInUse != (i+1) && GUI.Button(new Rect(Screen.width/2-200+i*100, 30, 100, 100),tSkills[i+Bool2Int(towerRow)*5]) ){
 				//the user has pressed a skill-button
-				skillError = Skill.UseSkill(i+1);
-				if(skillError != SkillSelectError.NO_ERROR){
-					errorStartTime = Time.time;
-				}
+				UseSkillError(Skill.UseSkill(i+1));
 			}else if( Skill.skillInUse == i+1 ){
 				GUI.Box(new Rect(Screen.width/2-200+i*100, 30, 100, 100),tSkills[i+Bool2Int(towerRow)*5]);
 			}
 		}
 		
-		UseSkillError(skillError,new Rect(Screen.width/2-100,Screen.height/2,250,25));
+		
 		
 		if(Skill.skillInUse == 0){
 			GUI.Box(new Rect(Screen.width/2+100, 30, 100, 100), tSkills[3+Bool2Int(towerRow)*5]);
@@ -212,34 +207,21 @@ public class GUI_script : MonoBehaviour {
 		return;
 	*/
 	
-	private void UseSkillError(SkillSelectError errorCode, Rect pos){
+	private void UseSkillError(SkillSelectError errorCode){
 		switch(errorCode){
 			case SkillSelectError.NO_ERROR:
-				//no error
-				errorStartTime = 0;
 				return;
-			case SkillSelectError.SKILL_AMMO_ERROR: 
-				//no more skills
-				if(Time.time < errorStartTime + errorDisplayTime){
-					GUI.Box(pos, "You dont have towers for that skill", "darkBox");
-				}
+			case SkillSelectError.SKILL_AMMO_ERROR:
+				PopupMessage.DisplayMessage("You dont have towers for that skill");
 				return;
-			case SkillSelectError.SKILL_CAP_ERROR: //not enough skillCap
-				if(Time.time < errorStartTime + errorDisplayTime){
-					GUI.Box(pos, "Cannot use that skill that many times", "darkBox");
-				}
+			case SkillSelectError.SKILL_CAP_ERROR:
+				PopupMessage.DisplayMessage("Cannot use that skill that many times");
 				return;
 			case SkillSelectError.UNKNOWN_ERROR:
-				if(Time.time < errorStartTime + errorDisplayTime){
-					GUI.Box(pos, "Unknown error occured", "darkBox");
-				}
+				PopupMessage.DisplayMessage("Unknown error occured");
 				return;
 		}
 		return;
 	}
 	
-	
-//	public void PrintToConsole(string s, Console.MessageType msgType){
-//		theConsole.PrintToConsole(s, msgType);
-//	}
 }

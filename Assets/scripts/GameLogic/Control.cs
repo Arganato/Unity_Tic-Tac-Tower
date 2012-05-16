@@ -107,7 +107,8 @@ public class Control: MonoBehaviour {
 		sound.PlaySound(SoundType.victory);
 		cState.player[cState.activePlayer].score += 1000;
 		Console.PrintToConsole("Player "+(cState.activePlayer+1)+" has won!",Console.MessageType.INFO);
-		//active player has won!
+		Stats.gameRunning = false;
+		PopupMessage.DisplayMessage("Player "+(cState.activePlayer+1)+" has won!",10f);
 		//TODO: victory-screen
 	}
 	
@@ -244,6 +245,7 @@ public class Control: MonoBehaviour {
 		cState.player[(cState.activePlayer+1)%2].silenced = true;
 		sound.PlaySound(SoundType.emp);
 		Skill.skillInUse = 0;
+		graphicsCenter.SilenceEffect();
 		return true;
 	}
 	
@@ -275,6 +277,8 @@ public class Control: MonoBehaviour {
 	
 	public void StartNewGame(){
 		GameState tmp = Stats.startState;
+		Stats.gameRunning = true;
+		Console.Clear();
 		if (tmp == null){
 			tmp = new GameState();
 			tmp.SetDefault();

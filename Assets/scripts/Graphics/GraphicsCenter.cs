@@ -6,7 +6,7 @@ public class GraphicsCenter : MonoBehaviour {
 	public Transform buildingConstruction;
 	public Transform directionalLight;
 	
-	private Color silenceFlashColor = Color.blue;
+	private Color silenceFlashColor = new Color(0.3f,0.4f,1,1);
 	
 
 	void Start () {
@@ -23,6 +23,16 @@ public class GraphicsCenter : MonoBehaviour {
 	}
 	
 	public void SilenceEffect(){
-		
+		StartCoroutine("SilenceEnumerator");
+	}
+	
+	private IEnumerator SilenceEnumerator(){
+		Color origColor = directionalLight.light.color;
+		float origIntensity = directionalLight.light.intensity;
+		directionalLight.light.color = silenceFlashColor;
+		directionalLight.light.intensity = 5f;
+		yield return new WaitForSeconds(0.25f);
+		directionalLight.light.color = origColor;
+		directionalLight.light.intensity = origIntensity;
 	}
 }

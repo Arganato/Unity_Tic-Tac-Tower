@@ -40,11 +40,11 @@ public static class Stats{
 	public static GameState startState;
 	public static SkillEnabled skillEnabled;
 	public static Rules rules;
+	public static bool gameRunning = true;
 	
 	
 	public static int totalArea{
 		get{return fieldSize*fieldSize;}
-//		set{}
 	}
 	
 	public static void SetDefaultSettings(){

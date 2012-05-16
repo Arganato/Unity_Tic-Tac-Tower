@@ -49,8 +49,14 @@ public static class Console{
 		
 		if(show){
 			windowRect = GUI.Window(0,windowRect,TheWindow,"Console");
+			WindowInsideScreen();
 		}
 		
+	}
+	
+	public static void Clear(){
+		editableText = "";
+		diplayedText = "";
 	}
 	
 	private static void TheWindow(int windowID){
@@ -64,6 +70,17 @@ public static class Console{
 			HandleString(editableText);
 		}
 		GUI.DragWindow(new Rect(0,0,windowRect.width,15));
+	}
+	
+	private static void WindowInsideScreen(){
+		if(windowRect.x < 0)
+			windowRect.x = 0;
+		if(windowRect.x > Screen.width-windowRect.width)
+			windowRect.x = Screen.width-windowRect.width;
+		if(windowRect.y < 0)
+			windowRect.y = 0;
+		if(windowRect.y > Screen.height - windowRect.height)
+			windowRect.y = Screen.height - windowRect.height;
 	}
 	
 	private static void HandleString(string s){

@@ -37,6 +37,6 @@ public class UndoButton{
 	}
 	
 	private bool CanUndo(){
-		return !Skill.skillsUsed.Empty() || control.playerDone;
+		return (!Skill.skillsUsed.Empty() || control.playerDone) && Stats.gameRunning;
 	}
 }

@@ -12,16 +12,17 @@ public class UserInputs : MonoBehaviour {
 	
 	void Update () {
 		//keyboard input
-		if(Input.GetButton("End Turn") && control.playerDone){
-			control.UserEndTurn();
-		}
-		if(Input.GetButton("shoot")){
-			Skill.UseSkill(1);
-		}if(Input.GetButton("build")){
-			Skill.UseSkill(2);
-		}if(Input.GetButton("emp")){
-			Skill.UseSkill(3);
-		}
-	
+		if(Stats.gameRunning){
+			if(Input.GetButton("End Turn") && control.playerDone){
+				control.UserEndTurn();
+			}
+			if(Input.GetButton("shoot")){
+				Skill.UseSkill(1);
+			}if(Input.GetButton("build")){
+				Skill.UseSkill(2);
+			}if(Input.GetButton("emp")){
+				Skill.UseSkill(3);
+			}
+		}	
 	}
 }

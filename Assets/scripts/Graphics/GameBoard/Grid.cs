@@ -27,9 +27,11 @@ public class Grid : MonoBehaviour {
 	
 	
 	public void MouseDown(Vector3 mousePosition){
-		FieldIndex ind = ScreenPointToBoard(mousePosition);
-		if ( ind.index != -1){
-			control.UserFieldSelect(ind);
+		if( Stats.gameRunning){
+			FieldIndex ind = ScreenPointToBoard(mousePosition);
+			if ( ind.index != -1){
+				control.UserFieldSelect(ind);
+			}
 		}
 	}
 	
