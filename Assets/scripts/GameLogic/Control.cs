@@ -61,6 +61,10 @@ public class Control: MonoBehaviour {
 		ExecuteOrder(o);
 	}
 	
+	public void TimeOut(){
+		Victory((cState.activePlayer+1)%2);
+	}
+	
 	private bool CheckCluster(FieldIndex index){ //rename?
 		//Finds a cluster from a field index recursively
 		//calls appropriate FindTower-functions on this cluster
@@ -90,7 +94,7 @@ public class Control: MonoBehaviour {
 					}
 				}
 				if(t.type == TowerType.five){
-					Victory();
+					Victory(cState.activePlayer);
 				}
 				//adding skills:
 				ReportTower(t);
@@ -103,12 +107,11 @@ public class Control: MonoBehaviour {
 		return true;
 	}
 	
-	private void Victory(){
+	private void Victory(int player){
 		sound.PlaySound(SoundType.victory);
-		cState.player[cState.activePlayer].score += 1000;
-		Console.PrintToConsole("Player "+(cState.activePlayer+1)+" has won!",Console.MessageType.INFO);
+		Console.PrintToConsole("Player "+(player+1)+" has won!",Console.MessageType.INFO);
 		Stats.gameRunning = false;
-		PopupMessage.DisplayMessage("Player "+(cState.activePlayer+1)+" has won!",10f);
+		PopupMessage.DisplayMessage("Player "+(player+1)+" has won!",10f);
 		EndTurn();
 		//TODO: victory-screen
 	}
@@ -300,7 +303,9 @@ public class Control: MonoBehaviour {
 	}
 	
 	public void UndoTurn(){
+		GameTime gt = cState.player[cState.activePlayer].gameTime;
 		cState = new GameState(startOfTurn);
+		cState.player[cState.activePlayer].gameTime = gt; // so that you cant undo the time
 		playerDone = false;
 		activeTurn = new Turn();
 		Skill.skillInUse = 0;

@@ -12,6 +12,7 @@ public class MainMenu : MonoBehaviour {
 	public int towDescr = 130;
 	private SkillDescription[] skillDescr = new SkillDescription[4];
 	private bool showChooseRules = false;
+	private SelectGameTime selectGameTime = new SelectGameTime();
 	
 	void Start () {
 		skillDescr[0] = new SkillDescription(TowerType.shoot);
@@ -38,8 +39,12 @@ public class MainMenu : MonoBehaviour {
 		// ** Tower Descriptions **
 
 		GUI.BeginGroup(new Rect(0, towDescr,Screen.width,300));
-		foreach(SkillDescription s in skillDescr){
-			s.PrintGUI();
+		if(showChooseRules){
+			selectGameTime.PrintGUI();
+		}else{
+			foreach(SkillDescription s in skillDescr){
+				s.PrintGUI();
+			}
 		}
 		GUI.EndGroup();
 		// ** Start Game Buttons **
@@ -58,12 +63,14 @@ public class MainMenu : MonoBehaviour {
 			if(GUI.Button(new Rect(0+b1Start, Screen.height-50, buttonWidth-0, 50-0), "Towers disapears")){
 				Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 				showChooseRules = false;
+				selectGameTime.SetGameTime();
 				Application.LoadLevel("game");
 			}
 	
 			if(GUI.Button(new Rect(0+b2Start,Screen.height-50, buttonWidth-0, 50-0), "Normal game")){
 				Stats.rules = Stats.Rules.SOLID_TOWERS;
 				showChooseRules = false;
+				selectGameTime.SetGameTime();
 				Application.LoadLevel("game");
 			}
 			

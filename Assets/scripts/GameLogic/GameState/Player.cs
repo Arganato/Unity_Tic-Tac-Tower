@@ -7,16 +7,18 @@ public class Player {
 	public bool silenced = false;	//Status saying whether players is silenced or not.
 	
 	public SkillContainer playerSkill = new SkillContainer();
-		
+	public GameTime gameTime = new GameTime(0,0);
 	
-	public Player(){	
-	
+	public Player(){}
+	public Player(GameTime gt){
+		gameTime = gt;
 	}
 	
 	public Player(Player copy){
 		this.playerSkill = copy.playerSkill;
 		silenced = copy.silenced;
 		score = copy.score;
+		gameTime = copy.gameTime;
 	}
 	
 	public void AddScore(int numbOfTowers){
@@ -31,6 +33,7 @@ public class Player {
 		score += numbOfSquares * 5;
 		}
 		silenced = false;
+		gameTime.timePrTurn = gameTime.startTimePrTurn;
 	}
 	
 	public void Reset(){

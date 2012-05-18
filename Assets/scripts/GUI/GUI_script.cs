@@ -28,6 +28,7 @@ public class GUI_script : MonoBehaviour {
 	private bool confirmNewGame = false;
 		
 	private UndoButton undobutton;
+	private ClockGUI clockGui = new ClockGUI();
 	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
@@ -44,6 +45,8 @@ public class GUI_script : MonoBehaviour {
 		GUI.enabled = !lockGUI;
 		
 		GUI.skin = customSkin;
+		
+		clockGui.PrintGUI();
 		
 		PopupMessage.PrintGUI();
 		
