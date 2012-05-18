@@ -61,6 +61,10 @@ public class Control: MonoBehaviour {
 		ExecuteOrder(o);
 	}
 	
+	public void UserResign(){
+		Victory((cState.activePlayer+1)%2);
+	}
+	
 	public void TimeOut(){
 		Victory((cState.activePlayer+1)%2);
 	}

@@ -25,10 +25,11 @@ public class GUI_script : MonoBehaviour {
 //	private Console theConsole;
 	
 	private bool towerRow; // whether the straight or diagonal towers shall be shown	
-	private bool confirmNewGame = false;
 		
 	private UndoButton undobutton;
 	private ClockGUI clockGui = new ClockGUI();
+	private ConfirmMenu newGameMenu = new ConfirmMenu("New Game");
+	private ConfirmMenu resignMenu = new ConfirmMenu("Resign",Screen.width - 110, Screen.height - 215);
 	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
@@ -58,11 +59,17 @@ public class GUI_script : MonoBehaviour {
 		
 		SkillDescrDropdown();
 		
-		NewGameMenu();
-				
-		Console.PrintGUI();
+		//NewGameMenu();
+		if(newGameMenu.PrintGUI()){
+			Application.LoadLevel("mainMenu");
+		}
+		if(resignMenu.PrintGUI()){
+			control.UserResign();
+		}
 		
 		undobutton.PrintGUI();
+				
+		Console.PrintGUI();
 		
 		//----Framework to handle mouse-input etc----//
 		GUI.enabled = true;
@@ -170,20 +177,6 @@ public class GUI_script : MonoBehaviour {
 				if(GUI.Button(new Rect(Screen.width/2-270+i*100, 130, 40, 15),smallArrowUp)){
 				showSkillInfo = 0;
 				}
-			}
-		}		
-	}
-	
-	private void NewGameMenu(){
-		if( !confirmNewGame && GUI.Button(new Rect(Screen.width - 100, Screen.height - 280, 100, 40), "NEW GAME")){
-			confirmNewGame = true;
-		}else if(confirmNewGame){
-			GUI.Box(new Rect(Screen.width - 100, Screen.height - 280, 100, 40), "NEW GAME");
-			if(GUI.Button(new Rect(Screen.width - 110, Screen.height - 240, 55, 25), "confirm")){
-				Application.LoadLevel("mainMenu");
-				confirmNewGame = false;
-			}else if(GUI.Button(new Rect(Screen.width - 55, Screen.height - 240, 55, 25), "cancel")){
-				confirmNewGame = false;
 			}
 		}		
 	}

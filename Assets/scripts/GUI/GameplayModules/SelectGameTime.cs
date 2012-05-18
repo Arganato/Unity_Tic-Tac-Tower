@@ -60,6 +60,5 @@ public class SelectGameTime{
 			}
 			Stats.startState.player[1].gameTime = new GameTime(p2tptNr,p2ttNr);
 		}
-		Debug.Log("p1ptp: "+p1tptNr+", p1tt: "+p1ttNr);
 	}
 }
