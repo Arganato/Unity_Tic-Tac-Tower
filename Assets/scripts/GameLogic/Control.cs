@@ -8,8 +8,6 @@ public class Control: MonoBehaviour {
 	public static GameState cState; //the current gamestate of the progressing game
 	public static GameState startOfTurn; //the undo-point
 	
-	public Transform towerBuildEffect;
-	
 	private Turn activeTurn;
 	private Sound sound;
 	private GraphicsCenter graphicsCenter;

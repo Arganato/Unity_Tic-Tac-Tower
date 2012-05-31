@@ -35,6 +35,7 @@ public struct Order{
 	}
 	
 		public static Order StringToOrder( string str){
+//		Debug.Log("string to order: "+str);
 		Order ret = new Order();
 		ret.skill = SkillType.noSkill; //default
 		ret.endTurn = false;

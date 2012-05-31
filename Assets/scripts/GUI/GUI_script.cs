@@ -16,20 +16,14 @@ public class GUI_script : MonoBehaviour {
 	
 	public bool enable;
 	public bool lockGUI;
-	
-	private string buildText = "Build Tower: \nAllows the player to place one more piece on the board. This will not, however, reset the amount of skills used, as if starting a new round.";
-	private string shootText = "Shoot Tower: \nThe player may destroy another unused, hostile piece on the board. The piece is ruined, and the tile cannot be built upon.";
-	private string empText = "EMP Tower: \nThe opponent is rendered unable to place a piece where he/she would normally be able to build a tower. Also, the opponent will not benefit from any abilities next turn.";
-	private string squareText = "Square Tower: \nIncreases the skill cap by one for the player who builds it, allowing the player to use the same skill one more time during the same round. In addition, the player will gain five score points at the end of each turn.";
-	
-//	private Console theConsole;
-	
+		
 	private bool towerRow; // whether the straight or diagonal towers shall be shown	
 		
 	private UndoButton undobutton;
 	private ClockGUI clockGui = new ClockGUI();
 	private ConfirmMenu newGameMenu = new ConfirmMenu("New Game");
 	private ConfirmMenu resignMenu = new ConfirmMenu("Resign",Screen.width - 110, Screen.height - 215);
+	private PlayerInfoText playerInfoText = new PlayerInfoText();
 	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
@@ -50,8 +44,8 @@ public class GUI_script : MonoBehaviour {
 		clockGui.PrintGUI();
 		
 		PopupMessage.PrintGUI();
-		
-		TextInfo();
+
+		playerInfoText.PrintGUI();
 		
 		EndTurn();
 		
@@ -88,40 +82,7 @@ public class GUI_script : MonoBehaviour {
 		}	
 	}
 	
-	private void TextInfo(){
-		string p1SkillInfo = "Player 1 skills\nShoot: "+Control.cState.player[0].playerSkill.shoot+
-				"\nBuild: "+Control.cState.player[0].playerSkill.build+"\nEMP: "+Control.cState.player[0].playerSkill.emp+
-				"\nSkill cap: "+(int)(1+Control.cState.player[0].playerSkill.square+Control.cState.globalSkillCap);
-		string p2SkillInfo = "Player 2 skills\nShoot: "+Control.cState.player[1].playerSkill.shoot+
-				"\nBuild: "+Control.cState.player[1].playerSkill.build+"\nEMP: "+Control.cState.player[1].playerSkill.emp+
-				"\nSkill cap: "+(int)(1+Control.cState.player[1].playerSkill.square+Control.cState.globalSkillCap);
-		
-		GUI.Box(new Rect(0,0,90,100), p1SkillInfo);
-		GUI.Box(new Rect(Screen.width - 90,0,90,100), p2SkillInfo);
-		
-		GUI.Box(new Rect(0,110,90,45), "Player 1 \n score: " +Control.cState.player[0].score);
-		GUI.Box(new Rect(Screen.width-90,110,90,45), "Player 2 \nscore: " +Control.cState.player[1].score);
-		
-		//Turns until skill cap increase.
-		if(Stats.rules == Stats.Rules.SOLID_TOWERS){
-			if(Control.cState.placedPieces <= Stats.totalArea/3){
-				GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (Control.cState.activePlayer+1) + "'s turn.  " 
-						+ "Skill cap: " + (int)(1+Control.cState.globalSkillCap) + ".   Skill cap increase after: " 
-						+ (int)(Stats.totalArea/3+1-Control.cState.placedPieces) + " tiles.");
-			}else if(Control.cState.placedPieces <= 2*Stats.totalArea/3){
-				GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (Control.cState.activePlayer+1) + "'s turn.  " 
-						+ "Skill cap: " + (int)(1+Control.cState.globalSkillCap) + ".   Skill cap increase after: " 
-						+ (int)(Stats.totalArea*2/3+1-Control.cState.placedPieces) + " tiles.");
-			}else{
-				GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (Control.cState.activePlayer+1) + "'s turn.  " 
-						+ "Skill cap: " + (int)(1+Control.cState.globalSkillCap) + ".   Total skill cap increases reached");
-			}	
-		}else if( Stats.rules == Stats.Rules.INVISIBLE_TOWERS){
-			GUI.Box(new Rect(Screen.width/2-200, 0, 400, 25), "Player " + (Control.cState.activePlayer+1) + "'s turn.  " 
-						+ "Skill cap: " + (int)(1+Control.cState.globalSkillCap) + ".   Total skill cap increases reached");
-		}
-	}
-	
+
 	private void SkillOverview(){
 		GUI.Box(new Rect(Screen.width/2-200, 30, 400, 100), "");
 
@@ -137,8 +98,6 @@ public class GUI_script : MonoBehaviour {
 			}
 		}
 		
-		
-		
 		if(Skill.skillInUse == 0){
 			GUI.Box(new Rect(Screen.width/2+100, 30, 100, 100), tSkills[3+Bool2Int(towerRow)*5]);
 		}else{
@@ -152,16 +111,16 @@ public class GUI_script : MonoBehaviour {
 			case 0:
 				break;
 			case 1:
-				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),shootText, "darkBox");
+				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),SkillDescription.GetDescription(TowerType.shoot), "darkBox");
 				break;
 			case 2:
-				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),buildText, "darkBox");
+				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),SkillDescription.GetDescription(TowerType.build), "darkBox");
 				break;
 			case 3:
-				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),empText, "darkBox");
+				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),SkillDescription.GetDescription(TowerType.emp), "darkBox");
 				break;
 			case 4:
-				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),squareText, "darkBox");
+				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),SkillDescription.GetDescription(TowerType.square), "darkBox");
 				break;
 		}		
 		

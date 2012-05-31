@@ -57,6 +57,7 @@ public static class Console{
 	public static void Clear(){
 		editableText = "";
 		diplayedText = "";
+		windowHeight = 6;
 	}
 	
 	private static void TheWindow(int windowID){

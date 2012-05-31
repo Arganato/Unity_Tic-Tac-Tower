@@ -37,6 +37,10 @@ public class Turn{
 		return valid;
 	}
 	
+	public bool IsEmpty(){
+		return orders.Count == 0;
+	}
+	
 	public void Add(Order o){
 		if(valid && o.skill == SkillType.place){
 			Debug.LogError("Turn already has a place-order: Only one place-order allowed each turn"); 

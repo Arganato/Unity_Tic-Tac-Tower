@@ -2,8 +2,8 @@ using UnityEngine;
 using System.Collections;
 
 public class ConfirmMenu{
-	//option for new game and resign
-	public bool enable;
+
+	public bool enable = true;
 	public Rect position = new Rect(Screen.width - 110, Screen.height - 280, 110, 65);
 	public string name = "";
 	
@@ -21,14 +21,14 @@ public class ConfirmMenu{
 	public ConfirmMenu(string buttonName, int x, int y){
 		position.x = x;
 		position.y = y;
-		name = buttonName;		
+		name = buttonName;
 	}
 	
 	public bool PrintGUI(){
 		if(enable){
 			GUI.BeginGroup(position);
 			bool b = Print();
-			GUI.EndGroup();		
+			GUI.EndGroup();
 			return b;
 		}else{
 			return false;

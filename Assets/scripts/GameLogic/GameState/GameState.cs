@@ -12,7 +12,7 @@ public class GameState {
 	
 	public GameState(){
 		field = new Field<Route>(Route.empty);
-		turn = 1;
+		turn = 0;
 		activePlayer = 0;
 		placedPieces = 0;
 		globalSkillCap = 0;
@@ -40,7 +40,7 @@ public class GameState {
 	}	
 	public void Reset(){
 		field = new Field<Route>(Route.empty);
-		turn = 1;
+		turn = 0;
 		activePlayer = 0;
 		placedPieces = 0;
 		globalSkillCap = 0;
