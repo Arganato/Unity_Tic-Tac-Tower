@@ -26,13 +26,13 @@ public static class Skill {
 			return CanUseShoot();
 		case SkillType.build:
 			return CanUseBuild();
-		case SkillType.emp:
+		case SkillType.silence:
 			return CanUseSilence();
 		}
 		return SkillSelectError.UNKNOWN_ERROR;
 	}
 	public static SkillSelectError CanUseShoot(){
-		if ( !(skillsUsed.shoot <= Control.cState.player[Control.cState.activePlayer].playerSkill.square + Control.cState.globalSkillCap) ) 
+		if ( !(skillsUsed.shoot <= Control.cState.player[Control.cState.activePlayer].playerSkill.skillCap + Control.cState.globalSkillCap) ) 
 			return SkillSelectError.SKILL_CAP_ERROR;
 		if(!(Control.cState.player[Control.cState.activePlayer].playerSkill.shoot > 0))
 			return SkillSelectError.SKILL_AMMO_ERROR;
@@ -40,7 +40,7 @@ public static class Skill {
 	}
 	
 	public static SkillSelectError CanUseBuild(){
-		if ( !(skillsUsed.build <= Control.cState.player[Control.cState.activePlayer].playerSkill.square + Control.cState.globalSkillCap)) 
+		if ( !(skillsUsed.build <= Control.cState.player[Control.cState.activePlayer].playerSkill.skillCap + Control.cState.globalSkillCap)) 
 			return SkillSelectError.SKILL_CAP_ERROR;
 		if( !(Control.cState.player[Control.cState.activePlayer].playerSkill.build > 0) )
 			return SkillSelectError.SKILL_AMMO_ERROR;
@@ -48,9 +48,9 @@ public static class Skill {
 	}
 	
 	public static SkillSelectError CanUseSilence(){
-		if( !(skillsUsed.emp < 1) )
+		if( !(skillsUsed.silence < 1) )
 			return SkillSelectError.SKILL_CAP_ERROR;
-		if( !(Control.cState.player[Control.cState.activePlayer].playerSkill.emp > 0) )
+		if( !(Control.cState.player[Control.cState.activePlayer].playerSkill.silence > 0) )
 			return SkillSelectError.SKILL_AMMO_ERROR;
 		return SkillSelectError.NO_ERROR;
 	}

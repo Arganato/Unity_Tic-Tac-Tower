@@ -82,9 +82,9 @@ public class ConstructBuildingEffect : MonoBehaviour {
 			return shootColor;
 		case TowerType.build:
 			return buildColor;
-		case TowerType.emp:
+		case TowerType.silence:
 			return silenceColor;
-		case TowerType.square:
+		case TowerType.skillCap:
 			return skillCapColor;
 		default:
 			return Color.white;

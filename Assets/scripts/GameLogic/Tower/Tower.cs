@@ -53,11 +53,11 @@ public class Tower {
 		else if(type == TowerType.shoot){
 			s = "Shoot tower: ";
 		}
-		else if(type == TowerType.emp){
-			s = "EMP tower: ";
+		else if(type == TowerType.silence){
+			s = "silence tower: ";
 		}
-		else if(type == TowerType.square){
-			s = "Square tower: ";
+		else if(type == TowerType.skillCap){
+			s = "SkillCap-tower: ";
 		}
 		else if(type == TowerType.five){
 			s = "\"Five in a row\"-tower: ";
@@ -147,7 +147,7 @@ public class Tower {
 		FieldIndex tmp = ind.Up(direction);
 		newTower.Add(ind);
 		newTower.Add(tmp);
-		newTower.type = TowerType.emp;						
+		newTower.type = TowerType.silence;						
 		ind = tmp;
 		FieldIndex right = ind.Right(direction);
 		FieldIndex left = ind.Left(direction);
@@ -200,7 +200,7 @@ public class Tower {
 	
 	public static void FindSquareTower(int direction, FieldIndex ind, Field<bool> taken, ref List<Tower> buildList){
 		Tower newTower = new Tower();
-		newTower.type = TowerType.square;
+		newTower.type = TowerType.skillCap;
 		//Debug.Log("Found 2nd piece forward on "+ind.ToString());
 		newTower.Add(ind);
 		FieldIndex tmp = ind.Up(direction);
@@ -265,12 +265,12 @@ public class Tower {
 						}if((j%2==1 && Stats.skillEnabled.diagShoot) || ( j%2==0 && Stats.skillEnabled.shoot)){ // shoot
 							FindShootTower(j, ind, taken, ref buildList);
 						}if(j<4){
-							if((j%2==1 && Stats.skillEnabled.diagEmp) || ( j%2==0 && Stats.skillEnabled.emp)){ // emp
+							if((j%2==1 && Stats.skillEnabled.diagEmp) || ( j%2==0 && Stats.skillEnabled.silence)){ // silence
 								FindEmpTower(j, ind, taken, ref buildList);
 							}
 							FindFiveTower(j, ind, taken, ref buildList);
 						}
-						if(j>5 && ((j%2==1 && Stats.skillEnabled.diagSquare) || (j%2==0 && Stats.skillEnabled.square))){ // square
+						if(j>5 && ((j%2==1 && Stats.skillEnabled.diagSkillCap) || (j%2==0 && Stats.skillEnabled.skillCap))){ // square
 							FindSquareTower(j, ind, taken, ref buildList);
 						}
 						

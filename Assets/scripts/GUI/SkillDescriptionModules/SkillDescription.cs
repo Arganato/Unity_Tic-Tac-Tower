@@ -18,10 +18,10 @@ public class SkillDescription{
 		case TowerType.build:
 			position.x = position.width;
 			break;
-		case TowerType.emp:
+		case TowerType.silence:
 			position.y = position.height;
 			break;
-		case TowerType.square:
+		case TowerType.skillCap:
 			position.x = position.width;
 			position.y = position.height;
 			break;

@@ -22,7 +22,7 @@ public struct Order{
 		case SkillType.shoot:
 			s = "shoot "+ position.ToString(); 
 			break;
-		case SkillType.emp:
+		case SkillType.silence:
 			s = "silence"; 
 			break;
 		}
@@ -47,7 +47,7 @@ public struct Order{
 		}else if(splitStr[0] == "build"){
 			ret.skill = SkillType.build;
 		}else if(splitStr[0] == "silence" || splitStr[0] == "silence."){
-			ret.skill = SkillType.emp;
+			ret.skill = SkillType.silence;
 		}
 		if(splitStr.Length > 1){ //it contains a field index
 			string fStr = splitStr[1];

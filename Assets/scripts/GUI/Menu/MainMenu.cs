@@ -17,8 +17,8 @@ public class MainMenu : MonoBehaviour {
 	void Start () {
 		skillDescr[0] = new SkillDescription(TowerType.shoot);
 		skillDescr[1] = new SkillDescription(TowerType.build);
-		skillDescr[2] = new SkillDescription(TowerType.emp);
-		skillDescr[3] = new SkillDescription(TowerType.square);
+		skillDescr[2] = new SkillDescription(TowerType.silence);
+		skillDescr[3] = new SkillDescription(TowerType.skillCap);
 	}
 	
 	void OnGUI () {

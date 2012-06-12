@@ -46,7 +46,7 @@ public class Control: MonoBehaviour {
 				o.position = index;
 				break;
 			case 3:
-				o.skill = SkillType.emp;
+				o.skill = SkillType.silence;
 				break;
 		}
 		ExecuteOrder(o);
@@ -142,7 +142,7 @@ public class Control: MonoBehaviour {
 				validMove = false;
 			}
 			break;
-		case SkillType.emp:
+		case SkillType.silence:
 			if(Skill.CanUseSilence() == SkillSelectError.NO_ERROR){
 				validMove = EMP();
 			}else{
@@ -246,10 +246,10 @@ public class Control: MonoBehaviour {
 	public bool EMP(){
 		Debug.Log("player "+(cState.activePlayer+1)+" has used EMP");
 		Console.PrintToConsole("player "+(cState.activePlayer+1)+" has used EMP!",Console.MessageType.INFO);
-		Skill.skillsUsed.emp++;
-		cState.player[cState.activePlayer].playerSkill.emp--;
+		Skill.skillsUsed.silence++;
+		cState.player[cState.activePlayer].playerSkill.silence--;
 		cState.player[(cState.activePlayer+1)%2].silenced = true;
-		sound.PlaySound(SoundType.emp);
+		sound.PlaySound(SoundType.silence);
 		Skill.skillInUse = 0;
 		graphicalEffectFactory.SilenceEffect();
 		return true;
@@ -263,11 +263,11 @@ public class Control: MonoBehaviour {
 			case TowerType.build:
 				cState.player[cState.activePlayer].playerSkill.build++;
 				break;
-			case TowerType.emp:
-				cState.player[cState.activePlayer].playerSkill.emp++;
+			case TowerType.silence:
+				cState.player[cState.activePlayer].playerSkill.silence++;
 				break;
-			case TowerType.square:
-				cState.player[cState.activePlayer].playerSkill.square++;
+			case TowerType.skillCap:
+				cState.player[cState.activePlayer].playerSkill.skillCap++;
 				break;
 		}
 	}

@@ -26,9 +26,9 @@ public static class ResourceFactory{
 			return "Shoot Tower: \nThe player may destroy another unused, hostile piece on the board.The piece is ruined, and the tile cannot be built upon.";
 		case TowerType.build:
 			return "Build Tower: \nAllows the player to place one more piece on the board.This will not, however, reset the amount of skills used, as if starting a new round.";
-		case TowerType.emp:
+		case TowerType.silence:
 			return "Silence Tower: \nThe opponent is rendered unable to place a piece where he/she would normally be able to build a tower. Also, the opponent will not benefit from any abilities next turn.";
-		case TowerType.square:
+		case TowerType.skillCap:
 			return "Skill Cap Tower: \nIncreases the skill cap by one for the player who builds it, allowing the player to use the same skill one more time during the same round. In addition, the player will gain five score points at the end of each turn.";
 		default:
 			return "";

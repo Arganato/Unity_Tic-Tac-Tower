@@ -11,11 +11,11 @@ public class PlayerInfoText {
 	
 	private void TextInfo(){
 		string p1SkillInfo = "Player 1 skills\nShoot: "+Control.cState.player[0].playerSkill.shoot+
-				"\nBuild: "+Control.cState.player[0].playerSkill.build+"\nSilence: "+Control.cState.player[0].playerSkill.emp+
-				"\nSkill cap: "+(int)(1+Control.cState.player[0].playerSkill.square+Control.cState.globalSkillCap);
+				"\nBuild: "+Control.cState.player[0].playerSkill.build+"\nSilence: "+Control.cState.player[0].playerSkill.silence+
+				"\nSkill cap: "+(int)(1+Control.cState.player[0].playerSkill.skillCap+Control.cState.globalSkillCap);
 		string p2SkillInfo = "Player 2 skills\nShoot: "+Control.cState.player[1].playerSkill.shoot+
-				"\nBuild: "+Control.cState.player[1].playerSkill.build+"\nSilence: "+Control.cState.player[1].playerSkill.emp+
-				"\nSkill cap: "+(int)(1+Control.cState.player[1].playerSkill.square+Control.cState.globalSkillCap);
+				"\nBuild: "+Control.cState.player[1].playerSkill.build+"\nSilence: "+Control.cState.player[1].playerSkill.silence+
+				"\nSkill cap: "+(int)(1+Control.cState.player[1].playerSkill.skillCap+Control.cState.globalSkillCap);
 		
 		GUI.Box(new Rect(0,0,90,100), p1SkillInfo);
 		GUI.Box(new Rect(Screen.width - 90,0,90,100), p2SkillInfo);

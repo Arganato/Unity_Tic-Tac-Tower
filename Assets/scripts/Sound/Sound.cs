@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public enum SoundType {background, onClick, error, shoot, build, emp, defeat, victory}
+public enum SoundType {background, onClick, error, shoot, build, silence, defeat, victory}
 
 public class Sound : MonoBehaviour {
 	
@@ -10,7 +10,7 @@ public class Sound : MonoBehaviour {
 	public AudioClip onError;
 	public AudioClip onShoot;
 	public AudioClip onBuild;
-	public AudioClip onEmp;
+	public AudioClip onSilence;
 	public AudioClip onDefeat;
 	public AudioClip onVictory;
 	
@@ -34,8 +34,8 @@ public class Sound : MonoBehaviour {
 		case SoundType.shoot:
 			if( onShoot != null)	gameObject.audio.PlayOneShot(onShoot);
 			break;
-		case SoundType.emp:
-			if( onEmp != null)	gameObject.audio.PlayOneShot(onEmp);
+		case SoundType.silence:
+			if( onSilence != null)	gameObject.audio.PlayOneShot(onSilence);
 			break;
 		case SoundType.error:
 			if( onError != null)	gameObject.audio.PlayOneShot(onError);

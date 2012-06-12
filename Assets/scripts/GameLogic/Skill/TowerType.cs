@@ -1,5 +1,5 @@
 using UnityEngine;
 using System.Collections;
 
-public enum TowerType {build, shoot, emp, square, five};
+public enum TowerType {build, shoot, silence, skillCap, five};
 

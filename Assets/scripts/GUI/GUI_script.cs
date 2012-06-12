@@ -5,7 +5,7 @@ public class GUI_script : MonoBehaviour {
 
 	private Control control;
 	private Grid grid;
-	//private string[] skillNames =new string[4] {"cancel", "shoot", "build", "emp"};
+	//private string[] skillNames =new string[4] {"cancel", "shoot", "build", "silence"};
 	
 	public Texture[] tSkills;
 	private int showSkillInfo = 0; //0 = Reveals no info.
@@ -115,10 +115,10 @@ public class GUI_script : MonoBehaviour {
 				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),ResourceFactory.GetDescription(TowerType.build), "darkBox");
 				break;
 			case 3:
-				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),ResourceFactory.GetDescription(TowerType.emp), "darkBox");
+				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),ResourceFactory.GetDescription(TowerType.silence), "darkBox");
 				break;
 			case 4:
-				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),ResourceFactory.GetDescription(TowerType.square), "darkBox");
+				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),ResourceFactory.GetDescription(TowerType.skillCap), "darkBox");
 				break;
 		}		
 		

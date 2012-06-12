@@ -8,25 +8,25 @@ public static class Stats{
 	public struct SkillEnabled{
 		public bool shoot;
 		public bool build;
-		public bool emp;
-		public bool square;
+		public bool silence;
+		public bool skillCap;
 		public bool diagShoot;
 		public bool diagBuild;
 		public bool diagEmp;
-		public bool diagSquare;
+		public bool diagSkillCap;
 		
 		public void SetDiag(bool b){
 		diagShoot = b;
 		diagBuild = b;
 		diagEmp = b;
-		diagSquare = b;
+		diagSkillCap = b;
 		}
 		
 		public void SetStraight(bool b){
 		shoot = b;
 		build = b;
-		emp = b;
-		square = b;
+		silence = b;
+		skillCap = b;
 		}
 		public void SetAll(bool b){
 			SetDiag(b);

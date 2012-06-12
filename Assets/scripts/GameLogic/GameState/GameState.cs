@@ -66,7 +66,7 @@ public class GameState {
 	}
 	
 		public void ChangeActivePlayer(){
-		player[activePlayer].EndTurn(player[activePlayer].playerSkill.square);
+		player[activePlayer].EndTurn(player[activePlayer].playerSkill.skillCap);
 		if(activePlayer == 1){
 			turn++;
 		}
