@@ -45,7 +45,7 @@ public static class Console{
 	}
 	
 	public static void PrintGUI(){
-		show = GUI.Toggle(buttonRect, show, "Toggle Console", "button");
+		show = GUI.Toggle(buttonRect, show, "Console", "button");
 		
 		if(show){
 			windowRect = GUI.Window(0,windowRect,TheWindow,"Console");

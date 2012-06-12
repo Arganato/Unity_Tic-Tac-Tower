@@ -4,16 +4,18 @@ using System.Collections;
 public class SkillGUI{
 
 	public bool enable;
-	public Rect position = new Rect(10,Screen.height-65,260,65);
+	public Rect position = new Rect(10,Screen.height-70,300,70);
 	
 	private SkillButtonGUI[] buttonRow = new SkillButtonGUI[4];
 	private SkillAmountGUI[] textRow = new SkillAmountGUI[4];
 
 	public void PrintGUI(){
+		GUI.BeginGroup(position);
 		for( int i=0;i<buttonRow.Length;i++){
 			buttonRow[i].PrintGUI();
 			textRow[i].PrintGUI();
 		}
+		GUI.EndGroup();
 	}
 	
 	private SkillGUI(){

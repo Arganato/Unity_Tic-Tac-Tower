@@ -5,7 +5,6 @@ public class GUI_script : MonoBehaviour {
 
 	private Control control;
 	private Grid grid;
-	//private string[] skillNames =new string[4] {"cancel", "shoot", "build", "silence"};
 	
 	public Texture[] tSkills;
 	private int showSkillInfo = 0; //0 = Reveals no info.
@@ -22,13 +21,13 @@ public class GUI_script : MonoBehaviour {
 	private ConfirmMenu newGameMenu = new ConfirmMenu("New Game");
 	private ConfirmMenu resignMenu = new ConfirmMenu("Resign",Screen.width - 110, Screen.height - 215);
 	private PlayerInfoText playerInfoText = new PlayerInfoText();
+	private SkillGUI skillGUI = SkillGUI.Create();
+	private HeaderBar header = new HeaderBar();
 	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
 		grid = (Grid)FindObjectOfType(typeof(Grid));
 		undobutton = new UndoButton(control);
-		//enable = true;
-		//lockGUI = false;
 	}
 	
 	void OnGUI() {
@@ -42,26 +41,29 @@ public class GUI_script : MonoBehaviour {
 		clockGui.PrintGUI();
 		
 		PopupMessage.PrintGUI();
+		
+		header.PrintGUI();
 
-		playerInfoText.PrintGUI();
+//		playerInfoText.PrintGUI();
 		
 		EndTurn();
 		
-		SkillOverview();
+		skillGUI.PrintGUI();
 		
-		SkillDescrDropdown();
+//		SkillOverview();
 		
-		//NewGameMenu();
-		if(newGameMenu.PrintGUI()){
-			Application.LoadLevel("mainMenu");
-		}
-		if(resignMenu.PrintGUI()){
-			control.UserResign();
-		}
+//		SkillDescrDropdown();
+		
+//		if(newGameMenu.PrintGUI()){
+//			Application.LoadLevel("mainMenu");
+//		}
+//		if(resignMenu.PrintGUI()){
+//			control.UserResign();
+//		}
 		
 		undobutton.PrintGUI();
 				
-		Console.PrintGUI();
+		//Console.PrintGUI();
 		
 		//----Framework to handle mouse-input etc----//
 		GUI.enabled = true;

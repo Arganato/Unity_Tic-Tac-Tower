@@ -16,7 +16,7 @@ public static class ResourceFactory{
 	
 	private static string towerBasepath = "GUI/Towers/"; // relative to the Resources-folder
 	private static string[] towerPaths = new string[8]{ "shoot_rett", "build_rett", "emp_rett", "square_rett", "shoot_skra", "build_skra", "emp_skra", "square_skra"};
-	private static string skillIconsBP = "GUI/Icons/Skills";
+	private static string skillIconsBP = "GUI/Icons/Skills/";
 	private static string[] skillIconpaths = new string[4]{ "Shoot_Icon", "Build_Icon", "Silence_Icon", "SkillCap_Icon"};
 	private static bool isLoaded = false;
 
@@ -27,7 +27,7 @@ public static class ResourceFactory{
 		case TowerType.build:
 			return "Build Tower: \nAllows the player to place one more piece on the board.This will not, however, reset the amount of skills used, as if starting a new round.";
 		case TowerType.silence:
-			return "Silence Tower: \nThe opponent is rendered unable to place a piece where he/she would normally be able to build a tower. Also, the opponent will not benefit from any abilities next turn.";
+			return "Silence Tower: \nThe opponent is rendered unable to place a piece where he/she would normally be able to build a tower.";
 		case TowerType.skillCap:
 			return "Skill Cap Tower: \nIncreases the skill cap by one for the player who builds it, allowing the player to use the same skill one more time during the same round. In addition, the player will gain five score points at the end of each turn.";
 		default:
@@ -42,10 +42,10 @@ public static class ResourceFactory{
 	
 	public static Texture GetSkillIcon(int i){
 		CheckLoaded();
-		if(i<skillIconTextures.Length && i>0){
+		if(i<skillIconTextures.Length && i>=0){
 			return skillIconTextures[i];
 		}else{
-			Debug.LogError("tried to access skillIconTextures["+i+"]; Out of range");
+			Debug.LogError("tried to access skillIconTextures["+i+"]; Out of range (L = "+skillIconTextures.Length+")");
 			return null;
 		}
 			
@@ -54,7 +54,6 @@ public static class ResourceFactory{
 	public static Texture GetCancelTexture(){
 		CheckLoaded();
 		if( cancelTexture == null){
-			cancelTexture = Resources.Load("GUI/Misc/Stop") as Texture;
 		}
 		return cancelTexture;
 	}
@@ -79,19 +78,15 @@ public static class ResourceFactory{
 		LoadTowerTextures();
 		LoadSkillIcons();
 		arrowUp = Resources.Load("GUI/Icons/Arrows/arrow_up") as Texture;
-		if(arrowUp == null){
-			Debug.LogError("Texture not found: GUI/Icons/Arrows/arrow_up"); 
-		}
+		cancelTexture = Resources.Load("GUI/Misc/Stop") as Texture;
 		arrowDown = Resources.Load("GUI/Icons/Arrows/arrow_down") as Texture;
-		if(arrowDown == null){
-			Debug.LogError("Texture not found: GUI/Icons/Arrows/arrow_down"); 
-		}
+
 		isLoaded = true;
 	}
 	private static void LoadTowerTextures(){
 		for( int i=0; i<towerTextures.Length;i++){
 			towerTextures[i] = Resources.Load(towerBasepath+towerPaths[i]) as Texture;
-			if(towerTextures[i] == null){
+			if(towerTextures[i] == null){ //this doesnt work... must probably catch some exceptions instead...
 				Debug.LogError("Texture not found: "+towerBasepath+towerPaths[i]);
 			}
 		}		
