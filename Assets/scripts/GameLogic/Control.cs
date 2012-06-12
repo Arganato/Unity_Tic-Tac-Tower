@@ -10,16 +10,16 @@ public class Control: MonoBehaviour {
 	
 	private Turn activeTurn;
 	private Sound sound;
-	private GraphicsCenter graphicsCenter;
+	private GraphicalEffectFactory graphicalEffectFactory;
 	
 	void Awake () {
 		sound = (Sound)FindObjectOfType(typeof(Sound));
-		graphicsCenter = (GraphicsCenter)FindObjectOfType(typeof(GraphicsCenter));
+		graphicalEffectFactory = (GraphicalEffectFactory)FindObjectOfType(typeof(GraphicalEffectFactory));
 		if (sound == null){
 			Debug.LogError("sound-object not found");
 		}
-		if (graphicsCenter == null){
-			Debug.LogError("graphicsCenter-object not found");
+		if (graphicalEffectFactory == null){
+			Debug.LogError("graphicalEffectFactory-object not found");
 		}
 		Console.Init(this);
 	}
@@ -101,7 +101,7 @@ public class Control: MonoBehaviour {
 				//adding skills:
 				ReportTower(t);
 			}
-			graphicsCenter.BuildingConstructionEffect(tower);
+			graphicalEffectFactory.BuildingConstructionEffect(tower);
 		}else if(tower.Count > 0){ //if a tower was found that was blocked by Silence
 			return false;
 		}
@@ -251,7 +251,7 @@ public class Control: MonoBehaviour {
 		cState.player[(cState.activePlayer+1)%2].silenced = true;
 		sound.PlaySound(SoundType.emp);
 		Skill.skillInUse = 0;
-		graphicsCenter.SilenceEffect();
+		graphicalEffectFactory.SilenceEffect();
 		return true;
 	}
 	

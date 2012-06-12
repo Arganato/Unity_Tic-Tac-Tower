@@ -8,8 +8,6 @@ public class GUI_script : MonoBehaviour {
 	//private string[] skillNames =new string[4] {"cancel", "shoot", "build", "emp"};
 	
 	public Texture[] tSkills;
-	public Texture smallArrowUp;
-	public Texture smallArrowDown;
 	private int showSkillInfo = 0; //0 = Reveals no info.
 	
 	public GUISkin customSkin;
@@ -111,16 +109,16 @@ public class GUI_script : MonoBehaviour {
 			case 0:
 				break;
 			case 1:
-				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),SkillDescription.GetDescription(TowerType.shoot), "darkBox");
+				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),ResourceFactory.GetDescription(TowerType.shoot), "darkBox");
 				break;
 			case 2:
-				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),SkillDescription.GetDescription(TowerType.build), "darkBox");
+				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),ResourceFactory.GetDescription(TowerType.build), "darkBox");
 				break;
 			case 3:
-				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),SkillDescription.GetDescription(TowerType.emp), "darkBox");
+				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),ResourceFactory.GetDescription(TowerType.emp), "darkBox");
 				break;
 			case 4:
-				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),SkillDescription.GetDescription(TowerType.square), "darkBox");
+				GUI.Box(new Rect(Screen.width/2-218, 144, 436, 70),ResourceFactory.GetDescription(TowerType.square), "darkBox");
 				break;
 		}		
 		
@@ -129,11 +127,11 @@ public class GUI_script : MonoBehaviour {
 	private void SkillDescrDropdown(){
 		for(int i = 1;i<5;i++){
 			if(showSkillInfo != i){ 
-				if(GUI.Button(new Rect(Screen.width/2-270+i*100, 130, 40, 15),smallArrowDown)){
+				if(GUI.Button(new Rect(Screen.width/2-270+i*100, 130, 40, 15),ResourceFactory.GetArrowDown())){
 					showSkillInfo = i;
 				}
 			}else{ 
-				if(GUI.Button(new Rect(Screen.width/2-270+i*100, 130, 40, 15),smallArrowUp)){
+				if(GUI.Button(new Rect(Screen.width/2-270+i*100, 130, 40, 15),ResourceFactory.GetArrowUp())){
 				showSkillInfo = 0;
 				}
 			}
