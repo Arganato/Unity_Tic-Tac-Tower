@@ -17,7 +17,7 @@ public class HeaderBar{
 		GUI.Box(position,"");
 		GUI.Box(new Rect(0,0,position.width-50,position.height/2),"Welcome to Tic-Tac-Tower!","InvisBox"); 
 		//this text could be swapped with player x vs player y, or something...
-		GUI.Box(new Rect(0,position.height/2-2,position.width-50,position.height/2+2),"Player " + (Control.cState.activePlayer+1) + "'s turn. ");
+		GUI.Box(new Rect(0,position.height/2-2,position.width-50,position.height/2+2),"Player " + (Control.cState.activePlayer+1) + "'s turn. Turn "+(Control.cState.turn+1));
 	}
 
 }

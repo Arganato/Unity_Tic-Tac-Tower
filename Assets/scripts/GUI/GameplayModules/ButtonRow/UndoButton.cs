@@ -4,7 +4,7 @@ using System.Collections;
 public class UndoButton{
 	
 	public bool enable = true;
-	public Rect position = new Rect(5,300,100,50);
+	public Rect position = new Rect(200,0,60,40);
 	
 	public int[] usedUndoCounter = new int[2];
 	
@@ -23,17 +23,25 @@ public class UndoButton{
 	public void PrintGUI(){
 		if( enable ){
 			GUI.BeginGroup(position);
-			GUI.Box(new Rect(0,25,position.width,25),"P1: "+usedUndoCounter[0]+"  P2: "+usedUndoCounter[1]);
+			ColoredBox();
 			if( CanUndo() ){
-				if(GUI.Button(new Rect(0,0,position.width,25),"Undo")){
+				if(GUI.Button(new Rect(0,0,position.width,20),"Undo")){
 				usedUndoCounter[Control.cState.activePlayer]++;
 				control.UndoTurn();
 				}
 			}else{
-				GUI.Box(new Rect(0,0,position.width,25),"Undo's used:");
+				GUI.Box(new Rect(0,0,position.width,20),"Undo");
 			}
 			GUI.EndGroup();
 		}
+	}
+	private void ColoredBox(){
+		Color old = GUI.contentColor;
+		GUI.contentColor = Color.red;
+		GUI.Box(new Rect(0,20,position.width/2,20),""+usedUndoCounter[0]);
+		GUI.contentColor = Color.blue;
+		GUI.Box(new Rect(position.width/2,20,position.width/2,20),""+usedUndoCounter[1]);
+		GUI.contentColor = old;
 	}
 	
 	private bool CanUndo(){

@@ -9,12 +9,20 @@ public class SkillAmountGUI{
 	
 	public void PrintGUI(){
 		string descr;
+		Color old = GUI.contentColor;
 		if(type == TowerType.skillCap){
-			descr = (Control.cState.player[0].playerSkill.skillCap+1)+"/"+(Control.cState.player[1].playerSkill.skillCap+1);			
+			GUI.contentColor = Color.red;
+			GUI.Box(new Rect(position.x,position.y,position.width/2,position.height), ""+(Control.cState.player[0].playerSkill.skillCap+1));
+			GUI.contentColor = Color.blue;
+			GUI.Box(new Rect(position.x+position.width/2,position.y,position.width/2,position.height), ""+(Control.cState.player[1].playerSkill.skillCap+1));
 		}else{
-			descr = Control.cState.player[0].playerSkill.GetSkillAmount(type)+"/"+Control.cState.player[1].playerSkill.GetSkillAmount(type);
+			GUI.contentColor = Color.red;
+			GUI.Box(new Rect(position.x,position.y,position.width/2,position.height), ""+(Control.cState.player[0].playerSkill.GetSkillAmount(type)));
+			GUI.contentColor = Color.blue;
+			GUI.Box(new Rect(position.x+position.width/2,position.y,position.width/2,position.height), ""+(Control.cState.player[1].playerSkill.GetSkillAmount(type)));
 		}
-		GUI.Box(position,descr,"invisBox");
+		GUI.contentColor = old;
+
 	}
 	
 	private SkillAmountGUI(){}

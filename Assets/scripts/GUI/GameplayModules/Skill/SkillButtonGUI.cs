@@ -9,6 +9,10 @@ public class SkillButtonGUI {
 	public TowerType type;
 	
 	public bool PrintGUI(){
+		if(type == TowerType.skillCap){
+			GUI.Box(position,ResourceFactory.GetSkillIcon(3),"button");
+			return false;
+		}
 		bool ret = GUI.Button(position,ResourceFactory.GetSkillIcon((int)type));
 		return ret;
 	}

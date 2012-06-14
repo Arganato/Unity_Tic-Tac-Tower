@@ -17,17 +17,19 @@ public class GUI_script : MonoBehaviour {
 	private bool towerRow; // whether the straight or diagonal towers shall be shown	
 		
 	private UndoButton undobutton;
-	private ClockGUI clockGui = new ClockGUI();
+	private ClockGUI clockGui = new ClockGUI(0);
 	private ConfirmMenu newGameMenu = new ConfirmMenu("New Game");
 	private ConfirmMenu resignMenu = new ConfirmMenu("Resign",Screen.width - 110, Screen.height - 215);
 	private PlayerInfoText playerInfoText = new PlayerInfoText();
 	private SkillGUI skillGUI = SkillGUI.Create();
 	private HeaderBar header = new HeaderBar();
+	private ButtonRow buttonRow;
 	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
 		grid = (Grid)FindObjectOfType(typeof(Grid));
 		undobutton = new UndoButton(control);
+		buttonRow =  new ButtonRow(control);
 	}
 	
 	void OnGUI() {
@@ -46,9 +48,11 @@ public class GUI_script : MonoBehaviour {
 
 //		playerInfoText.PrintGUI();
 		
-		EndTurn();
+//		EndTurn();
 		
 		skillGUI.PrintGUI();
+		
+		buttonRow.PrintGUI();
 		
 //		SkillOverview();
 		
@@ -61,7 +65,7 @@ public class GUI_script : MonoBehaviour {
 //			control.UserResign();
 //		}
 		
-		undobutton.PrintGUI();
+//		undobutton.PrintGUI();
 				
 		//Console.PrintGUI();
 		
@@ -176,7 +180,6 @@ public class GUI_script : MonoBehaviour {
 				PopupMessage.DisplayMessage("Unknown error occured");
 				return;
 		}
-		return;
 	}
 	
 }

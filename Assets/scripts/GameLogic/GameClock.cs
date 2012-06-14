@@ -5,6 +5,7 @@ public class GameClock : MonoBehaviour {
 	
 	
 	private Control control;
+	private int activePlayer;
 	// Use this for initialization
 	void Awake () {
 		control = (Control)FindObjectOfType(typeof(Control));
@@ -12,25 +13,27 @@ public class GameClock : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		GameTime gameTime = Control.cState.player[Control.cState.activePlayer].gameTime;
-		if(gameTime.enabled && !gameTime.isFinished && Stats.gameRunning){
-			DecTimer(gameTime);
+		if(Control.cState.activePlayer == activePlayer){
+			GameTime gameTime = Control.cState.player[activePlayer].gameTime;
+			if(gameTime.IsActive() && Stats.gameRunning){
+				DecTimer(gameTime);
+			}
+		}else{
+			ChangePlayer();
 		}
 	
 	}
 	
 	private void DecTimer(GameTime gt){
-		if( gt.timePrTurn > 0){
-			gt.timePrTurn -= Time.deltaTime;
-		}else if(gt.totalTime > 0){
-			gt.totalTime -= Time.deltaTime;
-			gt.timePrTurn = 0;
-		}else{
-			//time out
-			gt.totalTime = 0;
-			gt.isFinished = true;
+		if( gt.ProgressTime(Time.deltaTime)){
 			control.TimeOut();
 		}
-		Control.cState.player[Control.cState.activePlayer].gameTime = gt;
+		Control.cState.player[activePlayer].gameTime = gt;
+	}
+	
+	private void ChangePlayer(){
+		Control.cState.player[activePlayer].gameTime.SetCounting(false);
+		activePlayer = Control.cState.activePlayer;
+		Control.cState.player[activePlayer].gameTime.SetCounting(true);
 	}
 }
