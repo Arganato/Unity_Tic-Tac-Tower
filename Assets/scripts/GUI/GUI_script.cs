@@ -6,16 +6,11 @@ public class GUI_script : MonoBehaviour {
 	private Control control;
 	private Grid grid;
 	
-	public Texture[] tSkills;
-	private int showSkillInfo = 0; //0 = Reveals no info.
-	
 	public GUISkin customSkin;
 	
 	public bool enable;
 	public bool lockGUI;
-		
-	private bool towerRow; // whether the straight or diagonal towers shall be shown	
-		
+
 	private SkillGUI skillGUI = SkillGUI.Create();
 	private HeaderBar header;
 	private ButtonRow buttonRow;
