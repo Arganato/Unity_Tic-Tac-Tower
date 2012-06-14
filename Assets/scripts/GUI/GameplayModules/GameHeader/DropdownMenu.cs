@@ -12,10 +12,13 @@ public class DropdownMenu{
 	private ConfirmMenu endGame;
 	private ConfirmMenu resign;
 	
-	public DropdownMenu(){
+	private Control control;
+	
+	public DropdownMenu( Control c){
 		Console.buttonRect = new Rect(positionOpen.x,positionOpen.y+60,80,25);
 		endGame = new ConfirmMenu("Quit Game",(int)positionOpen.x,(int)positionOpen.y);
 		resign = new ConfirmMenu("Resign",(int)positionOpen.x,(int)positionOpen.y+30);
+		control = c;
 	}
 	
 	public void PrintGUI(){
@@ -30,12 +33,12 @@ public class DropdownMenu{
 			GUI.Box(positionOpen,"");
 			
 			if(endGame.PrintGUI()){
-				//new game
+				Application.LoadLevel("mainMenu");
 			}
 			if(resign.PrintGUI()){
-				//resign
+				control.UserResign();
 			}
-			Console.PrintGUI();
+			Console.PrintButton();
 			//option...
 		}
 	}

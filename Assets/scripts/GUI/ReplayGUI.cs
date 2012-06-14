@@ -6,7 +6,7 @@ public class ReplayGUI : MonoBehaviour {
 	public GUISkin customSkin;
 	
 	private ConfirmMenu quitMenu = new ConfirmMenu("Quit Replay");
-	private PlayerInfoText info = new PlayerInfoText();
+//	private PlayerInfoText info = new PlayerInfoText();
 	private ReplayButtons replayButtons = new ReplayButtons();
 	private SupplyTextWindow textwindow = new SupplyTextWindow();
 	
@@ -27,7 +27,7 @@ public class ReplayGUI : MonoBehaviour {
 			Application.LoadLevel("mainMenu");
 		}
 		
-		info.PrintGUI();
+//		info.PrintGUI();
 	
 		switch(replayButtons.PrintGUI()){
 		case ReplayButtons.UserAction.BACK:

@@ -11,7 +11,7 @@ public static class Console{
 	public static Vector2 windowScrollPos = Vector2.zero;
 	public static bool show = false;
 	
-	public static Rect windowRect = new Rect(20,Screen.height/2,400,150);
+	public static Rect windowRect = new Rect(20,Screen.height/2,320,150);
 	public static Rect buttonRect = new Rect(5, 270, 100, 25);
 	
 	private static Control control;
@@ -44,14 +44,15 @@ public static class Console{
 		diplayedText += (code+s+"\n");
 	}
 	
-	public static void PrintGUI(){
-		show = GUI.Toggle(buttonRect, show, "Console", "button");
-		
+	public static void PrintWindow(){
 		if(show){
 			windowRect = GUI.Window(0,windowRect,TheWindow,"Console");
 			WindowInsideScreen();
 		}
-		
+	}
+	
+	public static void PrintButton(){
+		show = GUI.Toggle(buttonRect, show, "Console", "button");		
 	}
 	
 	public static void Clear(){

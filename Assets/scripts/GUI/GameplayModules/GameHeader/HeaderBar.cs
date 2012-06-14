@@ -6,7 +6,11 @@ public class HeaderBar{
 	public bool enable = true;
 	public Rect position = new Rect(0,0,Screen.width,40);
 	
-	private DropdownMenu dropdownMenu = new DropdownMenu();
+	private DropdownMenu dropdownMenu;
+	
+	public HeaderBar(Control c){
+		dropdownMenu = new DropdownMenu(c);
+	}
 	
 	public void PrintGUI(){
 		HeaderText();
