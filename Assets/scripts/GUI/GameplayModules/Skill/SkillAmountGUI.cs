@@ -9,19 +9,20 @@ public class SkillAmountGUI{
 	
 	public void PrintGUI(){
 		Color old = GUI.contentColor;
+		GUI.BeginGroup(position);
 		if(type == TowerType.skillCap){
 			GUI.contentColor = Color.red;
-			GUI.Box(new Rect(position.x,position.y,position.width/2,position.height), ""+(Control.cState.player[0].playerSkill.skillCap+1));
+			GUI.Box(new Rect(0,0,position.width/2,position.height), ""+(Control.cState.player[0].playerSkill.skillCap+1));
 			GUI.contentColor = Color.blue;
-			GUI.Box(new Rect(position.x+position.width/2,position.y,position.width/2,position.height), ""+(Control.cState.player[1].playerSkill.skillCap+1));
+			GUI.Box(new Rect(0+position.width/2,0,position.width/2,position.height), ""+(Control.cState.player[1].playerSkill.skillCap+1));
 		}else{
 			GUI.contentColor = Color.red;
-			GUI.Box(new Rect(position.x,position.y,position.width/2,position.height), ""+(Control.cState.player[0].playerSkill.GetSkillAmount(type)));
+			GUI.Box(new Rect(0,0,position.width/2,position.height), ""+(Control.cState.player[0].playerSkill.GetSkillAmount(type)));
 			GUI.contentColor = Color.blue;
-			GUI.Box(new Rect(position.x+position.width/2,position.y,position.width/2,position.height), ""+(Control.cState.player[1].playerSkill.GetSkillAmount(type)));
+			GUI.Box(new Rect(0+position.width/2,0,position.width/2,position.height), ""+(Control.cState.player[1].playerSkill.GetSkillAmount(type)));
 		}
+		GUI.EndGroup();
 		GUI.contentColor = old;
-
 	}
 	
 	private SkillAmountGUI(){}

@@ -4,7 +4,7 @@ using System.Collections;
 public class SkillGUI{
 
 	public bool enable;
-	public Rect position = new Rect(10,Screen.height-70,300,70);
+	public Rect position;
 	
 	private bool showHelp = false;
 	private int helpSkill = 0;
@@ -75,7 +75,10 @@ public class SkillGUI{
 	
 	public static SkillGUI Create(){
 		//Platform-Specific code...
-		return new SkillGUI();
+		SkillGUI ret = new SkillGUI();
+		float width = 300f;
+		ret.position = new Rect(Screen.width/2-width/2,Screen.height-70,width,70);
+		return ret;
 	}
 		
 	private void UseSkillError(SkillSelectError errorCode){

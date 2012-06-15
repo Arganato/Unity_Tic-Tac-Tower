@@ -6,7 +6,7 @@ public class StartGameScreen {
 
 
 	public Rect position = new Rect(0,40,Screen.width,Screen.height-80);
-	public bool singlePlayer;
+	public bool localGame;
 	
 	private SelectGameTime selectGameTime = new SelectGameTime();
 	private GUIList selectRules;
@@ -25,7 +25,7 @@ public class StartGameScreen {
 	
 	public void PrintGUI(){
 		GUI.BeginGroup(position);
-		if(singlePlayer)
+		if(localGame)
 			GUI.Box(new Rect(0,0,position.width,25),"Start Local Game");
 		else
 			GUI.Box(new Rect(0,0,position.width,25),"Networked play not implemented yet");

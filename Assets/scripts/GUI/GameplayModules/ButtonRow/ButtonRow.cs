@@ -4,7 +4,7 @@ using System.Collections;
 public class ButtonRow{
 	
 	public bool enable = true;
-	public Rect position = new Rect(0,Screen.height-110,Screen.width,40);
+	public Rect position;
 	private EndTurnButton endturn;
 	private UndoButton undo;
 	private ClockGUI p1Clock = new ClockGUI(0);
@@ -13,6 +13,8 @@ public class ButtonRow{
 	public ButtonRow(Control c){
 		endturn = new EndTurnButton(c);
 		undo = new UndoButton(c);
+		float width = 300f;
+		position = new Rect(Screen.width/2-width/2,Screen.height-110,width,40);
 	}
 	
 	public void PrintGUI(){
