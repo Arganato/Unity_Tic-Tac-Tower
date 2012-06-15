@@ -37,7 +37,7 @@ public static class Stats{
 	public enum Rules{ SOLID_TOWERS, INVISIBLE_TOWERS, CHOOSE_TO_BUILD, SKILLS_PR_TEN}
 		
 	public static int fieldSize = 9;
-	public static GameState startState;
+	public static GameState startState = new GameState();
 	public static SkillEnabled skillEnabled;
 	public static Rules rules;
 	public static bool gameRunning = true;

@@ -8,7 +8,6 @@ public class SkillAmountGUI{
 	public TowerType type;
 	
 	public void PrintGUI(){
-		string descr;
 		Color old = GUI.contentColor;
 		if(type == TowerType.skillCap){
 			GUI.contentColor = Color.red;
