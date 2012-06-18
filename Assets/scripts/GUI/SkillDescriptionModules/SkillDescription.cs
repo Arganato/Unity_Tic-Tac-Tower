@@ -2,8 +2,12 @@ using UnityEngine;
 using System.Collections;
 
 public class SkillDescription{
-
+	
+	private int width = 100;
+	private int height = 150;
+	
 	public string descrString;
+	//public Rect position = new Rect((Screen.width-width)/2,(Screen.height-height)/2,(Screen.width+width)/2,(Screen.height+height)/2);
 	public Rect position = new Rect(0,0,Screen.width/2,150);
 
 	private int textureSize = 75;
@@ -19,16 +23,12 @@ public class SkillDescription{
 			break;
 		case TowerType.build:
 			textureType = 1;
-			position.x = position.width;
 			break;
 		case TowerType.silence:
 			textureType = 2;
-			position.y = position.height;
 			break;
 		case TowerType.skillCap:
 			textureType = 3;
-			position.x = position.width;
-			position.y = position.height;
 			break;
 		default:
 			Debug.LogWarning("TowerDescription not initialized with a valid tower");
