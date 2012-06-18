@@ -5,20 +5,24 @@ public class DropdownMenu{
 	
 	public bool enable;
 	private Rect positionClosed = new Rect(Screen.width-50,0,50,20);
-	private Rect positionOpen = new Rect(Screen.width-80,20,80,100);
+	private Rect positionOpen = new Rect(Screen.width-80,20,80,150);
 	
 	private bool menuActive;
 	
 	private ConfirmMenu endGame;
 	private ConfirmMenu resign;
+	private NetworkGUI networkGUI;
 	
 	private Control control;
 	
-	public DropdownMenu( Control c){
-		Console.buttonRect = new Rect(positionOpen.x,positionOpen.y+60,80,25);
+	public DropdownMenu( Control c, NetworkInterface nif){
+		control = c;
+
 		endGame = new ConfirmMenu("Quit Game",(int)positionOpen.x,(int)positionOpen.y);
 		resign = new ConfirmMenu("Resign",(int)positionOpen.x,(int)positionOpen.y+30);
-		control = c;
+		Console.buttonRect = new Rect(positionOpen.x,positionOpen.y+60,80,25);
+		networkGUI = new NetworkGUI(nif);
+		networkGUI.togglePos = new Rect(positionOpen.x,positionOpen.y+90,80,55);
 	}
 	
 	public void PrintGUI(){
@@ -31,7 +35,6 @@ public class DropdownMenu{
 				menuActive = false;
 			}
 			GUI.Box(positionOpen,"");
-			
 			if(endGame.PrintGUI()){
 				Application.LoadLevel("mainMenu");
 			}
@@ -39,7 +42,9 @@ public class DropdownMenu{
 				control.UserResign();
 			}
 			Console.PrintButton();
+			networkGUI.ToggleGUI();
 			//option...
 		}
+		networkGUI.WindowGUI();
 	}
 }

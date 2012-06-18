@@ -19,12 +19,16 @@ public class ButtonRow{
 	
 	public void PrintGUI(){
 		if(enable){
+			if(Stats.playerController[Control.cState.activePlayer] != Stats.PlayerController.localPlayer){
+				GUI.enabled = false;
+			}
 			GUI.BeginGroup(position);
 			endturn.PrintGUI();
 			undo.PrintGUI();
 			p1Clock.PrintGUI();
 			p2Clock.PrintGUI();
 			GUI.EndGroup();
+			GUI.enabled = true;
 		}
 	}
 	

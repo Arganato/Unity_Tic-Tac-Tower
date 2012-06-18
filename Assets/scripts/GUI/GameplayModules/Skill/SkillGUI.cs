@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SkillGUI{
 
-	public bool enable;
+	public bool enable = true;
 	public Rect position;
 	
 	private bool showHelp = false;
@@ -25,14 +25,20 @@ public class SkillGUI{
 	}
 	
 	public void PrintGUI(){
-		GUI.Box(position,"");
-		GUI.BeginGroup(position);
-		if(!showHelp){
-			ButtonGUI();
-		}else{
-			HelpGUI();
+		if(enable){
+			if(Stats.playerController[Control.cState.activePlayer] != Stats.PlayerController.localPlayer){
+				GUI.enabled = false;
+			}
+			GUI.Box(position,"");
+			GUI.BeginGroup(position);
+			if(!showHelp){
+				ButtonGUI();
+			}else{
+				HelpGUI();
+			}
+			GUI.EndGroup();
+			GUI.enabled = true;
 		}
-		GUI.EndGroup();
 	}
 	
 	private void ButtonGUI(){

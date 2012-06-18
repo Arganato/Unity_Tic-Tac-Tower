@@ -5,6 +5,8 @@ public static class Stats{
 	// Stats contains global constants and variables that define stats for the game
 	// Should not be edited during a game
 	
+	public enum PlayerController {localPlayer, remotePlayer, AI}
+	
 	public struct SkillEnabled{
 		public bool shoot;
 		public bool build;
@@ -47,7 +49,8 @@ public static class Stats{
 	public static SkillEnabled skillEnabled = SkillEnabled.AllActive();
 	public static Rules rules;
 	public static bool gameRunning = true;
-	
+	public static bool hasConnection = false; //set to true when a network connection is established
+	public static PlayerController[] playerController = new PlayerController[2];
 	
 	public static int totalArea{
 		get{return fieldSize*fieldSize;}

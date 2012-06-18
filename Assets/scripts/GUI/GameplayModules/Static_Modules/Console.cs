@@ -15,9 +15,13 @@ public static class Console{
 	public static Rect buttonRect = new Rect(5, 270, 100, 25);
 	
 	private static Control control;
+	private static NetworkInterface networkInterface;
 	
 	public static void Init(Control c){
 		control = c;
+	}
+	public static void Init(NetworkInterface nif){
+		networkInterface = nif;
 	}
 	
 	public static void PrintToConsole(string s, MessageType m){
@@ -25,6 +29,9 @@ public static class Console{
 		switch(m){
 		case MessageType.TURN:
 			code = "-t ";
+			if(Stats.hasConnection){
+				networkInterface.SendTurn(s);
+			}
 			break;
 		case MessageType.ORDER:
 			code = "-o ";

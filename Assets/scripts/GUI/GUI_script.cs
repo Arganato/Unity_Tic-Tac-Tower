@@ -15,11 +15,18 @@ public class GUI_script : MonoBehaviour {
 	private HeaderBar header;
 	private ButtonRow buttonRow;
 	
+	private ConnectGUI connectGUI;
+	private Chat chat;
+
+	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
 		grid = (Grid)FindObjectOfType(typeof(Grid));
+		NetworkInterface netIf = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
 		buttonRow =  new ButtonRow(control);
-		header = new HeaderBar(control);
+		header = new HeaderBar(control, netIf);
+//		connectGUI = new ConnectGUI(netIf);
+//		chat = new Chat(netIf);
 	}
 	
 	void OnGUI() {
@@ -32,6 +39,9 @@ public class GUI_script : MonoBehaviour {
 		header.PrintGUI();
 		skillGUI.PrintGUI();
 		buttonRow.PrintGUI();
+
+//		connectGUI.PrintGUI();
+//		chat.PrintGUI();
 		
 		Console.PrintWindow();
 		PopupMessage.PrintGUI();
@@ -44,5 +54,7 @@ public class GUI_script : MonoBehaviour {
 				grid.MouseDown(Input.mousePosition);
 			}
 		}
-	}	
+	}
+	
+
 }

@@ -8,8 +8,8 @@ public class HeaderBar{
 	
 	private DropdownMenu dropdownMenu;
 	
-	public HeaderBar(Control c){
-		dropdownMenu = new DropdownMenu(c);
+	public HeaderBar(Control c, NetworkInterface nif){
+		dropdownMenu = new DropdownMenu(c,nif);
 	}
 	
 	public void PrintGUI(){

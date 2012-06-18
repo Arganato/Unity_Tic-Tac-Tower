@@ -30,26 +30,28 @@ public class Control: MonoBehaviour {
 	
 	public void UserFieldSelect(FieldIndex index){
 		//Called when the user clicks on the field
-		Order o = new Order();
-		o.endTurn = false;
-		switch(Skill.skillInUse){
-			case 0:
-				o.skill = SkillType.place;
-				o.position = index;
-				break;
-			case 1:
-				o.skill = SkillType.shoot;
-				o.position = index;
-				break;
-			case 2:
-				o.skill = SkillType.build;
-				o.position = index;
-				break;
-			case 3:
-				o.skill = SkillType.silence;
-				break;
+		if(Stats.playerController[cState.activePlayer] == Stats.PlayerController.localPlayer){
+			Order o = new Order();
+			o.endTurn = false;
+			switch(Skill.skillInUse){
+				case 0:
+					o.skill = SkillType.place;
+					o.position = index;
+					break;
+				case 1:
+					o.skill = SkillType.shoot;
+					o.position = index;
+					break;
+				case 2:
+					o.skill = SkillType.build;
+					o.position = index;
+					break;
+				case 3:
+					o.skill = SkillType.silence;
+					break;
+			}
+			ExecuteOrder(o);
 		}
-		ExecuteOrder(o);
 	}
 	
 	public void UserEndTurn(){
