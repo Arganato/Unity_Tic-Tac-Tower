@@ -8,9 +8,11 @@ public class NetworkGUI {
 	private Rect position = new Rect(100,100,200,400);
 	private NetworkInterface networkInterface;
 	private string messages = "";
+	private bool showTest = false;
 	
 	private ConnectGUI connectGUI;
 	private Chat chat;
+	private TestWindow testWindow = new TestWindow();
 
 	public NetworkGUI(NetworkInterface nif){
 		connectGUI = new ConnectGUI(nif);
@@ -35,18 +37,33 @@ public class NetworkGUI {
 	}
 	
 	private void NetworkWindow(int windowID){
-		GUI.BeginGroup(new Rect(0,20,position.width,position.height-20));
-		if(!(Network.isClient || Network.isServer)){
-			connectGUI.PrintGUI();
+		if(showTest){
+			TestWindow();
 		}else{
-			GUI.Box(new Rect(0,0,position.width,20),"Connected! IP: "+Network.player.ipAddress);
-			if(GUI.Button(new Rect(0,20,position.width,20),"Disconnect")){
-				networkInterface.Disconnect();
-			}
+			NormalWindow();
 		}
-		GUI.TextArea(new Rect(0,40,position.width,position.height-60),messages);
-		GUI.EndGroup();
 		GUI.DragWindow();
+	}
+		
+	private void NormalWindow(){
+		if(GUI.Button(new Rect(2,20,position.width*0.6f,20),"Test Connection")){
+			showTest = true;
+		}
+		GUILayout.BeginArea(new Rect(2,40,position.width-4,position.height-40));
+		connectGUI.PrintGUI();
+		
+		GUILayout.TextArea(messages);
+		GUILayout.EndArea();
+		
+	}	
+	
+	private void TestWindow(){
+		if(GUI.Button(new Rect(position.width*0.6f,20,position.width*0.4f,20),"Back")){
+			showTest = false;
+		}
+		GUI.BeginGroup(new Rect(0,40,position.width,position.height-40));
+		testWindow.PrintGUI();
+		GUI.EndGroup();
 	}
 	
 	public void AddLogEntry(string str){

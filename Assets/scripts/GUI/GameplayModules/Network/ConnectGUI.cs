@@ -4,9 +4,12 @@ using System.Collections;
 public class ConnectGUI {
 	
 	public bool enable = true;
-	public Rect position = new Rect(0,00,200,40);
-	private string ipAdress = "192.168.8.2";
+	public Rect position = new Rect(0,00,200,60);
+	private string ipAdress = "192.168.0.0";
 	private NetworkInterface networkIf;
+	
+	private bool connectionStarted = false;
+	private bool useNat = false;
 	
 	public ConnectGUI(NetworkInterface netIf){
 		networkIf = netIf;
@@ -14,20 +17,55 @@ public class ConnectGUI {
 
 	public void PrintGUI(){
 		if(enable){
-			NetworkGUI();
+			if(Network.isClient || Network.isServer)
+				Connected();
+			else
+				NotConnected();
 		}
 	}
 	
-	private void NetworkGUI(){
-		GUI.BeginGroup(position);
-		GUI.Box(new Rect(0,0,100,20),"IP Adress:");
-		ipAdress = GUI.TextField(new Rect(100,0,100,20),ipAdress);
-		if(GUI.Button(new Rect(0,20,120,20),"Create Server")){
-			networkIf.LaunchServer();
-		}if(GUI.Button(new Rect(120,20,80,20),"Connect")){
-//			BroadcastMessage("ConnectToServer",ipAdress);
-			networkIf.ConnectToServer(ipAdress);
+	private void NotConnected(){
+		bool tmpNat = useNat;
+		useNat = GUILayout.Toggle(useNat,"Use NAT");
+		if(tmpNat != useNat && tmpNat){
+			ipAdress = "192.168.0.0";
+		}else if(tmpNat != useNat){
+			ipAdress = "";
 		}
-		GUI.EndGroup();
+		if(useNat){
+			GUILayout.Label("GUID:");
+		}else{
+			GUILayout.Label("IP Adress:"); //new Rect(0,0,100,20),
+		}
+		ipAdress = GUILayout.TextField(ipAdress); //new Rect(100,0,100,20),
+		GUILayout.BeginHorizontal();
+		if(connectionStarted){
+			GUILayout.Box("Connecting...");
+			if(GUILayout.Button("Cancel"))
+				connectionStarted = false;
+		}else{
+			if(GUILayout.Button("Create Server")){ //new Rect(0,20,120,20),
+				networkIf.LaunchServer(useNat);
+				connectionStarted = true;
+			}if(GUILayout.Button("Connect")){ //new Rect(120,20,80,20),
+				networkIf.ConnectToServer(ipAdress);
+				connectionStarted = true;
+			}
+		}
+		GUILayout.EndHorizontal();
 	}
+	
+	private void Connected(){
+		if(useNat)
+			GUILayout.Label("Connected! GUID: "+Network.player.guid);
+		else
+			GUILayout.Label("Connected! IP: "+Network.player.ipAddress); //new Rect(0,0,position.width,20),
+		if(GUILayout.Button("Disconnect")){ //new Rect(0,20,position.width,20),
+			networkIf.Disconnect();
+			connectionStarted = false;
+		}
+
+	}
+	
+	
 }

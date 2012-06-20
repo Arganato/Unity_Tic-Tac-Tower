@@ -3,8 +3,10 @@ using System.Collections;
 
 public class NetworkInterface : MonoBehaviour {
 	
-	private NetworkGUI networkGUI;
-	private Control control;
+	private NetworkGUI networkGUI; 	//link to the GUI
+	private Control control;		//link to Control
+	
+	private bool useNat = false;
 	
 	void Start(){
 		Console.Init(this);
@@ -23,8 +25,9 @@ public class NetworkInterface : MonoBehaviour {
 		Network.Connect(ip,25000);
 	}
 	
-	public void LaunchServer(){
-		Network.InitializeServer(1,25000,false);
+	public void LaunchServer(bool nat){
+		useNat = nat;
+		Network.InitializeServer(1,25000,nat);
 	}
 	
 	public void Disconnect(){
@@ -69,8 +72,14 @@ public class NetworkInterface : MonoBehaviour {
 	}
 	
 	void OnServerInitialized(){
-		if(networkGUI != null)
-			networkGUI.AddLogEntry("Created server at IP "+Network.player.ipAddress+"/"+Network.player.port+".");
+		if(networkGUI != null){
+			Debug.Log("usenat: "+useNat);
+			if(useNat){
+				networkGUI.AddLogEntry("Created server with GUID "+Network.player.guid+".");
+			}else{
+				networkGUI.AddLogEntry("Created server with IP "+Network.player.ipAddress+"/"+Network.player.port+".");
+			}
+		}
 	}
 	
 	void OnConnectedToServer(){
