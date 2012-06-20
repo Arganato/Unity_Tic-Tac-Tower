@@ -37,7 +37,36 @@ public class GameState {
 	}
 	public void SetTutorialBuild1(){
 		//TODO
+	}
+	
+	public void SetTutorialBuild2(){
+		//TODO
+	}
+	
+	public void SetTutorialShoot1(){
+		//TODO
+	}
+	
+	public void SetTutorialShoot2(){
+		//TODO
+	}
+	
+	public void SetTutorialSilence1(){
+		//TODO
+	}
+	
+	public void SetTutorialSilence2(){
+		//TODO
+	}
+	
+	public void SetTutorialSkillCap1(){
+		//TODO
 	}	
+	
+	public void SetTutorialSkillCap2(){
+		//TODO
+	}
+	
 	public void Reset(){
 		field = new Field<Route>(Route.empty);
 		turn = 0;

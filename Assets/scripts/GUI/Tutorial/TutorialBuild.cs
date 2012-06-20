@@ -14,6 +14,8 @@ public class TutorialBuild : MonoBehaviour {
 	
 	private Control control;
 	
+	public SkillDescription description = new SkillDescription(TowerType.build);
+	
 	//camera positions
 
 	//private Vector3 camPreviewPos = new Vector3(-30,150,35);
@@ -21,8 +23,8 @@ public class TutorialBuild : MonoBehaviour {
 	
 	//event points
 	
-	public bool changeChapter = false;
-	public int chapter = 0;
+	private enum Chapter {intro, exampleStr, tutStr, exampleDiag, tutDiag};
+	private Chapter chapter;
 	//private int section = 0;
 	
 	private int menuWidth = 300;
@@ -35,16 +37,20 @@ public class TutorialBuild : MonoBehaviour {
 		control.StartNewGame();		
 	}
 	void Update(){
-		if(changeChapter && chapter == 0 && menuWidth > 200){
-			menuWidth -= Mathf.RoundToInt(Time.deltaTime*menuChangeSpeed);
-		}
+		//if(changeChapter && chapter == 0 && menuWidth > 200){
+		//	menuWidth -= Mathf.RoundToInt(Time.deltaTime*menuChangeSpeed);
+		//}
 	}
 	
 	void OnGUI(){
 		
-		
-		
-		BuildDescrGUI();
+		switch(chapter){
+		case Chapter.intro:
+			BuildDescrGUI();
+			break;
+		case Chapter.exampleStr:
+			break;
+		}
 		
 		//deler skjermen i tre like deler:
 		int buttonWidth = 200;
@@ -53,13 +59,8 @@ public class TutorialBuild : MonoBehaviour {
 		int b1Start = (Screen.width-4*buttonWidth)/2;
 		int b2Start = Screen.width-3*buttonWidth; //Not used here
 		
-		if(GUI.Button(new Rect(border+b1Start, Screen.height-50, buttonWidth-border, 50-border), "Build 1")){
-			Stats.SetDefaultSettings();
-			Stats.SetTutorialBuild1();
-			//Application.LoadLevel("tutorialBuild");
-		}
-		
-		if(GUI.Button(new Rect(border+b2Start, Screen.height-50, buttonWidth-border, 50-border), "Build 2")){
+		if(GUI.Button(new Rect(border+b1Start, Screen.height-50, buttonWidth-border, 50-border), "Continue")){
+			chapter = Chapter.exampleStr;
 			Stats.SetDefaultSettings();
 			Stats.SetTutorialBuild1();
 			//Application.LoadLevel("tutorialBuild");
@@ -68,7 +69,7 @@ public class TutorialBuild : MonoBehaviour {
 	}
 	
 	private void BuildDescrGUI(){
-		string descrString = "Build Tower: \nAllows the player to place one more piece on the board.This will not, however, reset the amount of skills used, as if starting a new round.";
+		string descrString = "Build Tower: \nAllows the player to place one more piece on the board. This will not, however, reset the amount of skills used, as if starting a new round.";
 		int width = Screen.width/2-border;
 		int height = textureSize*2-border;
 		
