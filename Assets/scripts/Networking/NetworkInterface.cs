@@ -3,6 +3,8 @@ using System.Collections;
 
 public class NetworkInterface : MonoBehaviour {
 	
+	private bool connectToMaster = true;
+
 	private NetworkGUI networkGUI; 	//link to the GUI
 	private Control control;		//link to Control
 	
@@ -22,7 +24,11 @@ public class NetworkInterface : MonoBehaviour {
 	}
 	
 	public void ConnectToServer(string ip){
-		Network.Connect(ip,25000);
+		if(useNat){
+			Network.Connect(ip); //the string supplied should be the GUID
+		}else{
+			Network.Connect(ip,25000);
+		}
 	}
 	
 	public void LaunchServer(bool nat){
