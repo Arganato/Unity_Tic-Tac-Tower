@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class GUIList {
 
 	public Rect position;
-	public int choise;
+	public int choice;
 	
 	private List<string> elements = new List<string>();
 	private int activeElement;
@@ -21,23 +21,26 @@ public class GUIList {
 	public void AddElement(string element){
 		elements.Add(element);
 	}
-	public void PrintGUI(){
+	public bool PrintGUI(){
+		bool valueChanged = false;
 		if(showList){
 			for (int i=0;i<elements.Count;i++){
 				if(GUI.Button(new Rect(position.x,position.y+30*i,position.width-30,25),elements[i])){
-					choise = i;
+					choice = i;
 					showList = false;
+					valueChanged = true;
 				}
 			}
 			if(GUI.Button(new Rect(position.x+position.width-25,position.y,25,20),ResourceFactory.GetArrowUp())){
 				showList = false;
 			}
 		}else{
-			GUI.Box(new Rect(position.x,position.y,position.width-30,position.height),elements[choise]);
+			GUI.Box(new Rect(position.x,position.y,position.width-30,position.height),elements[choice]);
 			if(GUI.Button(new Rect(position.x+position.width-25,position.y,25,20),ResourceFactory.GetArrowDown())){
 				showList = true;
 			}
 		}
+		return valueChanged;
 	}
 	
 }

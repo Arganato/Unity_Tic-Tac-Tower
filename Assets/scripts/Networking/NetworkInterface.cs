@@ -3,37 +3,51 @@ using System.Collections;
 
 public class NetworkInterface : MonoBehaviour {
 	
-	private bool connectToMaster = true;
-
+	private bool pollHostList = false;
+	
 	private NetworkGUI networkGUI; 	//link to the GUI
 	private Control control;		//link to Control
+	
+	private const int port = 25000; 
 	
 	private bool useNat = false;
 	
 	void Start(){
 		Console.Init(this);
 		control = (Control)FindObjectOfType(typeof(Control));
-	}
-
-	public void TestConnection(){
-		
+		DontDestroyOnLoad(gameObject);
 	}
 
 	public void RegisterGUI(NetworkGUI ngui){
 		networkGUI = ngui;
 	}
 	
-	public void ConnectToServer(string ip){
+	public void ConnectToServer(string ip, bool nat){
+		useNat = nat;
 		if(useNat){
 			Network.Connect(ip); //the string supplied should be the GUID
 		}else{
-			Network.Connect(ip,25000);
+			Network.Connect(ip,port);
 		}
 	}
 	
-	public void LaunchServer(bool nat){
+	public void ConnectToServer(HostData game){
+		MasterServer.ClearHostList();
+		MasterServer.RequestHostList(Stats.uniqueGameID);
+		pollHostList = true;
+	}
+	
+	private void FinishMasterConnection(HostData game){ 
+	//called when the host list is received when connecting through the master server
+		Network.Connect(game);
+	}
+	
+	public void LaunchServer(bool nat, bool connectToMaster){
 		useNat = nat;
-		Network.InitializeServer(1,25000,nat);
+		Network.InitializeServer(1,port,nat);
+		if(connectToMaster){
+			MasterServer.RegisterHost(Stats.uniqueGameID,"New Game");
+		}
 	}
 	
 	public void Disconnect(){
@@ -55,6 +69,16 @@ public class NetworkInterface : MonoBehaviour {
 		}else{
 			networkView.RPC("ReceiveHeartbeat",RPCMode.Server,networkView.viewID, Network.time);			
 		}
+	}
+	
+	public void SendGameStats(){
+		string pck = Stats.MakeNetworkPackage();
+		networkView.RPC ("ReceiveGameStats",RPCMode.Others,networkView.viewID,pck);
+	}
+	
+	[RPC]
+	public void ReceiveGameStats(NetworkViewID id, string pck){
+		Stats.ReadNetworkPackage(pck);
 	}
 	
 	[RPC]
@@ -88,6 +112,19 @@ public class NetworkInterface : MonoBehaviour {
 		}
 	}
 	
+	//Messages
+	
+	void Update(){
+		if(pollHostList){
+			if(MasterServer.PollHostList().Length != 0){
+				HostData[] hostlist = MasterServer.PollHostList();
+				Debug.Log("game found: " +hostlist[0].gameName+", number of games: "+hostlist.Length+".");
+				pollHostList = false;
+				FinishMasterConnection(hostlist[0]);
+			}
+		}
+	}
+	
 	void OnConnectedToServer(){
 		if(networkGUI != null){
 			networkGUI.AddLogEntry("Successfully connected to server @"+Network.connections[0].ipAddress+"/"+Network.connections[0].port);
@@ -114,6 +151,16 @@ public class NetworkInterface : MonoBehaviour {
 		Stats.hasConnection = true;
 		Stats.playerController[1] = Stats.PlayerController.remotePlayer;
 	}
+
+	void OnFailedToConnectToMasterServer(NetworkConnectionError info) {
+		Debug.Log("Could not connect to master server: " + info);
+	}
 	
+	void OnMasterServerEvent(MasterServerEvent msEvent) {
+        if (msEvent == MasterServerEvent.RegistrationSucceeded)
+            Debug.Log("Server registered");
+        else
+			Debug.Log("unknown message: "+msEvent);
+    }
 	
 }

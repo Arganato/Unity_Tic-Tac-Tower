@@ -45,10 +45,10 @@ public class ConnectGUI {
 				connectionStarted = false;
 		}else{
 			if(GUILayout.Button("Create Server")){ //new Rect(0,20,120,20),
-				networkIf.LaunchServer(useNat);
+				networkIf.LaunchServer(useNat,false);
 				connectionStarted = true;
 			}if(GUILayout.Button("Connect")){ //new Rect(120,20,80,20),
-				networkIf.ConnectToServer(ipAdress);
+				networkIf.ConnectToServer(ipAdress,useNat);
 				connectionStarted = true;
 			}
 		}

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class SingleFrame : FrameContent{
+public class SingleFrame : Frame{
 	
 //	public string title;
 //	private Rect buttonSize = new Rect(0,0,300,100);

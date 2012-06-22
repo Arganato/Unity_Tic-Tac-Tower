@@ -6,7 +6,7 @@ public class NetworkGUI {
 	public bool enable;
 	public Rect togglePos = new Rect(0,0,80,55);
 	private Rect position = new Rect(100,100,200,400);
-	private NetworkInterface networkInterface;
+//	private NetworkInterface networkInterface;
 	private string messages = "";
 	private bool showTest = false;
 	
@@ -19,7 +19,7 @@ public class NetworkGUI {
 		chat = new Chat(nif);
 		chat.togglePos = new Rect(0,30,togglePos.width,25);
 		nif.RegisterGUI(this);
-		networkInterface = nif;
+//		networkInterface = nif;
 	}
 		
 	public void ToggleGUI(){

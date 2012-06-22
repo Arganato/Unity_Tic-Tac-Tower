@@ -2,12 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class DoubleFrame : FrameContent {
+public class DoubleFrame : Frame{
 
 
 	private List<MenuButton> buttonList = new List<MenuButton>();
 	private Vector2 scrollPosition = Vector2.zero;
-//	private Rect framePosition;
 	
 	
 	public DoubleFrame (string title,int buttonHeight, Rect position){
