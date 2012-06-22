@@ -265,7 +265,7 @@ public class Tower {
 						}if((j%2==1 && Stats.skillEnabled.diagShoot) || ( j%2==0 && Stats.skillEnabled.shoot)){ // shoot
 							FindShootTower(j, ind, taken, ref buildList);
 						}if(j<4){
-							if((j%2==1 && Stats.skillEnabled.diagEmp) || ( j%2==0 && Stats.skillEnabled.silence)){ // silence
+							if((j%2==1 && Stats.skillEnabled.diagSilence) || ( j%2==0 && Stats.skillEnabled.silence)){ // silence
 								FindEmpTower(j, ind, taken, ref buildList);
 							}
 							FindFiveTower(j, ind, taken, ref buildList);

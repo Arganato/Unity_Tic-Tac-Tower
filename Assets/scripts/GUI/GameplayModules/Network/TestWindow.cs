@@ -20,7 +20,7 @@ public class TestWindow {
 			TestConnection();
 		}if(doneTesting){
 		
-			GUILayout.Label("use of nat reccomended: "+ (useNat ? "yes" : "no"));
+			GUILayout.Label("use of nat recommended: "+ (useNat ? "yes" : "no"));
 		}
 		
 	}
