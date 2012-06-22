@@ -25,7 +25,6 @@ public class DropdownMenu{
 		if(nif != null){
 			networkGUI = new NetworkGUI(nif);
 			networkGUI.togglePos = new Rect(positionOpen.x,positionOpen.y+90,80,55);
-			networkEnabled = true;
 		}
 	}
 	
