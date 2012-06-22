@@ -7,16 +7,16 @@ public class SkillDescription{
 	private int height = 150;
 	
 	public string descrString;
-	//public Rect position = new Rect((Screen.width-width)/2,(Screen.height-height)/2,(Screen.width+width)/2,(Screen.height+height)/2);
-	public Rect position = new Rect(0,0,Screen.width/2,150);
+	public Rect position;
+	//public Rect position = new Rect(0,0,Screen.width/2,150);
 
 	private int textureSize = 75;
 	private int textureType;
-	
 
 
 	public SkillDescription(TowerType tower){
 		descrString = ResourceFactory.GetDescription(tower);
+		position = new Rect((Screen.width-width)/2,(Screen.height-height)/2,(Screen.width+width)/2,(Screen.height+height)/2);
 		switch(tower){
 		case TowerType.shoot:
 			textureType = 0;

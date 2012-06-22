@@ -7,7 +7,9 @@ public class TutorialSilenceButton : MenuButton {
 	}
 	
 	public override void ButtonDown(){
-//		Application.LoadLevel("tutorialSilence");
+		Tutorial.tutorialType = TowerType.silence;
+		Tutorial.SetupTutorial();
+		Application.LoadLevel("Tutorial");
 	}
 	
 	public override string Name(){

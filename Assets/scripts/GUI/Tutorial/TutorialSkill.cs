@@ -54,25 +54,21 @@ public class TutorialSkill : MonoBehaviour {
 		
 		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, 200, buttonWidth, buttonHeight), "Skill 1")){
 			Stats.SetDefaultSettings();
-			Stats.SetTutorialBuild1();
 			//Application.LoadLevel("tutorialShoot");
 		}
 		
 		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, 250, buttonWidth, buttonHeight), "Skill 2")){
 			Stats.SetDefaultSettings();
-			Stats.SetTutorialBuild1();
 			//Application.LoadLevel("tutorialShoot");
 		}
 		
 		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Main Menu")){
 			Stats.SetDefaultSettings();
-			Stats.SetTutorialBuild1();
 			Application.LoadLevel("mainMenu");
 		}
 		
 		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Main Menu")){
 			Stats.SetDefaultSettings();
-			Stats.SetTutorialBuild1();
 			Application.LoadLevel("mainMenu");
 		}
 		

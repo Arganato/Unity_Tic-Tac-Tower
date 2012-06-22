@@ -53,13 +53,11 @@ public class TutorialShoot : MonoBehaviour {
 		
 		if(GUI.Button(new Rect(border+b1Start, Screen.height-50, buttonWidth-border, 50-border), "Shoot 1")){
 			Stats.SetDefaultSettings();
-			Stats.SetTutorialBuild1();
 			//Application.LoadLevel("tutorialShoot");
 		}
 		
 		if(GUI.Button(new Rect(border+b2Start, Screen.height-50, buttonWidth-border, 50-border), "Shoot 2")){
 			Stats.SetDefaultSettings();
-			Stats.SetTutorialBuild1();
 			//Application.LoadLevel("tutorialShoot");
 		}
 		

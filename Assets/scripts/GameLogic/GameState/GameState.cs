@@ -34,8 +34,9 @@ public class GameState {
 		field[5,4] = Route.red;
 		field[3,4] = Route.blue;
 		placedPieces = 2;
-		SetTutorialBuild2();
+		//SetTutorialBuild2();
 	}
+	
 	public void SetTutorialBuild1(){	//Win during this round (red)
 		field[5,4] = Route.red;
 		field[3,4] = Route.blue;
