@@ -4,7 +4,7 @@ using System.Collections;
 public class Tutorial : MonoBehaviour {
 
 	Vector2 scrollPos = new Vector2(0,0);
-	public GUIStyle textBox;
+	public GUISkin skin;
 	new public Transform camera;
 	public int border = 0;
 
@@ -50,6 +50,8 @@ public class Tutorial : MonoBehaviour {
 	}
 	
 	void OnGUI(){
+		
+		GUI.skin = skin;
 		switch(chapter){
 		case Chapter.menu:
 			PrintMenu();
@@ -226,7 +228,7 @@ public class Tutorial : MonoBehaviour {
 	private void PrintTextWindow(){
 
 		GUI.BeginScrollView(new Rect(0,100,menuWidth, 500),scrollPos, new Rect(0,0,menuWidth,800));
-		GUI.Box(new Rect(0,0,menuWidth,800),introText,textBox);
+		GUI.Box(new Rect(0,0,menuWidth,800),introText,"darkbox");
 		GUI.EndScrollView();
 	}
 	
