@@ -3,8 +3,8 @@ using System.Collections;
 
 public class SkillDescription{
 	
-	private int width = 100;
-	private int height = 150;
+	private int width = 300;
+	private int height = 250;
 	
 	public string descrString;
 	public Rect position;
@@ -16,7 +16,7 @@ public class SkillDescription{
 
 	public SkillDescription(TowerType tower){
 		descrString = ResourceFactory.GetDescription(tower);
-		position = new Rect((Screen.width-width)/2,(Screen.height-height)/2,(Screen.width+width)/2,(Screen.height+height)/2);
+		position = new Rect((Screen.width-width)/2,(Screen.height-height)/2,width,height);
 		switch(tower){
 		case TowerType.shoot:
 			textureType = 0;
@@ -39,9 +39,9 @@ public class SkillDescription{
 	public void PrintGUI(){
 		GUI.BeginGroup(position);
 		GUI.Box(new Rect(0,0,position.width,position.height),"");
-		GUI.Box(new Rect(0,0,textureSize,textureSize),ResourceFactory.GetSkillTexture(textureType));
-		GUI.Box(new Rect(0,textureSize,textureSize,textureSize), ResourceFactory.GetSkillTexture(textureType+4));
-		GUI.Box(new Rect(textureSize,0,position.width-textureSize,position.height), descrString,"invisBox");
+		GUI.Box(new Rect(width/2-textureSize,0,textureSize,textureSize),ResourceFactory.GetSkillTexture(textureType));
+		GUI.Box(new Rect(width/2,0,textureSize,textureSize), ResourceFactory.GetSkillTexture(textureType+4));
+		GUI.Box(new Rect(0,textureSize,position.width-textureSize,position.height), descrString,"invisBox");
 		GUI.EndGroup();
 	}
 }

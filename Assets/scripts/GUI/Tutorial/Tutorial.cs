@@ -31,6 +31,7 @@ public class Tutorial : MonoBehaviour {
 	private static SkillDescription silenceDescr = new SkillDescription(TowerType.silence);
 	private static SkillDescription skillDescr = new SkillDescription(TowerType.skillCap);
 	private static SkillDescription activeDescr;
+	private InfoWindow infoText = new InfoWindow();
 	
 	public static TowerType tutorialType{
         get { return towerTut; }
@@ -89,7 +90,11 @@ public class Tutorial : MonoBehaviour {
 			}
 			break;
 		case Chapter.exampleStr:
-			control.StartNewGame();
+			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
+				chapter = Chapter.tutStr;
+			}
+			infoText.PrintTutorialText();
+			//control.StartNewGame();
 			switch(towerTut){
 			case TowerType.build:
 				//For Build Skill Tutorial.
@@ -109,6 +114,10 @@ public class Tutorial : MonoBehaviour {
 			}		
 			break;
 		case Chapter.tutStr:
+			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
+				chapter = Chapter.exampleDiag;
+			}
+			infoText.PrintTutorialText();
 			switch(towerTut){
 			case TowerType.build:
 				//For Build Skill Tutorial.
@@ -128,6 +137,10 @@ public class Tutorial : MonoBehaviour {
 			}
 			break;
 		case Chapter.exampleDiag:
+			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
+				chapter = Chapter.tutDiag;
+			}
+			infoText.PrintTutorialText();
 			switch(towerTut){
 			case TowerType.build:
 				//For Build Skill Tutorial.
@@ -147,6 +160,10 @@ public class Tutorial : MonoBehaviour {
 			}
 			break;
 		case Chapter.tutDiag:
+			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
+				chapter = Chapter.end;
+			}
+			infoText.PrintTutorialText();
 			switch(towerTut){
 			case TowerType.build:
 				//For Build Skill Tutorial.
@@ -166,23 +183,10 @@ public class Tutorial : MonoBehaviour {
 			}
 			break;
 		case Chapter.end:
-			switch(towerTut){
-			case TowerType.build:
-				//For Build Skill Tutorial.
-				break;
-			case TowerType.shoot:
-				//For Shoot Skill Tutorial.
-				break;
-			case TowerType.silence:
-				//For Silence Skill Tutorial.
-				break;
-			case TowerType.skillCap:
-				//For Skill Skill Tutorial.
-				break;
-			default:
-				Debug.LogError("Tried to access invalid skill tutorial");
-				break;
+			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Finish.")){
+				Application.LoadLevel("MainMenu");
 			}
+			infoText.PrintTutorialText();
 			break;
 		}
 		
