@@ -114,7 +114,7 @@ public static class Stats{
 	public static string MakeNetworkPackage(){
 		int intRules = (int)rules;
 		string s = intRules.ToString();
-		s+="."+rules.ToString();
+		s+="."+skillEnabled.ToString();
 		return s;
 	}
 	

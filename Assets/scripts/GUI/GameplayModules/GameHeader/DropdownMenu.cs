@@ -39,7 +39,7 @@ public class DropdownMenu{
 			}
 			GUI.Box(positionOpen,"");
 			if(endGame.PrintGUI()){
-				Application.LoadLevel("mainMenu");
+				Control.QuitGame();
 			}
 			if(resign.PrintGUI()){
 				control.UserResign();

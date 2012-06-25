@@ -1,57 +1,71 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class NetworkInterface : MonoBehaviour {
 	
-	private bool pollHostList = false;
-	
-	private NetworkGUI networkGUI; 	//link to the GUI
 	private Control control;		//link to Control
-	
+	private List<INetworkMessage> messageRecipients = new List<INetworkMessage>();
+		
 	private const int port = 25000; 
 	
 	private bool useNat = false;
+	private bool useMasterServer = true;
+	private string gameName = "";
 	
 	void Start(){
 		Console.Init(this);
-		control = (Control)FindObjectOfType(typeof(Control));
 		DontDestroyOnLoad(gameObject);
 	}
-
-	public void RegisterGUI(NetworkGUI ngui){
-		networkGUI = ngui;
+	
+	public void DestroySelf(){
+		Disconnect();
+		Destroy(gameObject);
 	}
 	
-	public void ConnectToServer(string ip, bool nat){
+	private void FindControl(){
+		control = (Control)FindObjectOfType(typeof(Control));
+	}
+
+	public void AddMessageRecipient(INetworkMessage inst){
+		messageRecipients.Add(inst);
+	}
+	public void RemoveMessageRecipient(INetworkMessage inst){
+		messageRecipients.Remove(inst);
+	}
+
+	public void ConnectToServer(string ip, bool nat, string password = ""){
 		useNat = nat;
 		if(useNat){
-			Network.Connect(ip); //the string supplied should be the GUID
+			Network.Connect(ip,password); //the string supplied should be the GUID
 		}else{
-			Network.Connect(ip,port);
+			Network.Connect(ip,port,password);
 		}
 	}
 	
-	public void ConnectToServer(HostData game){
-		MasterServer.ClearHostList();
-		MasterServer.RequestHostList(Stats.uniqueGameID);
-		pollHostList = true;
+	public void ConnectToServer(HostData game, string password = ""){
+		Network.Connect(game,password);	
 	}
-	
-	private void FinishMasterConnection(HostData game){ 
-	//called when the host list is received when connecting through the master server
-		Network.Connect(game);
-	}
-	
-	public void LaunchServer(bool nat, bool connectToMaster){
+		
+	public void LaunchServer(bool nat){
 		useNat = nat;
+		useMasterServer = false;
 		Network.InitializeServer(1,port,nat);
-		if(connectToMaster){
-			MasterServer.RegisterHost(Stats.uniqueGameID,"New Game");
-		}
 	}
 	
+	public void LaunchServer(bool nat, string gameName){
+		useNat = nat;
+		useMasterServer = true;
+		this.gameName = gameName;
+		Network.InitializeServer(1,port,nat);
+		Debug.Log("gameName = "+gameName);
+	}
+
 	public void Disconnect(){
 		Network.Disconnect();
+		Stats.hasConnection = false;
+		Stats.playerController[0] = Stats.PlayerController.localPlayer;
+		Stats.playerController[1] = Stats.PlayerController.localPlayer;
 	}
 	
 	public void SendChatMessage(string pck){
@@ -63,17 +77,26 @@ public class NetworkInterface : MonoBehaviour {
 		Debug.Log("Turn sent: "+pck);
 	}
 	
-	private void SendHeartbeat(){
-		if(Network.isServer){
-			networkView.RPC("ReceiveHeartbeat",RPCMode.Others,networkView.viewID, Network.time);
-		}else{
-			networkView.RPC("ReceiveHeartbeat",RPCMode.Server,networkView.viewID, Network.time);			
-		}
-	}
+//	private void SendHeartbeat(){
+//		if(Network.isServer){
+//			networkView.RPC("ReceiveHeartbeat",RPCMode.Others,networkView.viewID, Network.time);
+//		}else{
+//			networkView.RPC("ReceiveHeartbeat",RPCMode.Server,networkView.viewID, Network.time);			
+//		}
+//	}
 	
 	public void SendGameStats(){
 		string pck = Stats.MakeNetworkPackage();
 		networkView.RPC ("ReceiveGameStats",RPCMode.Others,networkView.viewID,pck);
+	}
+	
+	public void SendStartGame(){
+		networkView.RPC ("ReceiveStartGame",RPCMode.Others,networkView.viewID,true);		
+	}
+	
+	[RPC]
+	public void ReceiveStartGame(NetworkViewID id, bool dummy){
+		RelayStartMessage();
 	}
 	
 	[RPC]
@@ -84,83 +107,103 @@ public class NetworkInterface : MonoBehaviour {
 	[RPC]
 	public void ReceiveChatMessage(NetworkViewID id, string pck){
 		Debug.Log("Package received: "+pck);
-		if(networkGUI != null){
-			networkGUI.AddChatMessage(pck,networkView.name);
-		}
+		RelayChatMessage("Player: "+pck);
+		//TODO: add player name
 	}
-	[RPC]
-	public void ReceiveHeartbeat(NetworkViewID id, float timestamp){
-		if(!Network.isServer){
-			SendHeartbeat();
-		}
-		//receive heartbeat somehow
-	}
+//	[RPC]
+//	public void ReceiveHeartbeat(NetworkViewID id, float timestamp){
+//		if(!Network.isServer){
+//			SendHeartbeat();
+//		}
+//		//receive heartbeat somehow
+//	}
 	[RPC]
 	public void ReceiveTurn(NetworkViewID id, string pck){
 		Turn turn = Turn.StringToTurn(pck);
-		control.ExecuteTurn(turn);
+		if(control == null)
+			FindControl();
+		if(control == null)
+			Debug.LogError("script control not found!");
+		else{
+			control.ExecuteTurn(turn);
+		}
 	}
+
+	//Messages	
 	
 	void OnServerInitialized(){
-		if(networkGUI != null){
-			Debug.Log("usenat: "+useNat);
-			if(useNat){
-				networkGUI.AddLogEntry("Created server with GUID "+Network.player.guid+".");
-			}else{
-				networkGUI.AddLogEntry("Created server with IP "+Network.player.ipAddress+"/"+Network.player.port+".");
-			}
+		if(useMasterServer){
+			MasterServer.RegisterHost(Stats.uniqueGameID,gameName);
+		}else{
+			RelayConnectionStatus(ConnectionMessage.serverInit);
 		}
+//			if(useNat){
+//				networkGUI.AddLogEntry("Created server with GUID "+Network.player.guid+".");
+//			}else{
+//				networkGUI.AddLogEntry("Created server with IP "+Network.player.ipAddress+"/"+Network.player.port+".");
+//			}
 	}
 	
-	//Messages
-	
-	void Update(){
-		if(pollHostList){
-			if(MasterServer.PollHostList().Length != 0){
-				HostData[] hostlist = MasterServer.PollHostList();
-				Debug.Log("game found: " +hostlist[0].gameName+", number of games: "+hostlist.Length+".");
-				pollHostList = false;
-				FinishMasterConnection(hostlist[0]);
-			}
-		}
-	}
 	
 	void OnConnectedToServer(){
-		if(networkGUI != null){
-			networkGUI.AddLogEntry("Successfully connected to server @"+Network.connections[0].ipAddress+"/"+Network.connections[0].port);
-		}
+		RelayConnectionStatus(ConnectionMessage.connected);
+		Debug.Log("Successfully connected to server @"+Network.connections[0].ipAddress+"/"+Network.connections[0].port);
 		Stats.hasConnection = true;
 		Stats.playerController[0] = Stats.PlayerController.remotePlayer;
 	}
 	
 	void OnDisconnectedFromServer(){
-		if(networkGUI != null)
-			networkGUI.AddLogEntry("Disconnected from server");
+		RelayConnectionStatus(ConnectionMessage.disconnected);
 	}
-	
+		
 	void OnPlayerDisconnected(NetworkPlayer player){
-		if(networkGUI != null)
-			networkGUI.AddLogEntry("Player "+player+" has disconnected");
+		RelayConnectionStatus(ConnectionMessage.playerDisconnected);
 		Stats.hasConnection = false;
 		Stats.playerController[1] = Stats.PlayerController.localPlayer;
 	}
 	
 	void OnPlayerConnected(NetworkPlayer player){
-		if(networkGUI != null)
-			networkGUI.AddLogEntry("player "+player+" connected to the server!");
+		RelayConnectionStatus(ConnectionMessage.playerConnected);
 		Stats.hasConnection = true;
 		Stats.playerController[1] = Stats.PlayerController.remotePlayer;
 	}
 
 	void OnFailedToConnectToMasterServer(NetworkConnectionError info) {
+		RelayConnectionStatus(ConnectionMessage.connectFailed);
 		Debug.Log("Could not connect to master server: " + info);
 	}
 	
 	void OnMasterServerEvent(MasterServerEvent msEvent) {
-        if (msEvent == MasterServerEvent.RegistrationSucceeded)
-            Debug.Log("Server registered");
-        else
-			Debug.Log("unknown message: "+msEvent);
+		switch(msEvent){
+		case MasterServerEvent.RegistrationSucceeded:
+			RelayConnectionStatus(ConnectionMessage.serverInit);
+			break;
+		}
     }
+	
+	//Event relay functions
+	
+	private void RelayStartMessage(){
+		foreach( INetworkMessage i in messageRecipients){
+			i.StartGameMessage();
+		}
+	}
+	
+	private void RelayConnectionStatus( ConnectionMessage msg){
+//		foreach( INetworkMessage i in messageRecipients){
+//			i.ConnectionStatus(msg);
+//		}
+//		
+		for(int i=0; i<messageRecipients.Count;i++){
+			messageRecipients[i].ConnectionStatus(msg);
+		}
+		
+	}
+	
+	private void RelayChatMessage(string msg){
+		foreach( INetworkMessage i in messageRecipients){
+			i.ChatMessage(msg);
+		}
+	}
 	
 }

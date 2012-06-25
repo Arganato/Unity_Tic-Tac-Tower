@@ -316,4 +316,13 @@ public class Control: MonoBehaviour {
 		Skill.skillsUsed.Reset();
 		BroadcastMessage("UpdateField");
 	}
+	
+	public static void QuitGame(){
+		//cleans up stuff, and makes ready to quit the game
+		NetworkInterface nif = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
+		if(nif != null){
+			nif.DestroySelf();
+		}
+		Application.LoadLevel("mainMenu");
+	}
 }

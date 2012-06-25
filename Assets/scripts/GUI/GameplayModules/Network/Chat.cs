@@ -39,8 +39,8 @@ public class Chat{
 	}
 	
 	
-	public void AddEntry(string entry, string name){
-		AddString(name+": "+entry);
+	public void AddEntry(string entry){
+		AddString(entry);
 	}
 	
 }

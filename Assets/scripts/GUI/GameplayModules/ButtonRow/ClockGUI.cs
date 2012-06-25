@@ -4,7 +4,7 @@ using System.Collections;
 public class ClockGUI{
 
 	public bool enable = true;
-	public Rect position = new Rect(0,150,90,60);
+	public Rect position;
 	public int player;
 	
 	public ClockGUI(int playerID){
@@ -12,7 +12,7 @@ public class ClockGUI{
 		if(player == 0){
 			position = new Rect(0,0,40,40);
 		}else{
-			position = new Rect(Screen.width-40,0,40,40);
+			position = new Rect(300-40,0,40,40);
 		}
 	}
 

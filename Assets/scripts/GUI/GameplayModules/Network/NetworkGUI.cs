@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class NetworkGUI {
+public class NetworkGUI : INetworkMessage{
 
 	public bool enable;
 	public Rect togglePos = new Rect(0,0,80,55);
@@ -18,8 +18,7 @@ public class NetworkGUI {
 		connectGUI = new ConnectGUI(nif);
 		chat = new Chat(nif);
 		chat.togglePos = new Rect(0,30,togglePos.width,25);
-		nif.RegisterGUI(this);
-//		networkInterface = nif;
+		nif.AddMessageRecipient((INetworkMessage)this);
 	}
 		
 	public void ToggleGUI(){
@@ -70,7 +69,18 @@ public class NetworkGUI {
 		messages += str+"\n";
 	}
 	
-	public void AddChatMessage(string entry,string name){
-		chat.AddEntry(entry,name);
+	//Network messages
+	
+	public void ChatMessage (string msg)
+	{
+		chat.AddEntry(msg);
 	}
+	
+	public void ConnectionStatus (ConnectionMessage msg)
+	{
+		AddLogEntry("Network update: "+msg);
+	}
+	
+	public void StartGameMessage (){}
+	
 }

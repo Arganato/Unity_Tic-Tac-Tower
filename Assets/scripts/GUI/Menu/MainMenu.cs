@@ -4,14 +4,19 @@ using System.Collections.Generic;
 public class MainMenu : MonoBehaviour {
 	
 	public GUISkin customSkin;
+	public Transform network;
 	
 	private Frame mainMenuFrame;
-//	private FrameContent tutorialFrame;
-//	private FrameContent optionsFrame;
 	private List<MenuContent> menuStack = new List<MenuContent>();
 		
 	void Start () {
 		Stats.StartUpRoutine(); //should be called once at the beginning of every game (include in loading script or smt)
+
+		NetworkInterface nif = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
+		if(nif == null){
+			Instantiate(network);
+		}
+		
 		mainMenuFrame = Frame.Create("Main Menu");
 
 		mainMenuFrame.AddButton(new LocalGameButton(this));
@@ -19,7 +24,7 @@ public class MainMenu : MonoBehaviour {
 		mainMenuFrame.AddButton(new TutorialButton(this));
 		mainMenuFrame.AddButton(new OptionsButton(this));
 		
-		menuStack.Add(mainMenuFrame);
+		menuStack.Add(mainMenuFrame);	
 	}
 	
 	void OnGUI () {
@@ -33,7 +38,7 @@ public class MainMenu : MonoBehaviour {
 				Quit();
 			}			
 		}else{
-			if(GUI.Button(new Rect(Screen.width-100,Screen.height-45,60,25),"Back")){
+			if(GUI.Button(new Rect(Screen.width-100,Screen.height-35,60,25),"Back")){
 				GoBack();
 			}
 		}
@@ -48,7 +53,10 @@ public class MainMenu : MonoBehaviour {
 	}
 	
 	public NetworkInterface FindNetworkInterface(){
-		return (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
+		NetworkInterface nif = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
+		if(nif == null)
+			Debug.LogError("No network interface found!");
+		return nif;
 	}
 	
 	private void Quit(){
