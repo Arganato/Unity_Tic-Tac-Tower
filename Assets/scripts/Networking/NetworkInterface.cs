@@ -68,6 +68,23 @@ public class NetworkInterface : MonoBehaviour {
 		Stats.playerController[1] = Stats.PlayerController.localPlayer;
 	}
 	
+	public string GetPlayerName(int i){
+		//temporary solution
+		if(i == 0)
+			return Stats.playerName;
+		else
+			return "Player 2";
+	}
+	
+	public int GetConnectedPlayers(){
+		//temporary solution...
+		if(Stats.hasConnection)
+			return 2;
+		else
+			return 1;
+	}
+	
+	
 	public void SendChatMessage(string pck){
 		networkView.RPC("ReceiveChatMessage",RPCMode.Others, networkView.viewID, pck);
 	}
@@ -154,6 +171,8 @@ public class NetworkInterface : MonoBehaviour {
 	
 	void OnDisconnectedFromServer(){
 		RelayConnectionStatus(ConnectionMessage.disconnected);
+		Stats.hasConnection = false;
+		Stats.playerController[0] = Stats.PlayerController.localPlayer;
 	}
 		
 	void OnPlayerDisconnected(NetworkPlayer player){

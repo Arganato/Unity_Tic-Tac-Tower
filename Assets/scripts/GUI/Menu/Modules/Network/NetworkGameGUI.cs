@@ -16,7 +16,11 @@ public class NetworkGameGUI : MenuContent, INetworkMessage{
 		networkInterface = mainMenu.FindNetworkInterface();
 		networkInterface.AddMessageRecipient((INetworkMessage) this);
 	}
-	
+	public override void Close (){
+		networkInterface.RemoveMessageRecipient((INetworkMessage)this);
+	}
+
+
 	public override void PrintGUI (){
 		if(joiningGame){
 			GUI.Box(new Rect(position.width/2-150,position.height/2-25,300,50),"Joining Game...","darkBoxCentered");
@@ -46,7 +50,7 @@ public class NetworkGameGUI : MenuContent, INetworkMessage{
 		networkInterface.ConnectToServer(game,password);
 	}
 	
-	private void EnterGame(){
+	private void EnterGame(){ //"join game 2"
 		StartGameScreen startGame = new StartGameScreen(networkInterface,true);
 		mainMenu.AddMenu(startGame);
 	}

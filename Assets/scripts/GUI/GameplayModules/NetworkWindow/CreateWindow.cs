@@ -32,6 +32,10 @@ public class CreateWindow : MenuContent, INetworkMessage {
 			break;
 		}
 	}
+	
+	public override void Close (){}
+	
+	
 	private void DefaultGUI(){
 		GUILayout.FlexibleSpace();
 		GUILayout.BeginHorizontal();

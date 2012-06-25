@@ -33,7 +33,12 @@ public class CreateGameGUI : MenuContent, INetworkMessage{
 			position.height = Screen.height-40;
 		}
 	}
-	
+	public override void Close (){
+		networkInterface.RemoveMessageRecipient((INetworkMessage)this);
+		networkInterface.Disconnect();
+	}
+
+
 	public override void PrintGUI(){
 		GUILayout.BeginArea(position);
 		switch(state){
@@ -133,8 +138,5 @@ public class CreateGameGUI : MenuContent, INetworkMessage{
 			break;
 		}
 	}
-	public void ChatMessage (string msg)
-	{
-		throw new System.NotImplementedException ();
-	}
+	public void ChatMessage (string msg){}
 }

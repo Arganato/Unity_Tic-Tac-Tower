@@ -87,6 +87,7 @@ public static class Stats{
 	public static PlayerController[] playerController = new PlayerController[2];
 	public const string uniqueGameID = "TicTacTower_0.9000";
 	public static bool networkEnabled = false;
+	public static string playerName = "Player 1";
 	
 	public static int totalArea{
 		get{return fieldSize*fieldSize;}

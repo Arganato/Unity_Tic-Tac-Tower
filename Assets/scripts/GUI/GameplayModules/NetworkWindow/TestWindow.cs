@@ -26,6 +26,8 @@ public class TestWindow : MenuContent{
 		
 	}
 	
+	public override void Close (){}
+
 	private void TestConnection(){
 		testResult = Network.TestConnection();
 		switch(testResult){

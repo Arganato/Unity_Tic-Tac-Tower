@@ -14,6 +14,8 @@ public class ConnectGUI : MenuContent {
 	public ConnectGUI(NetworkInterface netIf){
 		networkIf = netIf;
 	}
+	public override void Close (){}
+
 
 	public override void PrintGUI(){
 		if(enable){

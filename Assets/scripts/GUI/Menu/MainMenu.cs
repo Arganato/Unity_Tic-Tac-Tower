@@ -45,6 +45,7 @@ public class MainMenu : MonoBehaviour {
 	}
 	
 	private void GoBack(){
+		menuStack[menuStack.Count-1].Close();
 		menuStack.RemoveAt(menuStack.Count-1);
 	}
 	

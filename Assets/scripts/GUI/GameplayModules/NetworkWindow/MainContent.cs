@@ -14,7 +14,9 @@ public class MainContent : MenuContent{
 		networkWindow = networkWin;
 		networkInterface = nif;
 	}
-	
+
+	public override void Close (){}
+
 	public override void PrintGUI ()
 	{
 		GUILayout.Space(20);

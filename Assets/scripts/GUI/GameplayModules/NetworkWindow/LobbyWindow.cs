@@ -16,6 +16,7 @@ public class LobbyWindow : MenuContent {
 		networkWindow = networkWin;
 	}
 	
+	public override void Close (){}
 	
 	public override void PrintGUI ()
 	{

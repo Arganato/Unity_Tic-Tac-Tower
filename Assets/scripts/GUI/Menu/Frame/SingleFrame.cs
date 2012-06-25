@@ -50,7 +50,9 @@ public class SingleFrame : Frame{
 		}
 	}
 	
-	
+	public override void Close (){}
+
+
 	public override void PrintGUI(){
 		GUI.BeginGroup(position);
 		GUI.Box(new Rect(0,0,position.width,20),title);
