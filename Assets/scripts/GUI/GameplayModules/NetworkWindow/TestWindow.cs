@@ -1,14 +1,15 @@
 using UnityEngine;
 using System.Collections;
 
-public class TestWindow {
+public class TestWindow : MenuContent{
 
 	private bool doneTesting = true;
 	private bool useNat = false;
 	private string testMessage = "this is a test message";
 	private ConnectionTesterStatus testResult = ConnectionTesterStatus.Undetermined;
 	
-	public void PrintGUI(){
+	public override void PrintGUI(){
+		GUILayout.Space(20);
 		if(doneTesting && GUILayout.Button("Start Test")){ //new Rect(0,0,position.width/2,20),
 			doneTesting = false;
 			testResult = ConnectionTesterStatus.Undetermined;

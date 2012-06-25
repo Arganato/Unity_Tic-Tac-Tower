@@ -11,7 +11,7 @@ public class DropdownMenu{
 	
 	private ConfirmMenu endGame;
 	private ConfirmMenu resign;
-	private NetworkGUI networkGUI;
+	private NetworkWindow networkGUI;
 	
 	private Control control;
 	
@@ -23,7 +23,7 @@ public class DropdownMenu{
 		Console.buttonRect = new Rect(positionOpen.x,positionOpen.y+60,80,25);
 		
 		if(nif != null){
-			networkGUI = new NetworkGUI(nif);
+			networkGUI = new NetworkWindow(nif);
 			networkGUI.togglePos = new Rect(positionOpen.x,positionOpen.y+90,80,55);
 		}
 	}

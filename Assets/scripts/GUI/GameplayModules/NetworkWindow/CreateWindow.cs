@@ -1,41 +1,25 @@
 using UnityEngine;
 using System.Collections;
 
-public class CreateGameGUI : MenuContent, INetworkMessage{
-	
+public class CreateWindow : MenuContent, INetworkMessage {
+
 	private enum State {DefaultState, LaunchingServer, FailedToLaunchServer}
 	
-	public Rect position =  new Rect(0,0,300,440);
 	
 	private string gameName = "new game";
 	private string password = "";
 	private NetworkInterface networkInterface;
-	private MainMenu mainMenu; //callback
+	private NetworkWindow mainMenu; //callback
 	private State state = State.DefaultState;
 	
-	public CreateGameGUI(NetworkInterface nif, MainMenu m){
+	public CreateWindow(NetworkInterface nif, NetworkWindow m){
 		networkInterface = nif;
 		networkInterface.AddMessageRecipient((INetworkMessage)this);
 		mainMenu = m;
-		SetUpScreen();
 	}
 	
-	private void  SetUpScreen(){
-		if( Screen.width >= 300){
-			position.x = Screen.width/2 - position.width/2;
-		}else{
-			position.x = 0; 
-			position.width = Screen.width;
-		}if(Screen.height >= 480){
-			position.y = Screen.height/2+20 - position.height/2;
-		}else{
-			position.y = 0;
-			position.height = Screen.height-40;
-		}
-	}
 	
 	public override void PrintGUI(){
-		GUILayout.BeginArea(position);
 		switch(state){
 		case State.DefaultState:
 			DefaultGUI();
@@ -47,7 +31,6 @@ public class CreateGameGUI : MenuContent, INetworkMessage{
 			FailedToConnectGUI();
 			break;
 		}
-		GUILayout.EndArea();
 	}
 	private void DefaultGUI(){
 		GUILayout.FlexibleSpace();
@@ -87,9 +70,7 @@ public class CreateGameGUI : MenuContent, INetworkMessage{
 		GUILayout.FlexibleSpace();
 		GUILayout.Label(connectLabel);
 		GUILayout.EndHorizontal();
-		GUILayout.BeginArea(new Rect(position.width/2-150,position.height/2-25,300,50),"","darkBoxCentered");
-		GUILayout.Label("Launching server...");
-		GUILayout.EndArea();
+		GUILayout.Label("Launching server...","darkBoxCentered");
 		GUILayout.FlexibleSpace();
 		if(GUILayout.Button("Abort",GUILayout.ExpandWidth(false))){
 			state = State.FailedToLaunchServer;
@@ -112,9 +93,8 @@ public class CreateGameGUI : MenuContent, INetworkMessage{
 	}
 	
 	private void FinishCreateGame(){
-		StartGameScreen startGame = new StartGameScreen(networkInterface,false);
-		mainMenu.AddMenu(startGame);
-		state = State.DefaultState;
+		mainMenu.Back();
+		mainMenu.Back();
 	}
 	
 	//interface functions
@@ -138,3 +118,5 @@ public class CreateGameGUI : MenuContent, INetworkMessage{
 		throw new System.NotImplementedException ();
 	}
 }
+
+

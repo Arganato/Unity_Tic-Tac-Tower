@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class ConnectGUI {
+public class ConnectGUI : MenuContent {
 	
 	public bool enable = true;
 	public Rect position = new Rect(0,00,200,60);
@@ -15,7 +15,7 @@ public class ConnectGUI {
 		networkIf = netIf;
 	}
 
-	public void PrintGUI(){
+	public override void PrintGUI(){
 		if(enable){
 			if(Network.isClient || Network.isServer)
 				Connected();
