@@ -149,11 +149,11 @@ public class GameState {
 		//TODO
 	}
 	
-	public void SetTutorialSkillCap1(){
+	public void SetTutorialPower1(){
 		//TODO
 	}	
 	
-	public void SetTutorialSkillCap2(){
+	public void SetTutorialPower2(){
 		//TODO
 	}
 	
