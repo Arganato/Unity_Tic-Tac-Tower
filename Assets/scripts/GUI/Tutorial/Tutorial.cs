@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Tutorial : MonoBehaviour {
 
-	Vector2 scrollPos = new Vector2(0,0);
 	public GUISkin skin;
 	new public Transform camera;
 	public int border = 0;
@@ -57,8 +56,8 @@ public class Tutorial : MonoBehaviour {
 		}
     }
 	
-	private int menuWidth = 300;
-	private int menuChangeSpeed = 50; //100px/2sec
+//	private int menuWidth = 300;
+//	private int menuChangeSpeed = 50; //100px/2sec
 	
 	public static void SetupTutorial(){
 		tutorialState = new GameState();

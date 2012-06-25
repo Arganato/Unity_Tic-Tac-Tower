@@ -28,8 +28,6 @@ public class TutorialSkill : MonoBehaviour {
 	private int menuWidth = 300;
 	private int menuChangeSpeed = 50; //100px/2sec
 	
-	private string[] towerExpl = new string[3]; //put skill explanations here
-	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
 		control.StartNewGame();		
@@ -49,7 +47,7 @@ public class TutorialSkill : MonoBehaviour {
 		int buttonHeight = 40;
 //		int b1Start = (Screen.width-2*buttonWidth)/3;
 //		int b2Start = 2*b1Start + buttonWidth;
-		int b1Start = (Screen.width-4*buttonWidth)/2;
+//		int b1Start = (Screen.width-4*buttonWidth)/2;
 		//int b2Start = Screen.width-3*buttonWidth; //Not used here
 		
 		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, 200, buttonWidth, buttonHeight), "Skill 1")){

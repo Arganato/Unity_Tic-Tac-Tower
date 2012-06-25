@@ -28,8 +28,6 @@ public class TutorialSilence : MonoBehaviour {
 	private int menuWidth = 300;
 	private int menuChangeSpeed = 50; //100px/2sec
 	
-	private string[] towerExpl = new string[3]; //put skill explanations here
-	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
 		control.StartNewGame();		

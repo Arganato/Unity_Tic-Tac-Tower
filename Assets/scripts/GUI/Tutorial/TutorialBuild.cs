@@ -27,11 +27,9 @@ public class TutorialBuild : MonoBehaviour {
 	private Chapter chapter;
 	//private int section = 0;
 	
-	private int menuWidth = 300;
-	private int menuChangeSpeed = 50; //100px/2sec
-	
-	private string[] towerExpl = new string[3]; //put skill explanations here
-	
+//	private int menuWidth = 300;
+//	private int menuChangeSpeed = 50; //100px/2sec
+		
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
 		control.StartNewGame();		
@@ -57,7 +55,7 @@ public class TutorialBuild : MonoBehaviour {
 //		int b1Start = (Screen.width-2*buttonWidth)/3;
 //		int b2Start = 2*b1Start + buttonWidth;
 		int b1Start = (Screen.width-4*buttonWidth)/2;
-		int b2Start = Screen.width-3*buttonWidth; //Not used here
+//		int b2Start = Screen.width-3*buttonWidth; //Not used here
 		
 		if(GUI.Button(new Rect(border+b1Start, Screen.height-50, buttonWidth-border, 50-border), "Continue")){
 			chapter = Chapter.exampleStr;

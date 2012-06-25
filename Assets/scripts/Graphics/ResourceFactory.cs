@@ -41,100 +41,71 @@ public static class ResourceFactory{
 			switch(Tutorial.towerTut){
 			case TowerType.build:
 				return "The following shows how to build a straight Build Tower.";
-				break;
 			case TowerType.shoot:
 				return "The following shows how to build a straight Shoot Tower.";
-				break;
 			case TowerType.silence:
 				return "The following shows how to build a straight Silence Tower.";
-				break;
 			case TowerType.skillCap:
 				return "The following shows how to build a straight Power Tower.";
-				break;
 			default:
 				return "";
-				break;
 			}
-			break;
 		case Tutorial.Chapter.tutStr:
 			switch(Tutorial.towerTut){
 			case TowerType.build:
 				return "You'll now encounter a board mid-game (using only straight towers).\n During this turn, win the game!";
-				break;
 			case TowerType.shoot:
-				return "You'll now encounter a board mid-game (using only straight towers).\n Your opponent is about to win the game next round. It's up to you to prevent it!";
-				break;
+				return "You'll now encounter a board mid-game (using only straight towers)." +
+					"\n Your opponent is about to win the game next round. It's up to you to prevent it!";
 			case TowerType.silence:
-				return "You'll now encounter a board mid-game (using only straight towers).\n Your opponent is about to build a strong building. It's up to you to prevent it!";
-				break;
+				return "You'll now encounter a board mid-game (using only straight towers)." +
+					"\n Your opponent is about to build a strong building. It's up to you to prevent it!";
 			case TowerType.skillCap:
 				return "You'll now encounter a board mid-game (using only straight towers).\n During this turn, win the game!";
-				break;
 			default:
 				return "";
-				break;
 			}
-			break;
 		case Tutorial.Chapter.exampleDiag:
 			switch(Tutorial.towerTut){
 			case TowerType.build:
 				return "The following shows how to build a diagonal Build Tower.";
-				break;
 			case TowerType.shoot:
 				return "The following shows how to build a diagonal Shoot Tower.";
-				break;
 			case TowerType.silence:
 				return "The following shows how to build a diagonal Silence Tower.";
-				break;
 			case TowerType.skillCap:
 				return "The following shows how to build a diagonal Power Tower.";
-				break;
 			default:
 				return "";
-				break;
 			}
-			break;
 		case Tutorial.Chapter.tutDiag:
 			switch(Tutorial.towerTut){
 			case TowerType.build:
 				return "This game includes diagonal towers.\n During this turn, win the game!";
-				break;
 			case TowerType.shoot:
 				return "This game includes diagonal towers.\n Your opponent is about to win the game next round. It's up to you to prevent it!";
-				break;
 			case TowerType.silence:
 				return "This game includes diagonal towers.\n Your opponent is about to build a strong building. It's up to you to prevent it!";
-				break;
 			case TowerType.skillCap:
 				return "This game includes diagonal towers.\n During this turn, win the game!";
-				break;
 			default:
 				return "";
-				break;
 			}
-			break;
 		case Tutorial.Chapter.end:
 			switch(Tutorial.towerTut){
 			case TowerType.build:
 				return "You've just finished the tutorial for the Build Tower. Good luck in your games.";
-				break;
 			case TowerType.shoot:
 				return "You've just finished the tutorial for the Shoot Tower. Good luck in your games.";
-				break;
 			case TowerType.silence:
 				return "You've just finished the tutorial for the Silence Tower. Good luck in your games.";
-				break;
 			case TowerType.skillCap:
 				return "You've just finished the tutorial for the Power Tower. Good luck in your games.";
-				break;
 			default:
 				return "";
-				break;
 			}
-			break;
 		default:
 				return "";
-				break;
 		}
 	}			
 	
