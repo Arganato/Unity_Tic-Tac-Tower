@@ -38,9 +38,9 @@ public class InfoWindow{
 		}
 		GUI.BeginGroup(position);
 		GUI.Box(new Rect(0,0,position.width,position.height),"");
-		if(Tutorial.chapter == Tutorial.Chapter.exampleStr || Tutorial.chapter == Tutorial.Chapter.tutStr){
+		if(Tutorial.chapter == Tutorial.Chapter.textStr || Tutorial.chapter == Tutorial.Chapter.tutStr){
 			GUI.Box(new Rect((width-textureSize)/2,0,textureSize,textureSize),ResourceFactory.GetSkillTexture(textureType));
-		}else if(Tutorial.chapter == Tutorial.Chapter.exampleDiag || Tutorial.chapter == Tutorial.Chapter.tutDiag){
+		}else if(Tutorial.chapter == Tutorial.Chapter.textDiag || Tutorial.chapter == Tutorial.Chapter.tutDiag){
 			GUI.Box(new Rect((width-textureSize)/2,0,textureSize,textureSize), ResourceFactory.GetSkillTexture(textureType+4));
 		}else if(Tutorial.chapter == Tutorial.Chapter.end){
 			GUI.Box(new Rect(width/2-textureSize,0,textureSize,textureSize),ResourceFactory.GetSkillTexture(textureType));

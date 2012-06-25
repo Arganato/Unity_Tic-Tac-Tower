@@ -29,7 +29,7 @@ public static class ResourceFactory{
 		case TowerType.silence:
 			return "Silence Tower: \nThe opponent is rendered unable to place a piece where he/she would normally be able to build a tower.";
 		case TowerType.skillCap:
-			return "Skill Cap Tower: \nIncreases the skill cap by one for the player who builds it, allowing the player to use the same skill one more time during the same round. In addition, the player will gain five score points at the end of each turn.";
+			return "Power Tower: \nIncreases the skill cap by one for the player who builds it, allowing the player to use the same skill one more time during the same round. In addition, the player will gain five score points at the end of each turn.";
 		default:
 			return "";
 		}
@@ -37,104 +37,99 @@ public static class ResourceFactory{
 	
 	public static string GetTutorialMessage(){
 		switch(Tutorial.chapter){
+		case Tutorial.Chapter.textStr:
+			switch(Tutorial.towerTut){
+			case TowerType.build:
+				return "The image above shows how to construct a straight Build Tower.";
+			case TowerType.shoot:
+				return "The image above shows how to construct a straight Shoot Tower.";
+			case TowerType.silence:
+				return "The image above shows how to construct a straight Silence Tower.";
+			case TowerType.skillCap:
+				return "The image above shows how to construct a straight Power Tower.";
+			default:
+				return "";
+			}
 		case Tutorial.Chapter.exampleStr:
 			switch(Tutorial.towerTut){
 			case TowerType.build:
 				return "The following shows how to build a straight Build Tower.";
-				break;
 			case TowerType.shoot:
 				return "The following shows how to build a straight Shoot Tower.";
-				break;
 			case TowerType.silence:
 				return "The following shows how to build a straight Silence Tower.";
-				break;
 			case TowerType.skillCap:
 				return "The following shows how to build a straight Power Tower.";
-				break;
 			default:
 				return "";
-				break;
 			}
-			break;
 		case Tutorial.Chapter.tutStr:
 			switch(Tutorial.towerTut){
 			case TowerType.build:
 				return "You'll now encounter a board mid-game (using only straight towers).\n During this turn, win the game!";
-				break;
 			case TowerType.shoot:
 				return "You'll now encounter a board mid-game (using only straight towers).\n Your opponent is about to win the game next round. It's up to you to prevent it!";
-				break;
 			case TowerType.silence:
 				return "You'll now encounter a board mid-game (using only straight towers).\n Your opponent is about to build a strong building. It's up to you to prevent it!";
-				break;
 			case TowerType.skillCap:
 				return "You'll now encounter a board mid-game (using only straight towers).\n During this turn, win the game!";
-				break;
 			default:
 				return "";
-				break;
 			}
-			break;
+		case Tutorial.Chapter.textDiag:
+			switch(Tutorial.towerTut){
+			case TowerType.build:
+				return "The image above shows how to construct a diagonal Build Tower.";
+			case TowerType.shoot:
+				return "The image above shows how to construct a diagonal Shoot Tower.";
+			case TowerType.silence:
+				return "The image above shows how to construct a diagonal Silence Tower.";
+			case TowerType.skillCap:
+				return "The image above shows how to construct a diagonal Power Tower.";
+			default:
+				return "";
+			}
 		case Tutorial.Chapter.exampleDiag:
 			switch(Tutorial.towerTut){
 			case TowerType.build:
 				return "The following shows how to build a diagonal Build Tower.";
-				break;
 			case TowerType.shoot:
 				return "The following shows how to build a diagonal Shoot Tower.";
-				break;
 			case TowerType.silence:
 				return "The following shows how to build a diagonal Silence Tower.";
-				break;
 			case TowerType.skillCap:
 				return "The following shows how to build a diagonal Power Tower.";
-				break;
 			default:
 				return "";
-				break;
 			}
-			break;
 		case Tutorial.Chapter.tutDiag:
 			switch(Tutorial.towerTut){
 			case TowerType.build:
 				return "This game includes diagonal towers.\n During this turn, win the game!";
-				break;
 			case TowerType.shoot:
 				return "This game includes diagonal towers.\n Your opponent is about to win the game next round. It's up to you to prevent it!";
-				break;
 			case TowerType.silence:
 				return "This game includes diagonal towers.\n Your opponent is about to build a strong building. It's up to you to prevent it!";
-				break;
 			case TowerType.skillCap:
 				return "This game includes diagonal towers.\n During this turn, win the game!";
-				break;
 			default:
 				return "";
-				break;
 			}
-			break;
 		case Tutorial.Chapter.end:
 			switch(Tutorial.towerTut){
 			case TowerType.build:
-				return "You've just finished the tutorial for the Build Tower. Good luck in your games.";
-				break;
+				return "Well done!\n You've just finished the tutorial for the Build Tower. Good luck in your games.";
 			case TowerType.shoot:
-				return "You've just finished the tutorial for the Shoot Tower. Good luck in your games.";
-				break;
+				return "Well done!\n You've just finished the tutorial for the Shoot Tower. Good luck in your games.";
 			case TowerType.silence:
-				return "You've just finished the tutorial for the Silence Tower. Good luck in your games.";
-				break;
+				return "Well done!\n You've just finished the tutorial for the Silence Tower. Good luck in your games.";
 			case TowerType.skillCap:
-				return "You've just finished the tutorial for the Power Tower. Good luck in your games.";
-				break;
+				return "Well done!\n You've just finished the tutorial for the Power Tower. Good luck in your games.";
 			default:
 				return "";
-				break;
 			}
-			break;
 		default:
-				return "";
-				break;
+			return "";
 		}
 	}			
 	

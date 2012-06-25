@@ -6,6 +6,8 @@ public class SkillGUI{
 	public bool enable = true;
 	public Rect position;
 	
+	public bool[] skillEn = new bool[4];
+		
 	private bool showHelp = false;
 	private int helpSkill = 0;
 	private SkillButtonGUI[] buttonRow = new SkillButtonGUI[4];
@@ -22,6 +24,10 @@ public class SkillGUI{
 		textRow[2] = SkillAmountGUI.CreateSilence();
 		textRow[3] = SkillAmountGUI.CreateSkillCap();
 		
+		for(int i=0;i<4;i++){
+			skillEn[i] = true;
+		}
+				
 	}
 	
 	public void PrintGUI(){
@@ -43,10 +49,12 @@ public class SkillGUI{
 	
 	private void ButtonGUI(){
 		for( int i=0;i<buttonRow.Length;i++){
-			if(	buttonRow[i].PrintGUI() ){
-				UseSkillError(Skill.UseSkill(i+1));
+			if(skillEn[i]){
+				if(buttonRow[i].PrintGUI() ){
+					UseSkillError(Skill.UseSkill(i+1));
+				}
+				textRow[i].PrintGUI();
 			}
-			textRow[i].PrintGUI();
 		}
 		
 		if(GUI.Button(new Rect(250,0,50,50),"?")){
@@ -87,6 +95,18 @@ public class SkillGUI{
 		return ret;
 	}
 		
+	public static SkillGUI TutorialCreate(){
+		//Platform-Specific code...
+		SkillGUI ret = new SkillGUI();
+		float width = 300f;
+		if(Tutorial.towerTut != TowerType.shoot)ret.skillEn[0] = false;
+		if(Tutorial.towerTut != TowerType.build)ret.skillEn[1] = false;
+		if(Tutorial.towerTut != TowerType.silence)ret.skillEn[2] = false;
+		if(Tutorial.towerTut != TowerType.skillCap)ret.skillEn[3] = false;
+		ret.position = new Rect(Screen.width/2-width/2,Screen.height-70,width,70);
+		return ret;
+	}
+	
 	private void UseSkillError(SkillSelectError errorCode){
 		switch(errorCode){
 			case SkillSelectError.NO_ERROR:

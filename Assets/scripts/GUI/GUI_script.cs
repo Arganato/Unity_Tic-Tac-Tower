@@ -25,8 +25,7 @@ public class GUI_script : MonoBehaviour {
 		NetworkInterface netIf = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
 		buttonRow =  new ButtonRow(control);
 		header = new HeaderBar(control, netIf);
-//		connectGUI = new ConnectGUI(netIf);
-//		chat = new Chat(netIf);
+
 	}
 	
 	void OnGUI() {
@@ -40,9 +39,6 @@ public class GUI_script : MonoBehaviour {
 		skillGUI.PrintGUI();
 		buttonRow.PrintGUI();
 
-//		connectGUI.PrintGUI();
-//		chat.PrintGUI();
-		
 		Console.PrintWindow();
 		PopupMessage.PrintGUI();
 		
