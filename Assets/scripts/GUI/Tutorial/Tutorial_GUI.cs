@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class GUI_script : MonoBehaviour {
-
+public class Tutorial_GUI : MonoBehaviour {
+	
 	private Control control;
 	private Grid grid;
 	
@@ -11,23 +11,18 @@ public class GUI_script : MonoBehaviour {
 	public bool enable;
 	public bool lockGUI;
 
-	private SkillGUI skillGUI = SkillGUI.Create();
-	private HeaderBar header;
-	private ButtonRow buttonRow;
+	private SkillGUI skillGUI = SkillGUI.TutorialCreate();
+	private TutorialHeader header;
+	private TutorialButtonRow buttonRow;
 	
-	private ConnectGUI connectGUI;
-	private Chat chat;
-
-	
+	// Use this for initialization
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
 		grid = (Grid)FindObjectOfType(typeof(Grid));
-		NetworkInterface netIf = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
-		buttonRow =  new ButtonRow(control);
-		header = new HeaderBar(control, netIf);
-
+		buttonRow =  new TutorialButtonRow(control);
+		header = new TutorialHeader();
 	}
-	
+
 	void OnGUI() {
 		if(!enable){
 			return;
@@ -51,6 +46,4 @@ public class GUI_script : MonoBehaviour {
 			}
 		}
 	}
-	
-
 }

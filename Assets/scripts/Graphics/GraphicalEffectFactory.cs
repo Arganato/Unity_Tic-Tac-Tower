@@ -25,6 +25,11 @@ public class GraphicalEffectFactory : MonoBehaviour {
 	
 	public void SilenceEffect(){
 		StartCoroutine("SilenceEnumerator");
+		SilenceShake();
+	}
+	
+	private void SilenceShake(){
+		Camera.main.animation.Play("SilenceShake");
 	}
 	
 	private IEnumerator SilenceEnumerator(){

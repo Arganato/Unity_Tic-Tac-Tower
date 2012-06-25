@@ -13,7 +13,7 @@ public class TutorialSkillCapButton : MenuButton {
 	}
 	
 	public override string Name(){
-		return "Skill Cap Tutorial";
+		return "Power Tutorial";
 	}
 	
 }

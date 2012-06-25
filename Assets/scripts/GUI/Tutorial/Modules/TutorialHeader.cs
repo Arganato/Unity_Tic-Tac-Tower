@@ -4,21 +4,22 @@ using System.Collections;
 public class TutorialHeader{
 
 	public bool enable = true;
-	public Rect position = new Rect(0,0,Screen.width,40);
+	public Rect position = new Rect(0,0,120,25);
 	
 	private DropdownMenu dropdownMenu;
 	
 	public TutorialHeader(){
 	}
 	
-	public void PrintGUI(TowerType tower){
-		HeaderText(tower);
+	public void PrintGUI(){
+		HeaderText();
+		//Possibly insert drop-down menu.
 	}
 	
-	private void HeaderText(TowerType tower){
+	private void HeaderText(){
 		string s = "";
 		GUI.Box(position,"");
-		switch(tower){
+		switch(Tutorial.towerTut){
 		case TowerType.build:
 			s = "Build";
 			break;
@@ -29,12 +30,12 @@ public class TutorialHeader{
 			s = "Silence";
 			break;
 		case TowerType.skillCap:
-			s = "Skillcap";
+			s = "Power";
 			break;
 		default:
 			Debug.LogError("Tried to access invalid skill tutorial");
 			break;
 		}
-		GUI.Box(new Rect(0,0,position.width-50,position.height/2),"Tutorial - " + s,"InvisBox");
+		GUI.Box(new Rect((Screen.width-position.width)/2,0,position.width,position.height),"Tutorial - " + s,"InvisBox");
 	}
 }
