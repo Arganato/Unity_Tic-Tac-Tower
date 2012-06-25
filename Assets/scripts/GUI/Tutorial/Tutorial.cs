@@ -4,7 +4,7 @@ using System.Collections;
 public class Tutorial : MonoBehaviour {
 
 	Vector2 scrollPos = new Vector2(0,0);
-	public GUIStyle textBox;
+	public GUISkin skin;
 	new public Transform camera;
 	public int border = 0;
 
@@ -20,28 +20,58 @@ public class Tutorial : MonoBehaviour {
 	
 	//event points
 	
-	private enum Chapter {menu, intro, exampleStr, tutStr, exampleDiag, tutDiag, end};
-	private Chapter chapter;
-	private TowerType towerTut;	//Used to know which tutorial is run. TowerType.five is used when none is run.
+	public
+	enum Chapter {intro, exampleStr, tutStr, exampleDiag, tutDiag, end};
+	public static Chapter chapter;
+	public static TowerType towerTut;	//Used to know which tutorial is run. TowerType.five is used when none is run.
+	public static GameState tutorialState;
 	
-	private SkillDescription buildDescr = new SkillDescription(TowerType.build);
-	private SkillDescription shootDescr = new SkillDescription(TowerType.shoot);
-	private SkillDescription silenceDescr = new SkillDescription(TowerType.silence);
-	private SkillDescription skillDescr = new SkillDescription(TowerType.skillCap);
+	private static SkillDescription buildDescr = new SkillDescription(TowerType.build);
+	private static SkillDescription shootDescr = new SkillDescription(TowerType.shoot);
+	private static SkillDescription silenceDescr = new SkillDescription(TowerType.silence);
+	private static SkillDescription skillDescr = new SkillDescription(TowerType.skillCap);
+	private static SkillDescription activeDescr;
+	private InfoWindow infoText = new InfoWindow();
 	
-	//private int section = 0;
+	public static TowerType tutorialType{
+        get { return towerTut; }
+        set {
+			towerTut = value;
+			switch(towerTut){
+			case TowerType.build:
+				activeDescr = buildDescr;
+				break;
+			case TowerType.shoot:
+				activeDescr = shootDescr;
+				break;
+			case TowerType.silence:
+				activeDescr = silenceDescr;
+				break;
+			case TowerType.skillCap:
+				activeDescr = skillDescr;
+				break;
+			default:
+				Debug.LogError("Tried to access invalid skill tutorial");
+				break;
+			}
+		}
+    }
 	
 	private int menuWidth = 300;
 	private int menuChangeSpeed = 50; //100px/2sec
 	
-	//text
-	private string introText = "this is a scroll text \n\n\n\n\n\n\n this is further down\n\n\n\n\nthis is even further down\n\n this sentence is so long only because I wanted to see if the line is clipped or not. Probably it is clipped, and that would make me kinda sad.";
+	public static void SetupTutorial(){
+		tutorialState = new GameState();
+		chapter = Chapter.intro;
+	}
+	
+	//Stats.startState.SetTutorialBuild1();
+	//Stats.skillEnabled.SetAll(false);
+	//Stats.skillEnabled.build = true;
 	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
 		control.StartNewGame();
-		chapter = Chapter.menu;
-		towerTut = TowerType.five;
 	}
 	void Update(){
 		//if(changeChapter && chapter == 0 && menuWidth > 200){
@@ -50,37 +80,24 @@ public class Tutorial : MonoBehaviour {
 	}
 	
 	void OnGUI(){
+		
+		GUI.skin = skin;
 		switch(chapter){
-		case Chapter.menu:
-			PrintMenu();
-			//PrintTextWindow();
-			break;
 		case Chapter.intro:
-			PrintSkillInfoWindow();
-			switch(towerTut){
-			case TowerType.build:
-				//For Build Skill Tutorial.
-				break;
-			case TowerType.shoot:
-				//For Shoot Skill Tutorial.
-				break;
-			case TowerType.silence:
-				//For Silence Skill Tutorial.
-				break;
-			case TowerType.skillCap:
-				//For Skill Skill Tutorial.
-				break;
-			default:
-				Debug.LogError("Tried to access invalid skill tutorial");
-				break;
-			}		
+			activeDescr.PrintGUI();
+			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
+				chapter = Chapter.exampleStr;
+			}
 			break;
 		case Chapter.exampleStr:
-			control.StartNewGame();
+			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
+				chapter = Chapter.tutStr;
+			}
+			infoText.PrintTutorialText();
+			//control.StartNewGame();
 			switch(towerTut){
 			case TowerType.build:
 				//For Build Skill Tutorial.
-				Stats.SetTutorialBuild1();
 				break;
 			case TowerType.shoot:
 				//For Shoot Skill Tutorial.
@@ -97,6 +114,10 @@ public class Tutorial : MonoBehaviour {
 			}		
 			break;
 		case Chapter.tutStr:
+			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
+				chapter = Chapter.exampleDiag;
+			}
+			infoText.PrintTutorialText();
 			switch(towerTut){
 			case TowerType.build:
 				//For Build Skill Tutorial.
@@ -116,6 +137,10 @@ public class Tutorial : MonoBehaviour {
 			}
 			break;
 		case Chapter.exampleDiag:
+			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
+				chapter = Chapter.tutDiag;
+			}
+			infoText.PrintTutorialText();
 			switch(towerTut){
 			case TowerType.build:
 				//For Build Skill Tutorial.
@@ -135,6 +160,10 @@ public class Tutorial : MonoBehaviour {
 			}
 			break;
 		case Chapter.tutDiag:
+			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
+				chapter = Chapter.end;
+			}
+			infoText.PrintTutorialText();
 			switch(towerTut){
 			case TowerType.build:
 				//For Build Skill Tutorial.
@@ -154,90 +183,15 @@ public class Tutorial : MonoBehaviour {
 			}
 			break;
 		case Chapter.end:
-			switch(towerTut){
-			case TowerType.build:
-				//For Build Skill Tutorial.
-				break;
-			case TowerType.shoot:
-				//For Shoot Skill Tutorial.
-				break;
-			case TowerType.silence:
-				//For Silence Skill Tutorial.
-				break;
-			case TowerType.skillCap:
-				//For Skill Skill Tutorial.
-				break;
-			default:
-				Debug.LogError("Tried to access invalid skill tutorial");
-				break;
+			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Finish.")){
+				Application.LoadLevel("MainMenu");
 			}
+			infoText.PrintTutorialText();
 			break;
 		}
 		
-	}
+	}	
 	
-		
-	void PrintMenu(){
-		//deler skjermen i tre like deler:
-		//int buttonWidth = 100;
-		//int buttonHeight = 40;
-		//int b1Start = (Screen.width-2*buttonWidth)/3;
-		//int b2Start = 2*b1Start + buttonWidth;
-		//int b1Start = (Screen.width-buttonWidth)/2;
-		//int b2Start = Screen.width-buttonWidth;
-		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, 200, buttonWidth, buttonHeight), "Build Tower")){
-			Stats.SetDefaultSettings();
-			Stats.SetTutorialBuild1();
-			chapter = Chapter.intro;
-			towerTut = TowerType.build;	//Build Skill Tutorial
-			//chapter = Chapter.exampleStr; //Brukes for å fort komme til det kapittelet man selv ønsker (for debug/testing).
-		}
-		
-		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, 250, buttonWidth, buttonHeight), "Shoot Build")){
-			Stats.SetDefaultSettings();
-			Stats.SetTutorialBuild1();
-			chapter = Chapter.intro;
-			towerTut = TowerType.shoot;	//Shoot Skill Tutorial
-		}
-		
-		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, 300, buttonWidth, buttonHeight), "Silence Build")){
-			Stats.SetDefaultSettings();
-			Stats.SetTutorialBuild1();
-			chapter = Chapter.intro;
-			towerTut = TowerType.silence;	//Silence Skill Tutorial
-		}
-		
-		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, 350, buttonWidth, buttonHeight), "Skill Build")){
-			Stats.SetDefaultSettings();
-			Stats.SetTutorialBuild1();
-			chapter = Chapter.intro;
-			towerTut = TowerType.skillCap;	//Skill cap Skill Tutorial
-		}
-		
-		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Main Menu")){
-			Stats.SetDefaultSettings();
-			Stats.SetTutorialBuild1();
-			Application.LoadLevel("mainMenu");
-		}
-		
-	}
-	
-
-	private void PrintTextWindow(){
-
-		GUI.BeginScrollView(new Rect(0,100,menuWidth, 500),scrollPos, new Rect(0,0,menuWidth,800));
-		GUI.Box(new Rect(0,0,menuWidth,800),introText,textBox);
-		GUI.EndScrollView();
-	}
-	
-	private void PrintSkillInfoWindow(){
-		//GUI.BeginScrollView(new Rect(0,100,200, 500),scrollPos, new Rect(0,0,200,800));
-		buildDescr.PrintGUI();
-		if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, 200, buttonWidth, buttonHeight), "Continue")){
-			chapter = Chapter.exampleStr;
-		}
-		//GUI.EndScrollView();
-	}
 	/*
 	private void SimpleChangeChapter(){
 		Debug.Log("simple change chapter");

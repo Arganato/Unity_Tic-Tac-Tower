@@ -62,7 +62,6 @@ public class TutorialBuild : MonoBehaviour {
 		if(GUI.Button(new Rect(border+b1Start, Screen.height-50, buttonWidth-border, 50-border), "Continue")){
 			chapter = Chapter.exampleStr;
 			Stats.SetDefaultSettings();
-			Stats.SetTutorialBuild1();
 			//Application.LoadLevel("tutorialBuild");
 		}
 		

@@ -100,13 +100,6 @@ public static class Stats{
 		rules = Rules.INVISIBLE_TOWERS;
 	}
 	
-	public static void SetTutorialBuild1(){
-		fieldSize = 9;
-		startState.SetTutorialBuild1();
-		skillEnabled.SetAll(false);
-		skillEnabled.build = true;
-	}
-	
 	public static void StartUpRoutine(){
 		Application.targetFrameRate = 15;
 	}
