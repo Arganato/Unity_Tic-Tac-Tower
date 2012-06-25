@@ -50,19 +50,6 @@ public static class ResourceFactory{
 			default:
 				return "";
 			}
-		case Tutorial.Chapter.exampleStr:
-			switch(Tutorial.towerTut){
-			case TowerType.build:
-				return "The following shows how to build a straight Build Tower.";
-			case TowerType.shoot:
-				return "The following shows how to build a straight Shoot Tower.";
-			case TowerType.silence:
-				return "The following shows how to build a straight Silence Tower.";
-			case TowerType.skillCap:
-				return "The following shows how to build a straight Power Tower.";
-			default:
-				return "";
-			}
 		case Tutorial.Chapter.tutStr:
 			switch(Tutorial.towerTut){
 			case TowerType.build:
@@ -86,19 +73,6 @@ public static class ResourceFactory{
 				return "The image above shows how to construct a diagonal Silence Tower.";
 			case TowerType.skillCap:
 				return "The image above shows how to construct a diagonal Power Tower.";
-			default:
-				return "";
-			}
-		case Tutorial.Chapter.exampleDiag:
-			switch(Tutorial.towerTut){
-			case TowerType.build:
-				return "The following shows how to build a diagonal Build Tower.";
-			case TowerType.shoot:
-				return "The following shows how to build a diagonal Shoot Tower.";
-			case TowerType.silence:
-				return "The following shows how to build a diagonal Silence Tower.";
-			case TowerType.skillCap:
-				return "The following shows how to build a diagonal Power Tower.";
 			default:
 				return "";
 			}

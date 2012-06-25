@@ -20,7 +20,7 @@ public class Tutorial : MonoBehaviour {
 	//event points
 	
 	public
-	enum Chapter {intro, textStr, exampleStr, tutStr, textDiag, exampleDiag, tutDiag, end};
+	enum Chapter {intro, textStr, tutStr, textDiag, tutDiag, end};
 	public static Chapter chapter;
 	public static TowerType towerTut;	//Used to know which tutorial is run. TowerType.five is used when none is run.
 	public static GameState tutorialState;
@@ -92,30 +92,6 @@ public class Tutorial : MonoBehaviour {
 				camera.animation.Play("anim1");
 			}
 			break;
-//		case Chapter.exampleStr:
-//			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
-//				chapter = Chapter.tutStr;
-//				//camera.animation.Play("anim2");
-//			}
-//			switch(towerTut){
-//			case TowerType.build:
-//				//For Build Skill Tutorial.
-//				break;
-//			case TowerType.shoot:
-//				//For Shoot Skill Tutorial.
-//				break;
-//			case TowerType.silence:
-//				//For Silence Skill Tutorial.
-//				break;
-//			case TowerType.skillCap:
-//				//For Skill Skill Tutorial.
-//				break;
-//			default:
-//				Debug.LogError("Tried to access invalid skill tutorial");
-//				break;
-//			}
-//			control.StartNewGame();
-//			break;
 		case Chapter.tutStr:
 			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
 				camera.animation.Play("anim2");
@@ -147,30 +123,6 @@ public class Tutorial : MonoBehaviour {
 				camera.animation.Play("anim1");
 			}
 			break;
-//		case Chapter.exampleDiag:
-//			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
-//				chapter = Chapter.tutDiag;
-//				camera.animation.Play("anim2");
-//			}
-//			infoText.PrintTutorialText();
-//			switch(towerTut){
-//			case TowerType.build:
-//				//For Build Skill Tutorial.
-//				break;
-//			case TowerType.shoot:
-//				//For Shoot Skill Tutorial.
-//				break;
-//			case TowerType.silence:
-//				//For Silence Skill Tutorial.
-//				break;
-//			case TowerType.skillCap:
-//				//For Skill Skill Tutorial.
-//				break;
-//			default:
-//				Debug.LogError("Tried to access invalid skill tutorial");
-//				break;
-//			}
-//			break;
 		case Chapter.tutDiag:
 			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
 				camera.animation.Play("anim2");
