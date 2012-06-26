@@ -12,6 +12,8 @@ public class Control: MonoBehaviour {
 	private Sound sound;
 	private GraphicalEffectFactory graphicalEffectFactory;
 	
+	private bool victory = false;
+	
 	void Awake () {
 		sound = (Sound)FindObjectOfType(typeof(Sound));
 		graphicalEffectFactory = (GraphicalEffectFactory)FindObjectOfType(typeof(GraphicalEffectFactory));
@@ -51,6 +53,8 @@ public class Control: MonoBehaviour {
 					break;
 			}
 			ExecuteOrder(o);
+			if(victory)
+				Victory(cState.activePlayer);
 		}
 	}
 	
@@ -88,23 +92,28 @@ public class Control: MonoBehaviour {
 				cState.player[cState.activePlayer].AddScore(tower.Count);
 				sound.PlayEffect(SoundType.newTower);
 			}
+			Tower fiveTower = null;
 			foreach( Tower t in tower){
-				//Checking for victory
 
 				//Coloring the towers:
 				foreach(FieldIndex i in t.GetList()){ 
-					
-					if(Stats.rules == Stats.Rules.SOLID_TOWERS || t.type == TowerType.five){
+					if(t.type == TowerType.five){
+						fiveTower = t;
+					}
+					if(Stats.rules == Stats.Rules.SOLID_TOWERS){
 						cState.field[i] = Field<int>.GetDarkRoute(cState.field[i]);
 					}else if(Stats.rules == Stats.Rules.INVISIBLE_TOWERS){
 						cState.field[i] = Route.empty;
 					}
 				}
-				if(t.type == TowerType.five){
-					Victory(cState.activePlayer);
-				}
 				//adding skills:
 				ReportTower(t);
+			}
+			if(fiveTower != null){
+				foreach(FieldIndex i in fiveTower.GetList()){ //recoloring five-towers
+					cState.field[i] = Field<int>.GetDarkRoute(Field<int>.GetPlayerColor(cState.activePlayer));
+				}
+				victory = true;
 			}
 			graphicalEffectFactory.BuildingConstructionEffect(tower);
 		}else if(tower.Count > 0){ //if a tower was found that was blocked by Silence
@@ -115,11 +124,12 @@ public class Control: MonoBehaviour {
 	}
 	
 	private void Victory(int player){
+		victory = false;
 		sound.PlayEffect(SoundType.victory);
+		EndTurn();
 		Console.PrintToConsole("Player "+(player+1)+" has won!",Console.MessageType.INFO);
 		Stats.gameRunning = false;
 		PopupMessage.DisplayMessage("Player "+(player+1)+" has won!",10f);
-		EndTurn();
 		//TODO: victory-screen
 	}
 	
@@ -181,7 +191,7 @@ public class Control: MonoBehaviour {
 	private bool PlacePiece(FieldIndex index){ //placing piece in a normal turn
 		if (playerDone == false && cState.field[index] == Route.empty){
 //			Debug.Log("Index: " + index);
-			sound.PlayEffect (SoundType.onClick);
+			
 			if(cState.activePlayer == 0){
 				cState.field[index] = Route.red;
 			}else{
@@ -190,7 +200,9 @@ public class Control: MonoBehaviour {
 			if(CheckCluster(index)){
 				cState.IncPieceCount();
 				playerDone = true;
+				sound.PlayEffect (SoundType.onClick);
 			}else{ //the move is illegal due to silence
+				sound.PlayEffect (SoundType.error);
 				cState.field[index] = Route.empty;
 				Console.PrintToConsole("You are silenced; You can't build towers",Console.MessageType.ERROR);
 				return false;

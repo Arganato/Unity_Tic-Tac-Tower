@@ -41,7 +41,7 @@ public class DropdownMenu{
 			if(endGame.PrintGUI()){
 				Control.QuitGame();
 			}
-			if(resign.PrintGUI()){
+			if(Stats.gameRunning && resign.PrintGUI()){
 				control.UserResign();
 			}
 			Console.PrintButton();

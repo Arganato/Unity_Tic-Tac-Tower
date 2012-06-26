@@ -268,7 +268,9 @@ public class Tower {
 							if((j%2==1 && Stats.skillEnabled.diagSilence) || ( j%2==0 && Stats.skillEnabled.silence)){ // silence
 								FindEmpTower(j, ind, taken, ref buildList);
 							}
-							FindFiveTower(j, ind, taken, ref buildList);
+							if((j%2==1 && Stats.skillEnabled.diagFive) || ( j%2==0 && Stats.skillEnabled.five)){
+								FindFiveTower(j, ind, taken, ref buildList);
+							}
 						}
 						if(j>5 && ((j%2==1 && Stats.skillEnabled.diagSkillCap) || (j%2==0 && Stats.skillEnabled.skillCap))){ // square
 							FindSquareTower(j, ind, taken, ref buildList);

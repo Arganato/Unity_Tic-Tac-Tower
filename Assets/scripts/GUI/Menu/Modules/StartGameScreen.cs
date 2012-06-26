@@ -17,8 +17,8 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 	
 	private void SetUp(){
 		selectRules = new GUIList(new Rect(100,50,180,25));
-		selectRules.AddElement("Disappearing towers");
-		selectRules.AddElement("Solid towers");
+		selectRules.AddElement("Consumed towers");
+		selectRules.AddElement("Persistent towers");
 		selectTowers = new GUIList(new Rect(100,100,180,25));
 		selectTowers.AddElement("All towers");
 		selectTowers.AddElement("Straight only");
@@ -53,10 +53,19 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 			if(localGame)
 				GUI.Box(new Rect(0,0,position.width,25),"Start Local Game");
 			else
-				GUI.Box(new Rect(0,0,position.width,25),"Networked play (beta)");
+				GUI.Box(new Rect(0,0,position.width,25),"Networked game (beta)");
 				
 			if(!localGame && readOnly){
-				string rules = "Rules: "+Stats.rules.ToString();
+				string rules = "Rules: ";
+				switch(Stats.rules){
+				case Stats.Rules.INVISIBLE_TOWERS:
+					rules += "Consumed Towers";
+					break;
+				case Stats.Rules.SOLID_TOWERS:
+					rules += "Persistent Towers";
+					break;
+				}
+				
 				GUI.Label(selectRules.position,rules);
 				
 				//Hacka sammen utskrift for towers, siden det bare er to muligheter:
