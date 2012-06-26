@@ -8,12 +8,16 @@ public class OptionsGUI : MenuContent {
 	
 	private bool settingsSaved = false;
 	
+	private float masterVolume = 1f;
 	private float musicVolume = 1f;
 	private float effectVolume = 1f;
 	private bool muteMusic = false;
 	private string targetFrameRateString = "15";
 	
-	public OptionsGUI(){
+	private Sound sound;
+	
+	public OptionsGUI(MainMenu m){
+		sound = m.GetSoundScript();
 		SetUpScreen();
 		SetupValues();
 	}
@@ -36,7 +40,11 @@ public class OptionsGUI : MenuContent {
 	
 	public override void PrintGUI (){
 		GUILayout.BeginArea(position);
-
+		if(settingsSaved){
+			GUILayout.Label("Settings saved...",GUILayout.Height(25));
+		}else{
+			GUILayout.Space(25);
+		}
 		GUILayout.FlexibleSpace();
 		Sound();
 		GUILayout.FlexibleSpace();
@@ -59,6 +67,10 @@ public class OptionsGUI : MenuContent {
 		GUILayout.BeginVertical("","box");
 		GUILayout.Label("Sound");
 		muteMusic = GUILayout.Toggle(muteMusic,"Mute");
+		GUILayout.BeginHorizontal();
+		GUILayout.Label("Master-volume");
+		masterVolume = GUILayout.HorizontalSlider(masterVolume,0f,1f);
+		GUILayout.EndHorizontal();		
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Music volume");
 		musicVolume = GUILayout.HorizontalSlider(musicVolume,0f,1f);
@@ -84,24 +96,37 @@ public class OptionsGUI : MenuContent {
 		int framerateInt = System.Convert.ToInt32(targetFrameRateString);
 		if(framerateInt >= 5 && framerateInt <= 60){
 			Application.targetFrameRate = framerateInt;
-		}else if(framerateInt >= 5){
+		}else if(framerateInt < 5){
 			Application.targetFrameRate = 5;
 		}else{
 			Application.targetFrameRate = 60;
 		}
 		
 		//Sound...
+		sound.audio.volume = masterVolume;
+		sound.effectVolume = effectVolume;
+		sound.musicVolume = musicVolume;
+		sound.audio.mute = muteMusic; 
+		
 		SetupValues();
+		settingsSaved = true;
 	}
 	
 	private void SetupValues(){
 		targetFrameRateString = System.Convert.ToString(Application.targetFrameRate);
-		
+		masterVolume = sound.audio.volume;
+		effectVolume = sound.effectVolume;
+		musicVolume = sound.musicVolume;
+		muteMusic = sound.audio.mute;
 	}
 	
 	private void SetDeafult(){
 		Application.targetFrameRate = 15;
-		targetFrameRateString = "15";
+		sound.audio.volume = 1f;
+		sound.effectVolume = 1f;
+		sound.musicVolume = 1f;
+		sound.audio.mute = false; 
+		SetupValues();
 	}
 	
 	

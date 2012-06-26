@@ -8,7 +8,7 @@ public class OptionsButton : MenuButton {
 	private OptionsGUI optionsMenu;
 	public OptionsButton(MainMenu m){
 		mainMenu = m;
-		optionsMenu = new OptionsGUI();
+		optionsMenu = new OptionsGUI(mainMenu);
 	}
 	public override void ButtonDown(){
 		mainMenu.AddMenu(optionsMenu);

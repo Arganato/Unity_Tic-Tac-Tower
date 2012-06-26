@@ -5,17 +5,26 @@ public class MainMenu : MonoBehaviour {
 	
 	public GUISkin customSkin;
 	public Transform network;
+	public Transform soundObject;
 	
 	private Frame mainMenuFrame;
 	private List<MenuContent> menuStack = new List<MenuContent>();
+	
+	private NetworkInterface nif;
+	private Sound sound;
 		
 	void Start () {
 		Stats.StartUpRoutine(); //should be called once at the beginning of every game (include in loading script or smt)
 
-		NetworkInterface nif = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
+		nif = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
 		if(nif == null){
 			Instantiate(network);
 		}
+		sound = (Sound)FindObjectOfType(typeof(Sound));
+		if(sound == null)
+			Instantiate(soundObject);
+		
+		
 		
 		mainMenuFrame = Frame.Create("Main Menu");
 
@@ -54,11 +63,16 @@ public class MainMenu : MonoBehaviour {
 	}
 	
 	public NetworkInterface FindNetworkInterface(){
-		NetworkInterface nif = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
 		if(nif == null)
-			Debug.LogError("No network interface found!");
+			nif = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
 		return nif;
 	}
+	public Sound GetSoundScript(){
+		if(sound == null)
+			sound = (Sound)FindObjectOfType(typeof(Sound));		
+		return sound;
+	}
+	
 	
 	private void Quit(){
 		Application.Quit();

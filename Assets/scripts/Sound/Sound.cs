@@ -5,6 +5,8 @@ public enum SoundType {onClick, error, undo, shoot, build, silence, newTower, de
 
 public class Sound : MonoBehaviour {
 	
+	public static Vector3 position = new Vector3(0f,30f,-10f); 
+	
 	public AudioClip[] backgroudMusic;
 	public AudioClip onButtonPress;
 	public AudioClip onError;
@@ -25,8 +27,10 @@ public class Sound : MonoBehaviour {
 	
 	
 	void Start () {
+		DontDestroyOnLoad(gameObject);
 		musicVolume = 1f;
 		effectVolume = 1f;
+		transform.position = position;
 		PlaySong(RandomInt(backgroudMusic.Length));
 	}
 	
