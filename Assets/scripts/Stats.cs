@@ -78,17 +78,20 @@ public static class Stats{
 		
 	//member variables&functions:
 	
+	//game-related
 	public static int fieldSize = 9;
 	public static GameState startState = new GameState();
 	public static SkillEnabled skillEnabled = SkillEnabled.AllActive();
 	public static Rules rules;
 	public static bool gameRunning = true;
+	//network-related
 	public static bool hasConnection = false; //set to true when a network connection is established
 	public static PlayerController[] playerController = new PlayerController[2];
 	public const string uniqueGameID = "TicTacTower_0.9000";
 	public static bool networkEnabled = false;
 	public static string playerName = "Player 1";
 	
+	private static bool hasRanStartupRoutine = false;
 	public static int totalArea{
 		get{return fieldSize*fieldSize;}
 	}
@@ -102,7 +105,10 @@ public static class Stats{
 	}
 	
 	public static void StartUpRoutine(){
-		Application.targetFrameRate = 15;
+		if(!hasRanStartupRoutine){
+			Application.targetFrameRate = 15;
+		}
+		hasRanStartupRoutine = true;
 	}
 	
 	public static string MakeNetworkPackage(){

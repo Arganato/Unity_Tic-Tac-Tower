@@ -84,7 +84,10 @@ public class Control: MonoBehaviour {
 
 //			Debug.Log(activePlayer + " silenced: " + player[activePlayer].silenced);
 		if(!cState.player[cState.activePlayer].silenced){
-			cState.player[cState.activePlayer].AddScore(tower.Count);
+			if(tower.Count > 0){
+				cState.player[cState.activePlayer].AddScore(tower.Count);
+				sound.PlayEffect(SoundType.newTower);
+			}
 			foreach( Tower t in tower){
 				//Checking for victory
 
@@ -112,7 +115,7 @@ public class Control: MonoBehaviour {
 	}
 	
 	private void Victory(int player){
-		sound.PlaySound(SoundType.victory);
+		sound.PlayEffect(SoundType.victory);
 		Console.PrintToConsole("Player "+(player+1)+" has won!",Console.MessageType.INFO);
 		Stats.gameRunning = false;
 		PopupMessage.DisplayMessage("Player "+(player+1)+" has won!",10f);
@@ -178,7 +181,7 @@ public class Control: MonoBehaviour {
 	private bool PlacePiece(FieldIndex index){ //placing piece in a normal turn
 		if (playerDone == false && cState.field[index] == Route.empty){
 //			Debug.Log("Index: " + index);
-			sound.PlaySound(SoundType.onClick);
+			sound.PlayEffect (SoundType.onClick);
 			if(cState.activePlayer == 0){
 				cState.field[index] = Route.red;
 			}else{
@@ -199,7 +202,7 @@ public class Control: MonoBehaviour {
 			}else{
 				Console.PrintToConsole("Cannot place there",Console.MessageType.ERROR);
 			}
-			sound.PlaySound(SoundType.error);
+			sound.PlayEffect(SoundType.error);
 			// **DEBUG** write this out somehow
 			return false;
 		}
@@ -215,12 +218,12 @@ public class Control: MonoBehaviour {
 			CheckCluster(index);
 			cState.IncPieceCount();
 			Skill.skillInUse = 0;
-			sound.PlaySound(SoundType.build);
+			sound.PlayEffect(SoundType.build);
 			return true;
 		}else{
 			Debug.Log("invalid move");
 			Console.PrintToConsole("Cannot place there",Console.MessageType.ERROR);
-			sound.PlaySound(SoundType.error);
+			sound.PlayEffect(SoundType.error);
 			return false;
 		}
 		//do not change first player
@@ -234,12 +237,12 @@ public class Control: MonoBehaviour {
 			Skill.skillsUsed.shoot++;
 			Skill.skillInUse = 0;
 			BroadcastMessage("UpdateField");
-			sound.PlaySound(SoundType.shoot);
+			sound.PlayEffect(SoundType.shoot);
 			return true;
 		}else{
 			Console.PrintToConsole("Can only shoot active enemy pieces",Console.MessageType.ERROR);
 			Debug.Log("invalid move");
-			sound.PlaySound(SoundType.error);
+			sound.PlayEffect(SoundType.error);
 			return false;
 			//write this out somehow
 		}
@@ -251,7 +254,7 @@ public class Control: MonoBehaviour {
 		Skill.skillsUsed.silence++;
 		cState.player[cState.activePlayer].playerSkill.silence--;
 		cState.player[(cState.activePlayer+1)%2].silenced = true;
-		sound.PlaySound(SoundType.silence);
+		sound.PlayEffect(SoundType.silence);
 		Skill.skillInUse = 0;
 		graphicalEffectFactory.SilenceEffect();
 		return true;
@@ -301,7 +304,6 @@ public class Control: MonoBehaviour {
 		Skill.skillsUsed = new SkillContainer();
 		playerDone = false;
 		
-		sound.PlaySound(SoundType.background);
 		activeTurn = new Turn();
 		BroadcastMessage("InitField");
 	}
@@ -319,10 +321,10 @@ public class Control: MonoBehaviour {
 	
 	public static void QuitGame(){
 		//cleans up stuff, and makes ready to quit the game
-		NetworkInterface nif = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
-		if(nif != null){
-			nif.DestroySelf();
-		}
+//		NetworkInterface nif = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
+//		if(nif != null){
+//			nif.DestroySelf();
+//		}
 		Application.LoadLevel("mainMenu");
 	}
 }
