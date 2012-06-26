@@ -57,8 +57,7 @@ public class Tutorial : MonoBehaviour {
     }
 	
 	public static void StartTutorial(){
-		tutorialState = new GameState();
-		Stats.startState = tutorialState;
+		Stats.startState = new GameState();
 		chapter = Chapter.intro;
 	}
 	
@@ -111,6 +110,7 @@ public class Tutorial : MonoBehaviour {
 	}
 	
 	public static void SetTutorial(){
+		Stats.startState = new GameState();
 		switch(towerTut){
 		case TowerType.build:
 			if(chapter == Chapter.tutStr) SetTutorialBuild1();
