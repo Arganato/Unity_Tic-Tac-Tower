@@ -15,17 +15,19 @@ public class TutorialButtonRow{
 		position = new Rect(Screen.width/2-width/2,Screen.height-110,width,40);
 	}
 	
-	public void PrintGUI(){
+	public bool PrintGUI(){
 		if(enable){
 			if(Stats.playerController[Control.cState.activePlayer] != Stats.PlayerController.localPlayer){
 				GUI.enabled = false;
 			}
 			GUI.BeginGroup(position);
-			checkSolution.PrintGUI();
+			bool check = checkSolution.PrintGUI();
 			undo.PrintGUI();
 			GUI.EndGroup();
 			GUI.enabled = true;
+			return check;
 		}
+		return false;
 	}
 	
 	

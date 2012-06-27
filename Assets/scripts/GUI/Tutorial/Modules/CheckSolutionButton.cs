@@ -12,10 +12,11 @@ public class CheckSolutionButton{
 		control = c;
 	}
 	
-	public void PrintGUI(){
+	public bool PrintGUI(){
+		bool buttonDown = false;
 		if(enable){
 			if(control.playerDone && GUI.Button( position, "Check\nSolution")){
-				//Run checkSolution();
+				buttonDown = true;
 			}else if(!control.playerDone){
 				Color old = GUI.contentColor;
 				if(Control.cState.activePlayer == 0)
@@ -26,6 +27,7 @@ public class CheckSolutionButton{
 				GUI.contentColor=old;
 			}
 		}
+		return buttonDown;
 	}
 	
 }

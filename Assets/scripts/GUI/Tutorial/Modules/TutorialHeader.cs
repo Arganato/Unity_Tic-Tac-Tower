@@ -8,12 +8,13 @@ public class TutorialHeader{
 	
 	private DropdownMenu dropdownMenu;
 	
-	public TutorialHeader(){
+	public TutorialHeader(Control c){
+		dropdownMenu = new DropdownMenu(c,null);
 	}
 	
 	public void PrintGUI(){
 		HeaderText();
-		//Possibly insert drop-down menu.
+		dropdownMenu.PrintGUI();
 	}
 	
 	private void HeaderText(){

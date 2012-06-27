@@ -12,12 +12,14 @@ public class Tutorial_GUI : MonoBehaviour {
 
 	private SkillGUI skillGUI = SkillGUI.TutorialCreate();
 	private TutorialButtonRow buttonRow;
+	private Tutorial tutorial;
 	
 	// Use this for initialization
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
 		grid = (Grid)FindObjectOfType(typeof(Grid));
 		buttonRow =  new TutorialButtonRow(control);
+		tutorial = (Tutorial)FindObjectOfType(typeof(Tutorial));
 	}
 
 	void OnGUI() {
@@ -29,7 +31,9 @@ public class Tutorial_GUI : MonoBehaviour {
 		if(Tutorial.chapter == Tutorial.Chapter.tutStr || Tutorial.chapter == Tutorial.Chapter.tutDiag){
 			skillGUI.PrintGUI();
 		}
-		buttonRow.PrintGUI();
+		if(buttonRow.PrintGUI()){
+			tutorial.CheckSolution();
+		}
 
 		PopupMessage.PrintGUI();
 		
@@ -38,9 +42,6 @@ public class Tutorial_GUI : MonoBehaviour {
 		if(Event.current.type == EventType.MouseDown){
 			if( Event.current.type != EventType.Used ){
 				grid.MouseDown(Input.mousePosition);
-				print("sending mouse click");
-			}else{
-				print("not sending mouse click");
 			}
 		}
 	}

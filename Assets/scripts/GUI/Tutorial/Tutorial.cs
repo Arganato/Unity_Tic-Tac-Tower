@@ -126,7 +126,7 @@ public class Tutorial : MonoBehaviour {
 		control = (Control)FindObjectOfType(typeof(Control));
 		tutorialGUI = (Tutorial_GUI)FindObjectOfType(typeof(Tutorial_GUI));
 		tutorialGUI.enable = false;
-		header = new TutorialHeader();
+		header = new TutorialHeader(control);
 	}
 	
 	void Update(){
@@ -138,17 +138,16 @@ public class Tutorial : MonoBehaviour {
 	void OnGUI(){
 		
 		GUI.skin = skin;
-		
-		header.PrintGUI();
-		
+
 		if(showTutorialWindow){
 			GUI.Window(5,tutorialWindowRect,TutorialWindow,"Tutorial");
 		}else{
 			if(GUI.Button(new Rect(0,0,100,25),"Open window")){
 				showTutorialWindow = true;
 			}
+
 		}
-		
+		header.PrintGUI();
 //		if(chapter == Chapter.tutStr  || chapter == Chapter.tutDiag){
 //			//do something with case...
 //			switch(towerTut){
@@ -171,6 +170,10 @@ public class Tutorial : MonoBehaviour {
 //		}
 		
 	}	
+	
+	public void CheckSolution(){
+		SolutionChecker.CheckSolution(chapter,towerTut);
+	}
 	
 	private void TutorialWindow(int windowID){
 		GUILayout.BeginArea(new Rect(0,0,tutorialWindowRect.width,20));
