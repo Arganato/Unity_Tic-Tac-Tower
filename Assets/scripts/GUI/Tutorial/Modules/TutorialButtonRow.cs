@@ -6,11 +6,11 @@ public class TutorialButtonRow{
 	public bool enable = true;
 	public Rect position;
 	private CheckSolutionButton checkSolution;
-	private QuitTutorialButton quitTutorial;
+	private UndoButton undo;
 	
 	public TutorialButtonRow(Control c){
 		checkSolution = new CheckSolutionButton(c);
-		quitTutorial = new QuitTutorialButton(c);
+		undo = new UndoButton(c);
 		float width = 300f;
 		position = new Rect(Screen.width/2-width/2,Screen.height-110,width,40);
 	}
@@ -22,7 +22,7 @@ public class TutorialButtonRow{
 			}
 			GUI.BeginGroup(position);
 			checkSolution.PrintGUI();
-			quitTutorial.PrintGUI();
+			undo.PrintGUI();
 			GUI.EndGroup();
 			GUI.enabled = true;
 		}

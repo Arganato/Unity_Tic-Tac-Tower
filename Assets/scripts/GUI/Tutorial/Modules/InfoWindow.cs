@@ -15,7 +15,8 @@ public class InfoWindow{
 
 
 	public InfoWindow(){
-		position = new Rect((Screen.width-width)/2,(Screen.height-height)/2,width,height);
+//		position = new Rect((Screen.width-width)/2,(Screen.height-height)/2,width,height);
+		position = new Rect(0,0,width,height);
 	}
 
 	public void PrintTutorialText(){
