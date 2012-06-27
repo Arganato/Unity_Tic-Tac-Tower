@@ -39,7 +39,7 @@ public class Grid : MonoBehaviour {
 		Ray ray = Camera.main.ScreenPointToRay (pos);
 		RaycastHit hit;
 		//Debug.Log("Looking for planet");
-		if (Physics.Raycast (ray, out hit, 100)) {
+		if (Physics.Raycast (ray, out hit, 1000)) {
 			GridUnit gu = hit.transform.GetComponent<GridUnit>();
 			if(gu == null){
 				Debug.Log("component GridUnit not found on mouseclick-target");
