@@ -17,6 +17,7 @@ public class CheckSolutionButton{
 		if(enable){
 			if(control.playerDone && GUI.Button( position, "Check\nSolution")){
 				buttonDown = true;
+				if(SolutionChecker.CheckSolution(Tutorial.chapter, Tutorial.towerTut)) Debug.Log ("Solution is correct!"); //Added for debugging.
 			}else if(!control.playerDone){
 				Color old = GUI.contentColor;
 				if(Control.cState.activePlayer == 0)

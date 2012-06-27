@@ -55,42 +55,46 @@ public class Tutorial : MonoBehaviour {
 	}
 	public static void SetTutorialBuild1(){
 		Stats.startState.SetTutorialBuild1();
-		Stats.skillEnabled.build = true;
+		Stats.skillEnabled.SetAll(false);
+		Stats.skillEnabled.SetStraight(true);
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
 	public static void SetTutorialBuild2(){
 		Stats.startState.SetTutorialBuild2();
-		Stats.skillEnabled.build = true;
+		Stats.skillEnabled.SetAll(true);
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
 	public static void SetTutorialShoot1(){
 		Stats.startState.SetTutorialShoot1();
-		Stats.skillEnabled.shoot = true;
+		Stats.skillEnabled.SetAll(false);
+		Stats.skillEnabled.SetStraight(true);
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
 	public static void SetTutorialShoot2(){
 		Stats.startState.SetTutorialShoot2();
-		Stats.skillEnabled.shoot = true;
+		Stats.skillEnabled.SetAll(true);
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
 	public static void SetTutorialSilence1(){
 		Stats.startState.SetTutorialSilence1();
-		Stats.skillEnabled.silence = true;
+		Stats.skillEnabled.SetAll(false);
+		Stats.skillEnabled.SetStraight(true);
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
 	public static void SetTutorialSilence2(){
 		Stats.startState.SetTutorialSilence2();
-		Stats.skillEnabled.silence = true;
+		Stats.skillEnabled.SetAll(true);
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
 	public static void SetTutorialPower1(){
 		Stats.startState.SetTutorialPower1();
-		Stats.skillEnabled.skillCap = true;
+		Stats.skillEnabled.SetAll(false);
+		Stats.skillEnabled.SetStraight(true);
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
 	public static void SetTutorialPower2(){
 		Stats.startState.SetTutorialPower2();
-		Stats.skillEnabled.skillCap = true;
+		Stats.skillEnabled.SetAll(true);
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
 	public void SetTutorial(){
@@ -117,10 +121,6 @@ public class Tutorial : MonoBehaviour {
 		}
 		tutorialGUI.enable = true;
 	}
-	
-	//Stats.startState.SetTutorialBuild1();
-	//Stats.skillEnabled.SetAll(false);
-	//Stats.skillEnabled.build = true;
 	
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));

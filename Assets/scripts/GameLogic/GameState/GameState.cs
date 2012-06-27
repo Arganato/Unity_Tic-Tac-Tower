@@ -34,7 +34,6 @@ public class GameState {
 		field[5,4] = Route.red;
 		field[3,4] = Route.blue;
 		placedPieces = 2;
-		SetTutorialPower2();
 	}
 	
 	public void SetTutorialBuild1(){	//Win during this round (red)
@@ -98,29 +97,29 @@ public class GameState {
 	}
 	
 	public void SetTutorialShoot2(){	//Stop red from winning next round (blue)
-		field[5,4] = Route.red;
-		field[3,4] = Route.blue;
-		field[5,5] = Route.red;
-		field[5,6] = Route.blue;
-		field[4,5] = Route.red;
-		field[3,5] = Route.blue;
-		field[3,6] = Route.red;
-		field[6,3] = Route.blue;
-		field[2,7] = Route.red;
-		field[1,8] = Route.blue;
-		field[7,2] = Route.red;
-		field[5,3] = Route.blue;
-		field[5,2] = Route.red;
-		field[6,5] = Route.blue;
-		field[6,2] = Route.red;
-		field[4,7] = Route.blue;
-		field[3,7] = Route.red;
-		field[7,3] = Route.blue;
-		field[4,2] = Route.red;
-		field[6,6] = Route.blue;
-		field[5,7] = Route.red;
-		field[2,8] = Route.blue;
-		field[5,8] = Route.red;
+		field[5,4] = Route.blue;
+		field[3,4] = Route.red;
+		field[5,5] = Route.blue;
+		field[5,6] = Route.red;
+		field[4,5] = Route.blue;
+		field[3,5] = Route.red;
+		field[3,6] = Route.blue;
+		field[6,3] = Route.red;
+		field[2,7] = Route.blue;
+		field[1,8] = Route.red;
+		field[7,2] = Route.blue;
+		field[5,3] = Route.red;
+		field[5,2] = Route.blue;
+		field[6,5] = Route.red;
+		field[6,2] = Route.blue;
+		field[4,7] = Route.red;
+		field[3,7] = Route.blue;
+		field[7,3] = Route.red;
+		field[4,2] = Route.blue;
+		field[6,6] = Route.red;
+		field[5,7] = Route.blue;
+		field[2,8] = Route.red;
+		field[5,8] = Route.blue;
 		player[0].playerSkill.skillCap = 1;
 		player[1].playerSkill.skillCap = 1;
 		activePlayer = 1;
