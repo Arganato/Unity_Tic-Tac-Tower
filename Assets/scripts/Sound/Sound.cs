@@ -5,7 +5,7 @@ public enum SoundType {onClick, error, undo, shoot, build, silence, newTower, de
 
 public class Sound : MonoBehaviour {
 	
-	public static Vector3 position = new Vector3(0f,30f,-10f); 
+	public static Vector3 position = new Vector3(0f,100f,-10.6f); 
 	
 	public AudioClip[] backgroudMusic;
 	public AudioClip onButtonPress;

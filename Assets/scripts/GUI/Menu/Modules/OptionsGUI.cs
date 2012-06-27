@@ -68,7 +68,7 @@ public class OptionsGUI : MenuContent {
 		GUILayout.Label("Sound");
 		muteMusic = GUILayout.Toggle(muteMusic,"Mute");
 		GUILayout.BeginHorizontal();
-		GUILayout.Label("Master-volume");
+		GUILayout.Label("Master volume");
 		masterVolume = GUILayout.HorizontalSlider(masterVolume,0f,1f);
 		GUILayout.EndHorizontal();		
 		GUILayout.BeginHorizontal();
