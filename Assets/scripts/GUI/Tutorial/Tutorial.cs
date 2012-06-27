@@ -7,7 +7,7 @@ public class Tutorial : MonoBehaviour {
 	new public Transform camera;
 	public int border = 0;
 
-	//private Control control;
+	private Control control;
 	
 	//camera positions
 	
@@ -56,10 +56,81 @@ public class Tutorial : MonoBehaviour {
 		}
     }
 	
-	public static void SetupTutorial(){
-		tutorialState = new GameState();
-		Stats.startState = tutorialState;
+	public static void StartTutorial(){
+		Stats.startState = new GameState();
 		chapter = Chapter.intro;
+	}
+	
+	public static void SetTutorialBuild1(){
+		Stats.startState.SetTutorialBuild1();
+		Stats.skillEnabled.build = true;
+		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
+	}
+	
+	public static void SetTutorialBuild2(){
+		Stats.startState.SetTutorialBuild2();
+		Stats.skillEnabled.build = true;
+		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
+	}
+	
+	public static void SetTutorialShoot1(){
+		Stats.startState.SetTutorialShoot1();
+		Stats.skillEnabled.shoot = true;
+		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
+	}
+	
+	public static void SetTutorialShoot2(){
+		Stats.startState.SetTutorialShoot2();
+		Stats.skillEnabled.shoot = true;
+		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
+	}
+	
+	public static void SetTutorialSilence1(){
+		Stats.startState.SetTutorialSilence1();
+		Stats.skillEnabled.silence = true;
+		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
+	}
+	
+	public static void SetTutorialSilence2(){
+		Stats.startState.SetTutorialSilence2();
+		Stats.skillEnabled.silence = true;
+		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
+	}
+	
+	public static void SetTutorialPower1(){
+		Stats.startState.SetTutorialPower1();
+		Stats.skillEnabled.skillCap = true;
+		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
+	}
+	
+	public static void SetTutorialPower2(){
+		Stats.startState.SetTutorialPower2();
+		Stats.skillEnabled.skillCap = true;
+		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
+	}
+	
+	public static void SetTutorial(){
+		Stats.startState = new GameState();
+		switch(towerTut){
+		case TowerType.build:
+			if(chapter == Chapter.tutStr) SetTutorialBuild1();
+			else if(chapter == Chapter.tutDiag) SetTutorialBuild2();
+			break;
+		case TowerType.shoot:
+			if(chapter == Chapter.tutStr) SetTutorialShoot1();
+			else if(chapter == Chapter.tutDiag) SetTutorialShoot2();
+			break;
+		case TowerType.silence:
+			if(chapter == Chapter.tutStr) SetTutorialSilence1();
+			else if(chapter == Chapter.tutDiag) SetTutorialSilence2();
+			break;	
+		case TowerType.skillCap:
+			if(chapter == Chapter.tutStr) SetTutorialPower1();
+			else if(chapter == Chapter.tutDiag) SetTutorialPower2();
+			break;
+		default:
+			break;
+		}
 	}
 	
 	//Stats.startState.SetTutorialBuild1();
@@ -67,7 +138,7 @@ public class Tutorial : MonoBehaviour {
 	//Stats.skillEnabled.build = true;
 	
 	void Start () {
-		//control = (Control)FindObjectOfType(typeof(Control));
+		control = (Control)FindObjectOfType(typeof(Control));
 	}
 	void Update(){
 		//if(changeChapter && chapter == 0 && menuWidth > 200){
@@ -90,6 +161,8 @@ public class Tutorial : MonoBehaviour {
 			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
 				chapter = Chapter.tutStr;
 				camera.animation.Play("anim1");
+				SetTutorial();
+				control.StartNewGame();
 			}
 			break;
 		case Chapter.tutStr:
@@ -121,6 +194,8 @@ public class Tutorial : MonoBehaviour {
 			if(GUI.Button(new Rect(Screen.width/2-buttonWidth/2, Screen.height-buttonHeight-border, buttonWidth, buttonHeight), "Continue")){
 				chapter = Chapter.tutDiag;
 				camera.animation.Play("anim1");
+				SetTutorial();
+				control.StartNewGame();
 			}
 			break;
 		case Chapter.tutDiag:

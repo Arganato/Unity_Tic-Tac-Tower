@@ -8,7 +8,7 @@ public class TutorialSkillCapButton : MenuButton {
 	
 	public override void ButtonDown(){
 		Tutorial.tutorialType = TowerType.skillCap;
-		Tutorial.SetupTutorial();
+		Tutorial.StartTutorial();
 		Application.LoadLevel("Tutorial");
 	}
 	

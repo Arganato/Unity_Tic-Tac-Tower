@@ -31,7 +31,9 @@ public class Tutorial_GUI : MonoBehaviour {
 		GUI.skin = customSkin;
 
 		header.PrintGUI();
-		skillGUI.PrintGUI();
+		if(Tutorial.chapter == Tutorial.Chapter.tutStr || Tutorial.chapter == Tutorial.Chapter.tutDiag){
+			skillGUI.PrintGUI();
+		}
 		buttonRow.PrintGUI();
 
 		Console.PrintWindow();

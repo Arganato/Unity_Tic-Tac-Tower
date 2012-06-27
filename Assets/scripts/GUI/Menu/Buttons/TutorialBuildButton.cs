@@ -8,7 +8,7 @@ public class TutorialBuildButton : MenuButton {
 	
 	public override void ButtonDown(){
 		Tutorial.tutorialType = TowerType.build;
-		Tutorial.SetupTutorial();
+		Tutorial.StartTutorial();
 		Application.LoadLevel("Tutorial");
 	}
 	

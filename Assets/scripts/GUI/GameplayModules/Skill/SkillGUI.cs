@@ -100,7 +100,7 @@ public class SkillGUI{
 		SkillGUI ret = new SkillGUI();
 		float width = 300f;
 		if(Tutorial.towerTut != TowerType.shoot)ret.skillEn[0] = false;
-		if(Tutorial.towerTut != TowerType.build)ret.skillEn[1] = false;
+		if(Tutorial.towerTut != TowerType.build && Tutorial.towerTut != TowerType.skillCap)ret.skillEn[1] = false;
 		if(Tutorial.towerTut != TowerType.silence)ret.skillEn[2] = false;
 		if(Tutorial.towerTut != TowerType.skillCap)ret.skillEn[3] = false;
 		ret.position = new Rect(Screen.width/2-width/2,Screen.height-70,width,70);
