@@ -50,7 +50,7 @@ public class SkillGUI{
 			if(!showHelp){
 				ButtonGUI();
 			}else{
-				NewHelpGUI();
+				HelpGUI();
 			}
 			GUI.EndGroup();
 			if(showHelp && helpSkill >= 0){
@@ -71,45 +71,25 @@ public class SkillGUI{
 				textRow[i].PrintGUI();
 			}
 		}
-		if(GUI.Button(new Rect(265,10,25,25),"?")){
+		if(GUI.Button(new Rect(265,10,25,25),new GUIContent("?","Help"))){
 			showHelp = true;
 			helpSkill = -1;
 		}
 		
 	}
 	
-	private void HelpGUI(){
-		GUI.Box(new Rect(0,0,position.height,position.height),ResourceFactory.GetSkillTexture(helpSkill));
-		GUI.Box(new Rect(position.height,25,position.width-position.height,position.height-25),ResourceFactory.GetDescription((TowerType)helpSkill));
-		bool moveCloser = false;
-		for (int i=0; i<4;i++){
-			if(i == helpSkill){
-				moveCloser = true;
-			}else{
-				if(moveCloser){
-					if(GUI.Button(new Rect(position.height+30*(i-1),0,25,25),ResourceFactory.GetSkillIcon(i))){
-						helpSkill = i;
-					}
-				}else{
-					if(GUI.Button(new Rect(position.height+30*i,0,25,25),ResourceFactory.GetSkillIcon(i))){
-						helpSkill = i;
-					}
-				}
-			}
-		}
-		if(GUI.Button(new Rect(position.width-25,0,25,25),"x")){
-			showHelp = false;
-		}		
-	}
 	
-	private void NewHelpGUI(){
+	private void HelpGUI(){
 		for( int i=0;i<buttonRow.Length;i++){
-			if(helpSkill != i && GUI.Button(new Rect(10 + i*60,0,50,50),ResourceFactory.GetSkillIcon(i))){
+			if(helpSkill != i && GUI.Button(new Rect(10 + i*60,0,50,50),new GUIContent(ResourceFactory.GetSkillIcon(i),ResourceFactory.GetSkillName(i)))){
 				helpSkill = i;
+			}else if(helpSkill == i){
+				GUI.Box(new Rect(10 + i*60,0,50,50),new GUIContent(ResourceFactory.GetSkillIcon(i),ResourceFactory.GetSkillName(i)));
 			}
 		}
-		GUI.Label(new Rect(0,50,300,20),"select one of the skills above for more info");
-		showHelp = GUI.Toggle(new Rect(265,10,25,25),showHelp, "?","button");
+		GUI.Label(new Rect(0,50,300,20),"select one of the skills above for more info","labelCentered");
+		
+		showHelp = GUI.Toggle(new Rect(265,10,25,25),showHelp, new GUIContent("?","Close help"),"button");
 		
 	}
 	

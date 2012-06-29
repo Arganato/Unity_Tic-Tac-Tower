@@ -23,16 +23,33 @@ public static class ResourceFactory{
 	public static string GetDescription(TowerType tower){
 		switch(tower){
 		case TowerType.shoot:
-			return "Shoot Tower: \nThe player may destroy another unused, hostile piece on the board.The piece is ruined, and the tile cannot be built upon.";
+			return "Shoot Tower: \nThe player may destroy another piece on the board. The piece is ruined, and the tile cannot be built upon. It is not possible to shoot gray pieces";
 		case TowerType.build:
-			return "Build Tower: \nAllows the player to place one more piece on the board.This will not, however, reset the amount of skills used, as if starting a new round.";
+			return "Build Tower: \nAllows the player to place one more piece on the board, However, to be able to use this more than once, aditional Power is required";
 		case TowerType.silence:
 			return "Silence Tower: \nThe opponent is rendered unable to place a piece where he/she would normally be able to build a tower.";
 		case TowerType.skillCap:
-			return "Power Tower: \nIncreases the skill cap by one for the player who builds it, allowing the player to use the same skill one more time during the same round. In addition, the player will gain five score points at the end of each turn.";
+			return "Power Tower: \nIncreases the skill cap by one for the player who builds it, allowing the player to use the same skill one more time during the same round.";
 		default:
 			return "";
 		}
+	}
+	public static string GetSkillName(int i){
+		switch(i){
+		case 0:
+			return "Shoot";
+		case 1:
+			return "Build";
+		case 2: 
+			return "Silence";
+		case 3:
+			return "Power";
+		default:
+			return "Invalid";
+		}
+	}
+	public static string GetSkillName(TowerType type){
+		return GetSkillName((int)type);
 	}
 	
 	public static string GetTutorialMessage(){

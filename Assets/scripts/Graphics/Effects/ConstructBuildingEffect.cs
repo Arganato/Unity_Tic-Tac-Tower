@@ -51,7 +51,6 @@ public class ConstructBuildingEffect : MonoBehaviour {
 	
 	private void IncreaseIntensity(){
 		foreach(Light l in lights){
-			print("startIntensity = "+startIntensity+". endIntensity = "+endIntensity+". delta = "+ (Time.deltaTime*(endIntensity - startIntensity)/duration)+".");
 			l.intensity += Time.deltaTime*(endIntensity - startIntensity)/duration;				
 		}
 	}

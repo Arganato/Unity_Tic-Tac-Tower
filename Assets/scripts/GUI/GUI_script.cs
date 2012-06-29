@@ -37,7 +37,7 @@ public class GUI_script : MonoBehaviour {
 
 		header.PrintGUI();
 		skillGUI.PrintGUI();
-		buttonRow.PrintGUI();
+		buttonRow.PrintGUI(); //catches tooltips from skillGUI (must be called after)
 
 		Console.PrintWindow();
 		PopupMessage.PrintGUI();

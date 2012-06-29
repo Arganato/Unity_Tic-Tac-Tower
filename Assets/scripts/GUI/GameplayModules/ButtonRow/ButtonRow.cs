@@ -9,9 +9,11 @@ public class ButtonRow{
 	private UndoButton undo;
 	private ClockGUI p1Clock = new ClockGUI(0);
 	private ClockGUI p2Clock = new ClockGUI(1);
+	private StatusField statusField;
 	
 	public ButtonRow(Control c){
 		endturn = new EndTurnButton(c);
+		statusField = new StatusField(c);
 		undo = new UndoButton(c);
 		float width = 300f;
 		position = new Rect(Screen.width/2-width/2,Screen.height-110,width,40);
@@ -27,6 +29,7 @@ public class ButtonRow{
 			undo.PrintGUI();
 			p1Clock.PrintGUI();
 			p2Clock.PrintGUI();
+			statusField.PrintGUI();
 			GUI.EndGroup();
 			GUI.enabled = true;
 		}
