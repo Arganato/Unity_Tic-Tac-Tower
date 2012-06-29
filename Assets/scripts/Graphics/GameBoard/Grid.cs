@@ -14,6 +14,7 @@ public class Grid : MonoBehaviour {
 	public Transform blueTowerPiece;
 	public Transform destroyedPiece; 
 	public Transform outOfBoundsPiece;
+	public Transform frame;
 
 	private Control control;
 	
@@ -63,6 +64,7 @@ public class Grid : MonoBehaviour {
 		
 	
 	public void InitField(){
+		Instantiate(frame);//Vector3.zero
 		for( int i = 0; i < Stats.fieldSize*Stats.fieldSize; i++){
 			//create new transform 
 			if( playFieldTransforms[i] != null ){

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EndTurnButton{
 
-	public Rect position = new Rect(50,0,60,40);
+	public Rect position = new Rect(40,0,60,40);
 	public bool enable = true;
 	
 	private Control control;

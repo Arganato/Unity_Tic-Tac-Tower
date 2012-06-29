@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ConstructBuildingEffect : MonoBehaviour {
-
-	public float duration = 2f;
-	public float startIntensity = 0f;
-	public float endIntensity = 0.25f;
-
-	public float endTime;
+	
+	//public variables overridden by prefab
+	public float duration; 
+	public float startIntensity;
+	public float endIntensity; //8 is max
 	public Transform lightTransform;
-	public bool lightsEnabled = false;
+	
+	private bool lightsEnabled = false;
+	private float endTime;
 	
 	private Color buildColor = Color.cyan;
 	private Color shootColor = Color.magenta;
@@ -36,12 +37,12 @@ public class ConstructBuildingEffect : MonoBehaviour {
 		if (lightsEnabled){
 			IncreaseIntensity();
 			if(Time.time > endTime){
-				SelfDestruct();
+				DestroyLights();
 			}
 		}
 	}
 	
-	private void SelfDestruct(){
+	private void DestroyLights(){
 		foreach(Light l in lights){
 			Destroy(l.gameObject);
 		}
@@ -50,6 +51,7 @@ public class ConstructBuildingEffect : MonoBehaviour {
 	
 	private void IncreaseIntensity(){
 		foreach(Light l in lights){
+			print("startIntensity = "+startIntensity+". endIntensity = "+endIntensity+". delta = "+ (Time.deltaTime*(endIntensity - startIntensity)/duration)+".");
 			l.intensity += Time.deltaTime*(endIntensity - startIntensity)/duration;				
 		}
 	}
@@ -57,17 +59,12 @@ public class ConstructBuildingEffect : MonoBehaviour {
 
 	private void MakeLights(){
 		lightTransform.light.intensity = startIntensity;
-//		for(int i=0; i<Stats.totalArea;i++){
-//			if(cluster[i]){
-//				Transform tmp = Instantiate(lightTransform,Grid.BoardToWorldPoint(new FieldIndex(i)),Quaternion.identity) as Transform;
-//				lights[i] = tmp.GetComponent<Light>();
-//			}else{
-//				lights[i] = null;	
-//			}
-//		}
+
 		foreach( Tower t in cluster){
 			foreach(FieldIndex i in t.GetList()){
-				Transform tmp = Instantiate(lightTransform,Grid.BoardToWorldPoint(i),Quaternion.identity) as Transform;
+				Vector3 pos = Grid.BoardToWorldPoint(i);
+				pos.y += 5;
+				Transform tmp = Instantiate(lightTransform,pos,Quaternion.identity) as Transform;
 				Light aLight = tmp.GetComponent<Light>();
 				aLight.color = GetColor(t.type);
 				lights.Add(aLight);

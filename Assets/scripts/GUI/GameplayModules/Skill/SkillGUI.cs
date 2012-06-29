@@ -9,10 +9,10 @@ public class SkillGUI{
 	public bool[] skillEn = new bool[4];
 		
 	private bool showHelp = false;
-	private int helpSkill = 0;
+	private int helpSkill = -1;
 	private SkillButtonGUI[] buttonRow = new SkillButtonGUI[4];
 	private SkillAmountGUI[] textRow = new SkillAmountGUI[4];
-
+	private SkillDescription[] descriptions = new SkillDescription[4];
 	private SkillGUI(){
 		buttonRow[0] = SkillButtonGUI.CreateShoot();
 		buttonRow[1] = SkillButtonGUI.CreateBuild();
@@ -23,6 +23,16 @@ public class SkillGUI{
 		textRow[1] = SkillAmountGUI.CreateBuild();
 		textRow[2] = SkillAmountGUI.CreateSilence();
 		textRow[3] = SkillAmountGUI.CreateSkillCap();
+		
+		descriptions[0] = new SkillDescription(TowerType.shoot);
+		descriptions[0].position = new Rect(0,0,300,200);
+		descriptions[1] = new SkillDescription(TowerType.build);
+		descriptions[1].position = new Rect(0,0,300,200);
+		descriptions[2] = new SkillDescription(TowerType.silence);
+		descriptions[2].position = new Rect(0,0,300,200);
+		descriptions[3] = new SkillDescription(TowerType.skillCap);
+		descriptions[3].position = new Rect(0,0,300,200);
+		
 		
 		for(int i=0;i<4;i++){
 			skillEn[i] = true;
@@ -40,9 +50,14 @@ public class SkillGUI{
 			if(!showHelp){
 				ButtonGUI();
 			}else{
-				HelpGUI();
+				NewHelpGUI();
 			}
 			GUI.EndGroup();
+			if(showHelp && helpSkill >= 0){
+				GUI.BeginGroup(new Rect(position.x,position.y-240,300,200),"");
+				descriptions[helpSkill].PrintGUI();
+				GUI.EndGroup();
+			}
 			GUI.enabled = true;
 		}
 	}
@@ -56,9 +71,9 @@ public class SkillGUI{
 				textRow[i].PrintGUI();
 			}
 		}
-		
-		if(GUI.Button(new Rect(250,0,50,50),"?")){
+		if(GUI.Button(new Rect(265,10,25,25),"?")){
 			showHelp = true;
+			helpSkill = -1;
 		}
 		
 	}
@@ -85,6 +100,17 @@ public class SkillGUI{
 		if(GUI.Button(new Rect(position.width-25,0,25,25),"x")){
 			showHelp = false;
 		}		
+	}
+	
+	private void NewHelpGUI(){
+		for( int i=0;i<buttonRow.Length;i++){
+			if(helpSkill != i && GUI.Button(new Rect(10 + i*60,0,50,50),ResourceFactory.GetSkillIcon(i))){
+				helpSkill = i;
+			}
+		}
+		GUI.Label(new Rect(0,50,300,20),"select one of the skills above for more info");
+		showHelp = GUI.Toggle(new Rect(265,10,25,25),showHelp, "?","button");
+		
 	}
 	
 	public static SkillGUI Create(){
