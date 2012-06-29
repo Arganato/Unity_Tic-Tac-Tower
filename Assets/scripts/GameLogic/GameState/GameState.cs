@@ -122,7 +122,7 @@ public class GameState {
 		field[5,8] = Route.blue;
 		player[0].playerSkill.skillCap = 1;
 		player[1].playerSkill.skillCap = 1;
-		activePlayer = 1;
+		activePlayer = 0;
 		placedPieces = 21;
 	}
 	

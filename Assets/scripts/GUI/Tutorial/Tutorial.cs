@@ -14,40 +14,17 @@ public class Tutorial : MonoBehaviour {
 	public static Chapter chapter;
 	public static TowerType towerTut;	//Used to know which tutorial is run. TowerType.five is used when none is run.
 	public static GameState tutorialState;
-	
-	private static SkillDescription buildDescr = new SkillDescription(TowerType.build);
-	private static SkillDescription shootDescr = new SkillDescription(TowerType.shoot);
-	private static SkillDescription silenceDescr = new SkillDescription(TowerType.silence);
-	private static SkillDescription skillDescr = new SkillDescription(TowerType.skillCap);
-	private static SkillDescription activeDescr;
+
 	private InfoWindow infoText = new InfoWindow();
 	private TutorialHeader header;
 	
+	private bool solutionAccepted = true;
 	private Rect tutorialWindowRect = new Rect(Screen.width/2-150,40,300,400);
 	private bool showTutorialWindow = true;
 	
 	public static TowerType tutorialType{
         get { return towerTut; }
-        set {
-			towerTut = value;
-			switch(towerTut){
-			case TowerType.build:
-				activeDescr = buildDescr;
-				break;
-			case TowerType.shoot:
-				activeDescr = shootDescr;
-				break;
-			case TowerType.silence:
-				activeDescr = silenceDescr;
-				break;
-			case TowerType.skillCap:
-				activeDescr = skillDescr;
-				break;
-			default:
-				Debug.LogError("Tried to access invalid skill tutorial");
-				break;
-			}
-		}
+        set {towerTut = value; }
     }
 	public static void StartTutorial(){
 		Stats.startState = new GameState();
@@ -56,34 +33,43 @@ public class Tutorial : MonoBehaviour {
 	public static void SetTutorialBuild1(){
 		Stats.startState.SetTutorialBuild1();
 		Stats.skillEnabled.SetAll(false);
-		Stats.skillEnabled.SetStraight(true);
+		Stats.skillEnabled.build = true;
+		Stats.skillEnabled.five = true;
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
 	public static void SetTutorialBuild2(){
 		Stats.startState.SetTutorialBuild2();
-		Stats.skillEnabled.SetAll(true);
+		Stats.skillEnabled.SetAll(false);
+		Stats.skillEnabled.build = true;
+		Stats.skillEnabled.diagBuild = true;
+		Stats.skillEnabled.five = true;
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
 	public static void SetTutorialShoot1(){
 		Stats.startState.SetTutorialShoot1();
 		Stats.skillEnabled.SetAll(false);
-		Stats.skillEnabled.SetStraight(true);
+		Stats.skillEnabled.shoot = true;
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
 	public static void SetTutorialShoot2(){
 		Stats.startState.SetTutorialShoot2();
-		Stats.skillEnabled.SetAll(true);
+		Stats.skillEnabled.SetAll(false);
+		Stats.skillEnabled.shoot = true;
+		Stats.skillEnabled.diagShoot = true;
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
 	public static void SetTutorialSilence1(){
 		Stats.startState.SetTutorialSilence1();
 		Stats.skillEnabled.SetAll(false);
 		Stats.skillEnabled.SetStraight(true);
+		Stats.skillEnabled.skillCap = false;
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
 	public static void SetTutorialSilence2(){
 		Stats.startState.SetTutorialSilence2();
 		Stats.skillEnabled.SetAll(true);
+		Stats.skillEnabled.skillCap = false;
+		Stats.skillEnabled.diagSkillCap = false;
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
 	public static void SetTutorialPower1(){
@@ -129,11 +115,6 @@ public class Tutorial : MonoBehaviour {
 		header = new TutorialHeader(control);
 	}
 	
-	void Update(){
-		//if(changeChapter && chapter == 0 && menuWidth > 200){
-		//	menuWidth -= Mathf.RoundToInt(Time.deltaTime*menuChangeSpeed);
-		//}
-	}
 	
 	void OnGUI(){
 		
@@ -148,31 +129,16 @@ public class Tutorial : MonoBehaviour {
 
 		}
 		header.PrintGUI();
-//		if(chapter == Chapter.tutStr  || chapter == Chapter.tutDiag){
-//			//do something with case...
-//			switch(towerTut){
-//			case TowerType.build:
-//				//For Build Skill Tutorial.
-//				break;
-//			case TowerType.shoot:
-//				//For Shoot Skill Tutorial.
-//				break;
-//			case TowerType.silence:
-//				//For Silence Skill Tutorial.
-//				break;
-//			case TowerType.skillCap:
-//				//For Skill Skill Tutorial.
-//				break;
-//			default:
-//				Debug.LogError("Tried to access invalid skill tutorial");
-//				break;
-//			}
-//		}
 		
 	}	
 	
 	public void CheckSolution(){
-		SolutionChecker.CheckSolution(chapter,towerTut);
+		if(SolutionChecker.CheckSolution(chapter,towerTut)){
+			solutionAccepted = true;
+			DoContinue();
+		}else{
+			PopupMessage.DisplayMessage("Wrong solution!\nUndo to try again");
+		}
 	}
 	
 	private void TutorialWindow(int windowID){
@@ -186,14 +152,12 @@ public class Tutorial : MonoBehaviour {
 		GUILayout.EndArea();
 		//----end header----//
 		GUI.BeginGroup(new Rect(0,20,tutorialWindowRect.width,tutorialWindowRect.height-45));
-		if(chapter == Chapter.intro){
-			activeDescr.PrintGUI();
-		}else{
-			infoText.PrintTutorialText();
-		}
+		infoText.PrintTutorialText();
 		GUI.EndGroup();
-		if(GUI.Button(new Rect(tutorialWindowRect.width-105,tutorialWindowRect.height-25,100,25),"Continue")){
-			DoContinue();
+		if(solutionAccepted){
+			if(GUI.Button(new Rect(tutorialWindowRect.width-105,tutorialWindowRect.height-25,100,25),"Continue")){
+				DoContinue();
+			}
 		}
 	}
 	
@@ -240,19 +204,24 @@ public class Tutorial : MonoBehaviour {
 			camera.animation.Play("anim1");
 			SetTutorial();
 			control.StartNewGame();
+			solutionAccepted = false;
 			break;
 		case Chapter.tutStr:
+			showTutorialWindow = true;
 			camera.animation.Play("anim2");
 			chapter = Chapter.textDiag;
 			tutorialGUI.enable = false;
+			Control.cState.activePlayer = 0;
 			break;
 		case Chapter.textDiag:
 			chapter = Chapter.tutDiag;
 			camera.animation.Play("anim1");
 			SetTutorial();
 			control.StartNewGame();
+			solutionAccepted = false;
 			break;
 		case Chapter.tutDiag:
+			showTutorialWindow = true;
 			camera.animation.Play("anim2");
 			chapter = Chapter.end;
 			tutorialGUI.enable = false;
@@ -261,5 +230,10 @@ public class Tutorial : MonoBehaviour {
 			Application.LoadLevel("MainMenu");
 			break;
 		}
+	}
+	
+	public void OnVictory(){ //event sent from control
+		CheckSolution(); //assumed to check in
+		Stats.gameRunning = true;
 	}
 }

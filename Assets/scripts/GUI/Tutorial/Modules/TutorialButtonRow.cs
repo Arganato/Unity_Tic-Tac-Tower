@@ -7,10 +7,12 @@ public class TutorialButtonRow{
 	public Rect position;
 	private CheckSolutionButton checkSolution;
 	private UndoButton undo;
+	private StatusField statusField;
 	
 	public TutorialButtonRow(Control c){
 		checkSolution = new CheckSolutionButton(c);
 		undo = new UndoButton(c);
+		statusField = new StatusField(c);
 		float width = 300f;
 		position = new Rect(Screen.width/2-width/2,Screen.height-110,width,40);
 	}
@@ -23,6 +25,7 @@ public class TutorialButtonRow{
 			GUI.BeginGroup(position);
 			bool check = checkSolution.PrintGUI();
 			undo.PrintGUI();
+			statusField.PrintGUI();
 			GUI.EndGroup();
 			GUI.enabled = true;
 			return check;

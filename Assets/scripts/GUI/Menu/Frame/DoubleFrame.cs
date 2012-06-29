@@ -49,7 +49,7 @@ public class DoubleFrame : Frame{
 	public override void PrintGUI(){
 		GUI.BeginGroup(position);
 		GUI.Box(new Rect(0,0,position.width/2,20),title);
-		float height = (buttonSize.height+spacing)*buttonList.Count+border-20;
+		float height = spacing*buttonList.Count+border-20;
 		scrollPosition = GUI.BeginScrollView(new Rect(0,20,position.width/2,position.height-20),scrollPosition,new Rect(0,0,position.width/2-50,height));
 		foreach(MenuButton button in buttonList){
 			if( GUI.Button(button.position,button.Name()) ){
@@ -64,7 +64,7 @@ public class DoubleFrame : Frame{
 		buttonList.Add(button);
 		SetSpacing();
 		for(int i=0; i<buttonList.Count; i++){
-			buttonList[i].position = new Rect(border,spacing*(i+1),buttonSize.width,buttonSize.height);
+			buttonList[i].position = new Rect(border,spacing*(i)+border,buttonSize.width,buttonSize.height);
 		}
 	}
 }

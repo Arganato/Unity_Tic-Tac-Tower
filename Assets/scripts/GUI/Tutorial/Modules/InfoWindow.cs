@@ -2,52 +2,37 @@ using UnityEngine;
 using System.Collections;
 
 public class InfoWindow{
-	
-	private int width = 300;
-	private int height = 400;
-	
+		
 	public string textString;
-	public Rect position;
-	//public Rect position = new Rect(0,0,Screen.width/2,150);
-
-	private int textureSize = 75;
+	public Rect position = new Rect(0,0,300,360);
+	
+	private SkillDescription[] skillDescriptions = new SkillDescription[4];
 	private int textureType;
 
 
 	public InfoWindow(){
-//		position = new Rect((Screen.width-width)/2,(Screen.height-height)/2,width,height);
-		position = new Rect(0,0,width,height);
+		skillDescriptions[0] = new SkillDescription(TowerType.shoot);
+		skillDescriptions[0].position = new Rect(0,position.height/2,position.width,position.height/2);
+		skillDescriptions[1] = new SkillDescription(TowerType.build);
+		skillDescriptions[1].position = new Rect(0,position.height/2,position.width,position.height/2);
+		skillDescriptions[2] = new SkillDescription(TowerType.silence);
+		skillDescriptions[2].position = new Rect(0,position.height/2,position.width,position.height/2);
+		skillDescriptions[3] = new SkillDescription(TowerType.skillCap);
+		skillDescriptions[3].position = new Rect(0,position.height/2,position.width,position.height/2);
+		
 	}
 
 	public void PrintTutorialText(){
-		switch(Tutorial.towerTut){
-		case TowerType.shoot:
-			textureType = 0;
-			break;
-		case TowerType.build:
-			textureType = 1;
-			break;
-		case TowerType.silence:
-			textureType = 2;
-			break;
-		case TowerType.skillCap:
-			textureType = 3;
-			break;
-		default:
-			Debug.LogWarning("TowerDescription not initialized with a valid tower");
-			break;
-		}
+		GUI.Box(position,"");
 		GUI.BeginGroup(position);
-		GUI.Box(new Rect(0,0,position.width,position.height),"");
-		if(Tutorial.chapter == Tutorial.Chapter.textStr || Tutorial.chapter == Tutorial.Chapter.tutStr){
-			GUI.Box(new Rect((width-textureSize)/2,0,textureSize,textureSize),ResourceFactory.GetSkillTexture(textureType));
-		}else if(Tutorial.chapter == Tutorial.Chapter.textDiag || Tutorial.chapter == Tutorial.Chapter.tutDiag){
-			GUI.Box(new Rect((width-textureSize)/2,0,textureSize,textureSize), ResourceFactory.GetSkillTexture(textureType+4));
-		}else if(Tutorial.chapter == Tutorial.Chapter.end){
-			GUI.Box(new Rect(width/2-textureSize,0,textureSize,textureSize),ResourceFactory.GetSkillTexture(textureType));
-			GUI.Box(new Rect(width/2,0,textureSize,textureSize), ResourceFactory.GetSkillTexture(textureType+4));
+		
+		if(Tutorial.chapter == Tutorial.Chapter.textStr){
+			GUI.Label(new Rect(10,5,position.width-20,position.height/2-10),TutorialAssets.GetTutorialMessage());
+			skillDescriptions[(int)Tutorial.towerTut].PrintGUI();
+		}else{
+			GUI.Label(new Rect(10,5,position.width-20,position.height-10),TutorialAssets.GetTutorialMessage());
 		}
-		GUI.Box(new Rect(0,textureSize,position.width-textureSize,position.height), ResourceFactory.GetTutorialMessage(),"invisBox");
+
 		GUI.EndGroup();
 	}
 }

@@ -4,7 +4,6 @@ using System.Collections;
 public class TutorialHeader{
 
 	public bool enable = true;
-	public Rect position = new Rect(0,0,120,25);
 	
 	private DropdownMenu dropdownMenu;
 	
@@ -19,7 +18,6 @@ public class TutorialHeader{
 	
 	private void HeaderText(){
 		string s = "";
-		GUI.Box(position,"");
 		switch(Tutorial.towerTut){
 		case TowerType.build:
 			s = "Build";
@@ -37,6 +35,6 @@ public class TutorialHeader{
 			Debug.LogError("Tried to access invalid skill tutorial");
 			break;
 		}
-		GUI.Box(new Rect((Screen.width-position.width)/2,0,position.width,position.height),"Tutorial - " + s,"InvisBox");
+		GUI.Label(new Rect((Screen.width-125)/2,0,125,25),"Tutorial - " + s);
 	}
 }

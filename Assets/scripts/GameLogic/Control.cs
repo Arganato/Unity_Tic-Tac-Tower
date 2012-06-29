@@ -111,7 +111,7 @@ public class Control: MonoBehaviour {
 			}
 			if(fiveTower != null){
 				foreach(FieldIndex i in fiveTower.GetList()){ //recoloring five-towers
-					cState.field[i] = Field<int>.GetDarkRoute(Field<int>.GetPlayerColor(cState.activePlayer));
+					cState.field[i] = Field<int>.GetPlayerColor(cState.activePlayer);
 				}
 				victory = true;
 			}
@@ -130,6 +130,7 @@ public class Control: MonoBehaviour {
 		Console.PrintToConsole("Player "+(player+1)+" has won!",Console.MessageType.INFO);
 		Stats.gameRunning = false;
 		PopupMessage.DisplayMessage("Player "+(player+1)+" has won!",10f);
+		BroadcastMessage("OnVictory",SendMessageOptions.DontRequireReceiver);
 		//TODO: victory-screen
 	}
 	
