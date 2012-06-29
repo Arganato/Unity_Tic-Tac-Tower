@@ -16,11 +16,11 @@ public class StatusField {
 		GUI.Box(new Rect(10,0,20,20),GetSkillInUseContent());
 		GUI.Box(new Rect(40,0,20,20),GetSilenceContent());
 		if(Skill.skillInUse > 0){
-			if(GUI.Button(new Rect(70,0,20,20),new GUIContent("","Cancel"))){
+			if(GUI.Button(new Rect(70,0,20,20),new GUIContent(ResourceFactory.GetCancelTexture(),"Cancel"))){
 				Skill.UseSkill(0);
 			}
 		}else{
-			GUI.Box(new Rect(70,0,20,20),new GUIContent(ResourceFactory.GetCancelTexture(),"Cancel"));
+			GUI.Box(new Rect(70,0,20,20),new GUIContent("","Cancel"));
 		}
 			
 		
