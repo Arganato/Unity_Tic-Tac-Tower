@@ -23,7 +23,8 @@ public class Sound : MonoBehaviour {
 	
 	private float musicPause = 0; //a pause between each new song. A negative pause would mean that they overlap
 	
-	private int[][] mixingTable = new int[][] { new int[]{0,1,2}, new int[]{1,2}, new int[]{0,1,2} };
+	private float[] volumeNormalizer = new float[] {0.30f, 0.34f, 1f, 0.30f};
+	private int[][] mixingTable = new int[][] { new int[]{1,1,1,2,2,3}, new int[]{0,0,0,2,2,3}, new int[]{0,1,3}, new int[]{0,1,2} };
 	
 	
 	void Start () {
@@ -35,7 +36,7 @@ public class Sound : MonoBehaviour {
 	}
 	
 	private void PlaySong(int id){
-		audio.PlayOneShot(backgroudMusic[id],musicVolume);
+		audio.PlayOneShot(backgroudMusic[id],musicVolume*volumeNormalizer[id]);
 		StartCoroutine("WaitForSong",id);
 	}
 	

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class SelectGameTime{
 
 	public bool enable = true;
-	public Rect position = new Rect(Screen.width/2-200,100,Screen.width,120);
+	public Rect position = new Rect(0,100,Screen.width,120);
 	
 	private string p1tpt = "";
 	private string p1tt = "";
@@ -23,7 +23,7 @@ public class SelectGameTime{
 			GUI.Box(new Rect(10,80,100,20),"Total time","invisBox");
 			p1tt = GUI.TextField(new Rect(110,80,40,20),p1tt);
 						
-			GUI.Box(new Rect(position.width/2,20,position.width/2,position.height-20),"Player 2");
+			GUI.Box(new Rect(position.width/2,10,position.width/2,position.height-20),"Player 2");
 			float rightMargin = position.width/2+10;
 			copyP2Toggle = GUI.Toggle(new Rect(rightMargin,40,position.width/2-20,20),copyP2Toggle,"Same as player 1");
 			if(!copyP2Toggle){

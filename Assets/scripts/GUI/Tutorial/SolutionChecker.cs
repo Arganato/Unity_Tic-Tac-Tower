@@ -71,13 +71,15 @@ public static class SolutionChecker {
 	
 	private static bool CheckSkillCap(Tutorial.Chapter chapter){
 		if(chapter == Tutorial.Chapter.tutStr){
-			return Control.cState.field[8,2] == Route.red &&
-				Control.cState.field[3,2] == Route.red &&
-				Control.cState.field[3,7] == Route.red;	
+			return Control.cState.field[4,3] == Route.destroyed &&
+				Control.cState.player[0].playerSkill.build == 2 &&
+				Control.cState.player[0].playerSkill.skillCap == 1;	
 		}else if(chapter == Tutorial.Chapter.tutDiag){
-			return Control.cState.field[8,7] == Route.red &&
-				Control.cState.field[6,7] == Route.red &&
-				Control.cState.field[4,7] == Route.red;	
+			return Control.cState.field[4,8] == Route.red &&
+				Control.cState.field[5,7] == Route.red &&
+				Control.cState.field[6,6] == Route.red &&
+				Control.cState.field[7,5] == Route.red &&
+				Control.cState.field[8,4] == Route.red;	
 		}
 		Debug.LogError("invalid chapter: "+chapter.ToString());
 		return true;

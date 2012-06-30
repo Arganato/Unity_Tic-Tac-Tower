@@ -25,11 +25,11 @@ public static class ResourceFactory{
 		case TowerType.shoot:
 			return "Shoot Tower: \nThe player may destroy another piece on the board. The piece is ruined, and the tile cannot be built upon. It is not possible to shoot gray pieces";
 		case TowerType.build:
-			return "Build Tower: \nAllows the player to place one more piece on the board, However, to be able to use this more than once, aditional Power is required";
+			return "Build Tower: \nAllows the player to place one more piece on the board, however, to be able to use this more than once, aditional Power is required";
 		case TowerType.silence:
-			return "Silence Tower: \nThe opponent is rendered unable to place a piece where he/she would normally be able to build a tower.";
+			return "Silence Tower: \nFor the next turn, the opponent cannot place a piece where it would make a tower, or 5 in a row.";
 		case TowerType.skillCap:
-			return "Power Tower: \nIncreases the skill cap by one for the player who builds it, allowing the player to use the same skill one more time during the same round.";
+			return "Power Tower: \nIncreases the power by one for the player who builds it. Power is the cap for how many times one skilltype can be used in one turn.";
 		default:
 			return "";
 		}

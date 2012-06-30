@@ -32,8 +32,10 @@ public class GameClock : MonoBehaviour {
 	}
 	
 	private void ChangePlayer(){
-		Control.cState.player[activePlayer].gameTime.SetCounting(false);
+		if(Control.cState.player[activePlayer].gameTime.IsActive())
+			Control.cState.player[activePlayer].gameTime.SetCounting(false);
 		activePlayer = Control.cState.activePlayer;
-		Control.cState.player[activePlayer].gameTime.SetCounting(true);
+		if(Control.cState.player[activePlayer].gameTime.IsActive())
+			Control.cState.player[activePlayer].gameTime.SetCounting(true);
 	}
 }

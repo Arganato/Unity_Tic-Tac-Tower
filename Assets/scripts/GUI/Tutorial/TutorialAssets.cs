@@ -183,7 +183,7 @@ public static class TutorialAssets {
 				"In addition, you only have enough power to use one of your builds this turn (more on power in the last tutorial)." +
 				"Use both straight and diagonal towers to stop blue from beeing able to win in this scenario.";
 		case Tutorial.Chapter.end:
-			return "Well done!\n You've just finished the tutorial for the Silence Tower.\nThe last thing to learn about is the power, this mysterious force that kept us from stopping blue with builds alone, " +
+			return "Well done!\nYou've just finished the tutorial for the Silence Tower.\n\nThe last thing to learn about is the power, this mysterious force that kept us from stopping blue with builds alone, " +
 				"or even going straight for a win, in the last scenario. After that tutorial you have learned all you need to get started on a full scale game of Tic-Tac Tower!";
 		default:
 			Debug.LogError("invalid chapter");
@@ -194,17 +194,45 @@ public static class TutorialAssets {
 	private static string GetSkillCapTutorial(Tutorial.Chapter chapter){
 		switch(chapter){
 		case Tutorial.Chapter.intro:
-			return "";
+			return "Welcome to the last tutorial for Tic-Tac Tower!\nThis tutorial is for the power-skill. This skill is a bit " +
+				"different than the other skills in the game. \n\nIts a passive skill, which means that it cannon be used, like the other " +
+				"skills. This has the benefit that any power you acquire during a game, stays with you for the entire game. " +
+				"The skill does nothing on its own, but it is nevertheless probably the most important skill of the game, and likely to " +
+				"be the most important tower you make during a game.\n\n"+
+				"The power is the skill that fuels the other skills, and it is particularly important for the build-skill. " +
+				"Build will therefore be used to explain it: There is a limit of how many skills you can use in a game on the same turn. " +
+				"If you have 4 build you would be able to put out 5 pieces in a single turn, and win the game automatically, if not for this limit." +
+				"This limit is the amount of power you have. You can only use as many builds as you have power.";
 		case Tutorial.Chapter.textStr:
-			return "";
+			return "As you can see from the picture below, the pattern for the Power-tower is a square. This makes it harder to build " +
+				"(or rather, easier for your opponent to block), than the other skills. Why? Lets take an example: if you have made an angle of " +
+				"three pieces, you can build every skill with one more piece. Shoot, build and silence can each be built on two different places, but power " +
+				"can only be built on one place. Now lets look at a scenario.";
 		case Tutorial.Chapter.tutStr:
-			return "";
+			return "This is a typical late game scenario. You have 2 builds, and have two in a row. With two build, and one piece to place. Hey thats 3 pieces " +
+				"and theres already a two in a row there? Cant I just make 5 in a row right at once? No, sorry. You only have 1 power, and therefore you can only use one of your builds. " +
+				"And as if that wasnt bad enough, blue has allready 3 in a row, and only need to use one of his builds next round to win. And he's even got two of them with enough power.\n\n" +
+				"So, we need to stop blue from winning. To do that we cant even allow him to have 2 in a row at the end of our turn. In addition, we need to take the " +
+				"offensive, and get that extra power to be able to use two builds. We have an angle of three pieces; thats a good start. And we have a build, which we can use. " +
+				"Use it to build a building formed like a P, by placing a piece outside of the open place in the angle, and then in the open place. " +
+				"This building gives you one of each of all the skills! Then use the shoot to stop blue.";
 		case Tutorial.Chapter.textDiag:
-			return "";
+			return "You did it! A possible defeat is turned to a chance to win, and now blue is forced to use his skills to stop you, instead of winning the game himself.\n\n" +
+				"Even though you used a build to make the P-shape, you get it back, as the shape gives you another build. " +
+				"This is a good way to use build as a catalyst to getting more complex buildings, and thus more skills\n\n" +
+				"The P-shape, by giving a total of 5 skills, is the shape that gives the most skills with only 5 pieces. This, in addition to giving one power, makes it" +
+				"very important, and something that should be looked out for in every game.";
 		case Tutorial.Chapter.tutDiag:
-			return "";
+			return "Now you should have learned all you need to play Tic-Tac Tower. " +
+				"In this scenario, you are more on your own, and you need to think of a smart way to solve a complex problem. The goal is to get 5 in a row, and all towers are used, both straight and diagonal. " +
+				"So, if you'r ready, just close this window and get started. If you need some more hints you can read on." +
+				"\n\nTo do that, you need several skills, including build, power, and a shoot. " +
+				"\"A shoot? what on earth could that be good for when I'm going to win this round anyways?\" Well, I'm not going to reveal too much," +
+				 "but remember that you can also shoot your own pieces. Good luck";
 		case Tutorial.Chapter.end:
-			return "Well done!\n You've just finished the tutorial for the Power Tower. Good luck in your games.";
+			return "Well done!\nYou've just finished the tutorial for the Power Tower. This is the last tutorial, and you should now be ready to try a real game. " +
+				"If you should forget what a skill does, or how its tower looks, fear not. The description is availible by clicking the \"?\"-button in game, just like in the tutorial.\n\n" +
+				"Good luck in your future games!";
 		default:
 			Debug.LogError("invalid chapter");
 			return "invalid query";

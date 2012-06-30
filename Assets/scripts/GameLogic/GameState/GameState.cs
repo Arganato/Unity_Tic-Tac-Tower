@@ -160,24 +160,21 @@ public class GameState {
 	}
 	
 	public void SetTutorialPower1(){
-		field[5,4] = Route.red;
-		field[3,4] = Route.blue;
+		field[5,2] = Route.red;
+		field[4,2] = Route.red;
 		field[5,5] = Route.red;
+		field[4,5] = Route.red;
+		field[4,6] = Route.red;
+
 		field[3,3] = Route.blue;
-		field[6,5] = Route.red;
-		field[4,2] = Route.blue;
-		field[7,4] = Route.red;
-		field[5,2] = Route.blue;
-		field[8,4] = Route.red;
-		field[3,5] = Route.blue;
-		field[7,6] = Route.red;
-		field[6,2] = Route.blue;
-		field[6,7] = Route.red;
-		field[7,2] = Route.blue;
-		field[8,6] = Route.red;
-		field[3,6] = Route.blue;
-		player[0].playerSkill.build = 1;
-		player[0].playerSkill.skillCap = 1;
+		field[5,3] = Route.blue;
+		field[4,3] = Route.blue;
+		
+		player[0].playerSkill.build = 2;
+		player[0].playerSkill.skillCap = 0;
+		player[1].playerSkill.build = 2;
+		player[1].playerSkill.skillCap = 1;
+		activePlayer = 0;
 	}	
 	
 	public void SetTutorialPower2(){
@@ -195,7 +192,7 @@ public class GameState {
 		field[6,5] = Route.red;
 		field[2,4] = Route.blue;
 		field[1,4] = Route.red;
-		field[2,3] = Route.blue;
+		field[6,7] = Route.blue;
 		field[1,6] = Route.red;
 		field[1,5] = Route.blue;
 		field[5,7] = Route.red;
