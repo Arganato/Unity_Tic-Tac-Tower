@@ -33,15 +33,15 @@ public class StatusField {
 		switch(Skill.skillInUse){
 		case 0:
 			if(!control.playerDone)
-				return new GUIContent("p","Place");
+				return new GUIContent(ResourceFactory.GetSmallSkillIcon(3),"Place");
 			else
 				return new GUIContent("","Skill in use");
 		case 1:
-			return new GUIContent("s","Shoot");
+			return new GUIContent(ResourceFactory.GetSmallSkillIcon(0),"Shoot");
 		case 2: 
-			return new GUIContent("b","Build");
+			return new GUIContent(ResourceFactory.GetSmallSkillIcon(1),"Build");
 		case 3:
-			return new GUIContent("i", "Silence");
+			return new GUIContent(ResourceFactory.GetSmallSkillIcon(2), "Silence");
 		default:
 			return new GUIContent("","Skill in use");
 		}
@@ -60,7 +60,7 @@ public class StatusField {
 	
 	private GUIContent GetSilenceContent(){
 		if(GetSilencedStatus())
-			return new GUIContent("x","silenced");
+			return new GUIContent(ResourceFactory.GetSmallSkillIcon(2),"silenced");
 		else
 			return new GUIContent("","not silenced");
 	}
