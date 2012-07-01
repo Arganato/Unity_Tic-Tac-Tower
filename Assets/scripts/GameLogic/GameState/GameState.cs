@@ -160,8 +160,8 @@ public class GameState {
 	}
 	
 	public void SetTutorialPower1(){
-		field[5,2] = Route.red;
-		field[4,2] = Route.red;
+		field[5,1] = Route.red;
+		field[4,1] = Route.red;
 		field[5,5] = Route.red;
 		field[4,5] = Route.red;
 		field[4,6] = Route.red;
