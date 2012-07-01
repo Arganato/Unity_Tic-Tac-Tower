@@ -8,7 +8,13 @@ public class TutorialHeader{
 	private DropdownMenu dropdownMenu;
 	
 	public TutorialHeader(Control c){
-		dropdownMenu = new DropdownMenu(c,null);
+		# if UNITY_WEBPLAYER
+			dropdownMenu = DropdownMenu.Create(c,null);
+		# elif UNITY_ANDROID
+			dropdownMenu = DropdownMenu.CreateAndroid(c,null);
+		# else
+			dropdownMenu = DropdownMenu.Create(c,null);
+		# endif
 	}
 	
 	public void PrintGUI(){

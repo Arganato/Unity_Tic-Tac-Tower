@@ -13,18 +13,19 @@ public class StatusField {
 	
 	public void PrintGUI(){
 		GUI.BeginGroup(position);
-		GUI.Box(new Rect(10,0,20,20),GetSkillInUseContent());
-		GUI.Box(new Rect(40,0,20,20),GetSilenceContent());
+		float w = position.width;
+		GUI.Box(new Rect(0.10f*w,0,0.2f*w,position.height/2),GetSkillInUseContent());
+		GUI.Box(new Rect(0.4f*w,0,0.20f*w,position.height/2),GetSilenceContent());
 		if(Skill.skillInUse > 0){
-			if(GUI.Button(new Rect(70,0,20,20),new GUIContent(ResourceFactory.GetCancelTexture(),"Cancel"))){
+			if(GUI.Button(new Rect(0.7f*w,0,0.2f*w,position.height/2),new GUIContent(ResourceFactory.GetCancelTexture(),"Cancel"))){
 				Skill.UseSkill(0);
 			}
 		}else{
-			GUI.Box(new Rect(70,0,20,20),new GUIContent("","Cancel"));
+			GUI.Box(new Rect(0.7f*w,0,0.2f*w,position.height/2),new GUIContent("","Cancel"));
 		}
 			
 		
-		GUI.Label(new Rect(0,20,position.width,20),GUI.tooltip,"labelCentered");
+		GUI.Label(new Rect(0,position.height/2,position.width,position.height/2),GUI.tooltip,"labelCentered");
 		GUI.EndGroup();
 	}
 	

@@ -15,17 +15,36 @@ public class DropdownMenu{
 	
 	private Control control;
 	
-	public DropdownMenu( Control c, NetworkInterface nif){
+	private DropdownMenu( Control c, NetworkInterface nif, int border, int buttonHeight){
 		control = c;
-
-		endGame = new ConfirmMenu("Quit Game",(int)positionOpen.x,(int)positionOpen.y);
-		resign = new ConfirmMenu("Resign",(int)positionOpen.x,(int)positionOpen.y+30);
-		Console.buttonRect = new Rect(positionOpen.x,positionOpen.y+60,80,25);
-		
 		if(nif != null){
 			networkGUI = new NetworkWindow(nif);
-			networkGUI.togglePos = new Rect(positionOpen.x,positionOpen.y+90,80,55);
 		}
+		SetUpButtons(border, buttonHeight);
+	}
+	
+	private void SetUpButtons(int border, int buttonHeight){
+		endGame = new ConfirmMenu("Quit Game",new Rect(positionOpen.x,positionOpen.y+border,positionOpen.width,buttonHeight),
+			new Rect(positionOpen.x-positionOpen.width,positionOpen.y+border,positionOpen.width,2*buttonHeight));
+		resign = new ConfirmMenu("Resign",new Rect(positionOpen.x,positionOpen.y+buttonHeight+2*border,positionOpen.width,buttonHeight),
+			new Rect(positionOpen.x-positionOpen.width,positionOpen.y+buttonHeight+2*border,positionOpen.width,buttonHeight*2));
+		Console.buttonRect = new Rect(positionOpen.x,positionOpen.y+buttonHeight*2+border*3,positionOpen.width,buttonHeight);
+		positionOpen.height = 3*buttonHeight+4*border;
+		if(networkGUI != null){
+			networkGUI.togglePos = new Rect(positionOpen.x,positionOpen.y+buttonHeight*4+border*5,positionOpen.width,buttonHeight*2+border);
+			positionOpen.height = 5*buttonHeight+6*border;		
+		}
+	}
+	
+	public static DropdownMenu Create(Control c, NetworkInterface nif){
+		return new DropdownMenu(c,nif,10,25);
+	}
+	public static DropdownMenu CreateAndroid(Control c, NetworkInterface nif){
+		DropdownMenu dropdown = new DropdownMenu(c,nif,(int)(Screen.height*0.02),(int)(Screen.height*0.08));
+		dropdown.positionOpen = new Rect(Screen.width-120,40,120,150);
+		dropdown.positionClosed = new Rect(Screen.width-80,0,80,40);
+		dropdown.SetUpButtons((int)(Screen.height*0.02),(int)(Screen.height*0.08));
+		return dropdown;
 	}
 	
 	public void PrintGUI(){

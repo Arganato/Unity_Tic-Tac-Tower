@@ -56,7 +56,7 @@ public class SingleFrame : Frame{
 	public override void PrintGUI(){
 		GUI.BeginGroup(position);
 		GUI.Box(new Rect(0,0,position.width,20),title);
-		float height = (buttonSize.height+spacing)*buttonList.Count+border-20;
+		float height = (buttonSize.height+spacing)*buttonList.Count+border-spacing-20;
 		scrollPosition = GUI.BeginScrollView(new Rect(0,20,position.width,position.height-20),scrollPosition,new Rect(0,0,position.width-50,height));
 		foreach(MenuButton button in buttonList){
 			if( GUI.Button(button.position,button.Name()) ){
@@ -71,7 +71,7 @@ public class SingleFrame : Frame{
 		buttonList.Add(button);
 		SetSpacing();
 		for(int i=0; i<buttonList.Count; i++){
-			buttonList[i].position = new Rect(border,spacing*(i+1),buttonSize.width,buttonSize.height);
+			buttonList[i].position = new Rect(border,border +(spacing+buttonSize.height)*i,buttonSize.width,buttonSize.height);
 		}
 	}
 }

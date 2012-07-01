@@ -9,7 +9,13 @@ public class HeaderBar{
 	private DropdownMenu dropdownMenu;
 	
 	public HeaderBar(Control c, NetworkInterface nif){
-		dropdownMenu = new DropdownMenu(c,nif);
+		# if UNITY_WEBPLAYER
+			dropdownMenu = DropdownMenu.Create(c,nif);
+		# elif UNITY_ANDROID
+			dropdownMenu = DropdownMenu.CreateAndroid(c,nif);
+		# else
+			dropdownMenu = DropdownMenu.Create(c,nif);
+		# endif
 	}
 	
 	public void PrintGUI(){
@@ -19,9 +25,9 @@ public class HeaderBar{
 	
 	private void HeaderText(){
 		GUI.Box(position,"");
-		GUI.Box(new Rect(0,0,position.width-50,position.height/2),"Welcome to Tic-Tac-Tower!"); 
+		GUI.Box(new Rect(0,0,position.width-80,position.height/2),"Welcome to Tic-Tac-Tower!"); 
 		//this text could be swapped with player x vs player y, or something...
-		GUI.Box(new Rect(0,position.height/2-2,position.width-50,position.height/2+2),"Player " + (Control.cState.activePlayer+1) + "'s turn. Turn "+(Control.cState.turn+1));
+		GUI.Box(new Rect(0,position.height/2-2,position.width-80,position.height/2+2),"Player " + (Control.cState.activePlayer+1) + "'s turn. Turn "+(Control.cState.turn+1));
 	}
 
 }

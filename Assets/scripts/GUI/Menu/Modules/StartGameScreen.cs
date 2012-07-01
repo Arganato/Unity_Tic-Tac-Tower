@@ -16,10 +16,10 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 	private NetworkInterface networkInterface = null;
 	
 	private void SetUp(){
-		selectRules = new GUIList(new Rect(100,50,180,25));
-		selectRules.AddElement("Consumed towers");
-		selectRules.AddElement("Persistent towers");
-		selectTowers = new GUIList(new Rect(100,100,180,25));
+//		selectRules = new GUIList(new Rect(100,50,180,25));
+//		selectRules.AddElement("Consumed towers");
+//		selectRules.AddElement("Persistent towers");
+		selectTowers = new GUIList(new Rect((int)(Screen.width/4),100,(int)(Screen.width/2),(int)(Screen.height*0.08)));
 		selectTowers.AddElement("All towers");
 		selectTowers.AddElement("Straight only");
 		selectGameTime.position.y = 180;
@@ -51,22 +51,22 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 		GUI.BeginGroup(position);
 		if(!lostConnection){
 			if(localGame)
-				GUI.Box(new Rect(0,0,position.width,25),"Start Local Game");
+				GUI.Label(new Rect(0,0,position.width,25),"Start Local Game");
 			else
-				GUI.Box(new Rect(0,0,position.width,25),"Networked game (beta)");
+				GUI.Label(new Rect(0,0,position.width,25),"Networked game (beta)");
 				
 			if(!localGame && readOnly){
-				string rules = "Rules: ";
-				switch(Stats.rules){
-				case Stats.Rules.INVISIBLE_TOWERS:
-					rules += "Consumed Towers";
-					break;
-				case Stats.Rules.SOLID_TOWERS:
-					rules += "Persistent Towers";
-					break;
-				}
+//				string rules = "Rules: ";
+//				switch(Stats.rules){
+//				case Stats.Rules.INVISIBLE_TOWERS:
+//					rules += "Consumed Towers";
+//					break;
+//				case Stats.Rules.SOLID_TOWERS:
+//					rules += "Persistent Towers";
+//					break;
+//				}
 				
-				GUI.Label(selectRules.position,rules);
+//				GUI.Label(selectRules.position,rules);
 				
 				//Hacka sammen utskrift for towers, siden det bare er to muligheter:
 				string towers;
@@ -76,8 +76,8 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 					towers = "Towers: Straight only";
 				GUI.Label(selectTowers.position,towers);
 			}else{
-				if(selectRules.PrintGUI())
-					UpdateStats();
+//				if(selectRules.PrintGUI())
+//					UpdateStats();
 		
 				if(selectTowers.PrintGUI())
 					UpdateStats();
@@ -89,7 +89,7 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 				ChatGUI();
 			}
 			if(localGame || !readOnly){
-				if(GUI.Button(new Rect(20,position.height-25,100,25),"Start Game")){
+				if(GUI.Button(new Rect(0,position.height-60,140,60),"Start Game")){
 					if(!localGame)
 						networkInterface.SendStartGame();
 					StartGame();
@@ -126,14 +126,14 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 	}
 	
 	private void UpdateStats(){
-		switch(selectRules.choice){
-		case 0:
-			Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
-			break;
-		case 1:
-			Stats.rules = Stats.Rules.SOLID_TOWERS;
-			break;
-		}
+//		switch(selectRules.choice){
+//		case 0:
+//			Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
+//			break;
+//		case 1:
+//			Stats.rules = Stats.Rules.SOLID_TOWERS;
+//			break;
+//		}
 		
 		switch(selectTowers.choice){
 		case 0:

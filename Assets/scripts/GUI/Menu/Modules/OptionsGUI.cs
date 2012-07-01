@@ -4,7 +4,7 @@ using System.Collections;
 public class OptionsGUI : MenuContent {
 
 	
-	public Rect position = new Rect(0,0,300,440);
+	public Rect position = new Rect(0,0,Screen.width,Screen.height-80);
 	
 	private bool settingsSaved = false;
 	
@@ -18,7 +18,7 @@ public class OptionsGUI : MenuContent {
 	
 	public OptionsGUI(MainMenu m){
 		sound = m.GetSoundScript();
-		SetUpScreen();
+//		SetUpScreen();
 		SetupValues();
 	}
 	
@@ -52,11 +52,11 @@ public class OptionsGUI : MenuContent {
 		
 		//-----save and cancel-----//
 		GUILayout.FlexibleSpace();
-		GUILayout.BeginHorizontal(GUILayout.Height(25));
-		if(GUILayout.Button("Save")){
+		GUILayout.BeginHorizontal(GUILayout.Height(25),GUILayout.Height(60));
+		if(GUILayout.Button("Save",GUILayout.Height(60))){
 			SaveSettings();
 		}
-		if(GUILayout.Button("Restore default")){
+		if(GUILayout.Button("Restore default",GUILayout.Height(60))){
 			SetDeafult();
 		}
 		GUILayout.EndHorizontal();
@@ -67,17 +67,20 @@ public class OptionsGUI : MenuContent {
 		GUILayout.BeginVertical("","box");
 		GUILayout.Label("Sound");
 		muteMusic = GUILayout.Toggle(muteMusic,"Mute");
+		GUILayout.FlexibleSpace();
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Master volume");
-		masterVolume = GUILayout.HorizontalSlider(masterVolume,0f,1f);
+		masterVolume = GUILayout.HorizontalSlider(masterVolume,0f,1f,GUILayout.Height(60));
 		GUILayout.EndHorizontal();		
+		GUILayout.FlexibleSpace();
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Music volume");
-		musicVolume = GUILayout.HorizontalSlider(musicVolume,0f,1f);
+		musicVolume = GUILayout.HorizontalSlider(musicVolume,0f,1f,GUILayout.Height(60));
 		GUILayout.EndHorizontal();
+		GUILayout.FlexibleSpace();
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Effect volume");
-		effectVolume = GUILayout.HorizontalSlider(effectVolume,0f,1f);
+		effectVolume = GUILayout.HorizontalSlider(effectVolume,0f,1f,GUILayout.Height(60));
 		GUILayout.EndHorizontal();
 		GUILayout.EndVertical();
 	}
@@ -86,7 +89,7 @@ public class OptionsGUI : MenuContent {
 		GUILayout.BeginVertical("","box");
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Target Framerate");
-		targetFrameRateString = GUILayout.TextField(targetFrameRateString,GUILayout.Width(40));
+		targetFrameRateString = GUILayout.TextField(targetFrameRateString,GUILayout.Width(100),GUILayout.Height(60));
 		GUILayout.EndHorizontal();
 		GUILayout.Label("A higher framerate takes more CPU. Too low framerate makes the game choppy");
 		GUILayout.EndVertical();
