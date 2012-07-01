@@ -56,17 +56,17 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 				GUI.Box(new Rect(0,0,position.width,25),"Networked game (beta)");
 				
 			if(!localGame && readOnly){
-				string rules = "Rules: ";
-				switch(Stats.rules){
-				case Stats.Rules.INVISIBLE_TOWERS:
-					rules += "Consumed Towers";
-					break;
-				case Stats.Rules.SOLID_TOWERS:
-					rules += "Persistent Towers";
-					break;
-				}
+//				string rules = "Rules: ";
+//				switch(Stats.rules){
+//				case Stats.Rules.INVISIBLE_TOWERS:
+//					rules += "Consumed Towers";
+//					break;
+//				case Stats.Rules.SOLID_TOWERS:
+//					rules += "Persistent Towers";
+//					break;
+//				}
 				
-				GUI.Label(selectRules.position,rules);
+//				GUI.Label(selectRules.position,rules);
 				
 				//Hacka sammen utskrift for towers, siden det bare er to muligheter:
 				string towers;
@@ -76,9 +76,9 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 					towers = "Towers: Straight only";
 				GUI.Label(selectTowers.position,towers);
 			}else{
-				if(selectRules.PrintGUI())
-					UpdateStats();
-		
+//				if(selectRules.PrintGUI())
+//					UpdateStats();
+//		
 				if(selectTowers.PrintGUI())
 					UpdateStats();
 			}
@@ -126,14 +126,14 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 	}
 	
 	private void UpdateStats(){
-		switch(selectRules.choice){
-		case 0:
-			Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
-			break;
-		case 1:
-			Stats.rules = Stats.Rules.SOLID_TOWERS;
-			break;
-		}
+//		switch(selectRules.choice){
+//		case 0:
+//			Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
+//			break;
+//		case 1:
+//			Stats.rules = Stats.Rules.SOLID_TOWERS;
+//			break;
+//		}
 		
 		switch(selectTowers.choice){
 		case 0:
