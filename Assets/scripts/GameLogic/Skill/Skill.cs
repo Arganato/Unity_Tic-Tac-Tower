@@ -2,10 +2,10 @@ using UnityEngine;
 using System.Collections;
 
 public static class Skill {
+	// Contains rules associated with the usage of skills, 
+	// in terms of functions to check them 
 	
 	public static int skillInUse;
-	public static SkillContainer skillsUsed; //skill used this turn by activePlayer
-	
 	
 	public static SkillSelectError UseSkill(int skill){
 		SkillSelectError ret = CanUseSkill((SkillType)skill);
@@ -14,7 +14,6 @@ public static class Skill {
 		}
 		return ret;
 	}
-
 	
 	public static SkillSelectError CanUseSkill(SkillType skill){
 		switch(skill){
@@ -31,28 +30,39 @@ public static class Skill {
 		}
 		return SkillSelectError.UNKNOWN_ERROR;
 	}
+	public static SkillSelectError CanUseShoot(GameState state){
+		if ( !(state.skillsUsed.shoot <= state.player[state.activePlayer].playerSkill.skillCap + state.globalSkillCap) ) 
+			return SkillSelectError.SKILL_CAP_ERROR;
+		if(!(state.player[state.activePlayer].playerSkill.shoot > 0))
+			return SkillSelectError.SKILL_AMMO_ERROR;
+		return SkillSelectError.NO_ERROR;
+	}
+	
+	public static SkillSelectError CanUseBuild(GameState state){
+		if ( !(state.skillsUsed.build <= state.player[state.activePlayer].playerSkill.skillCap + state.globalSkillCap)) 
+			return SkillSelectError.SKILL_CAP_ERROR;
+		if( !(state.player[state.activePlayer].playerSkill.build > 0) )
+			return SkillSelectError.SKILL_AMMO_ERROR;
+		return SkillSelectError.NO_ERROR;
+	}
+	
+	public static SkillSelectError CanUseSilence(GameState state){
+		if( !(state.skillsUsed.silence < 1) )
+			return SkillSelectError.SKILL_CAP_ERROR;
+		if( !(state.player[state.activePlayer].playerSkill.silence > 0) )
+			return SkillSelectError.SKILL_AMMO_ERROR;
+		return SkillSelectError.NO_ERROR;
+	}
+	
 	public static SkillSelectError CanUseShoot(){
-		if ( !(skillsUsed.shoot <= Control.cState.player[Control.cState.activePlayer].playerSkill.skillCap + Control.cState.globalSkillCap) ) 
-			return SkillSelectError.SKILL_CAP_ERROR;
-		if(!(Control.cState.player[Control.cState.activePlayer].playerSkill.shoot > 0))
-			return SkillSelectError.SKILL_AMMO_ERROR;
-		return SkillSelectError.NO_ERROR;
+		return CanUseShoot(Control.cState);
 	}
-	
 	public static SkillSelectError CanUseBuild(){
-		if ( !(skillsUsed.build <= Control.cState.player[Control.cState.activePlayer].playerSkill.skillCap + Control.cState.globalSkillCap)) 
-			return SkillSelectError.SKILL_CAP_ERROR;
-		if( !(Control.cState.player[Control.cState.activePlayer].playerSkill.build > 0) )
-			return SkillSelectError.SKILL_AMMO_ERROR;
-		return SkillSelectError.NO_ERROR;
+		return CanUseBuild(Control.cState);
 	}
-	
 	public static SkillSelectError CanUseSilence(){
-		if( !(skillsUsed.silence < 1) )
-			return SkillSelectError.SKILL_CAP_ERROR;
-		if( !(Control.cState.player[Control.cState.activePlayer].playerSkill.silence > 0) )
-			return SkillSelectError.SKILL_AMMO_ERROR;
-		return SkillSelectError.NO_ERROR;
+		return CanUseSilence(Control.cState);
 	}
-	
+
+
 }

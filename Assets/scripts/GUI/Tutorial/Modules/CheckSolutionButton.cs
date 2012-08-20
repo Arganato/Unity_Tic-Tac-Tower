@@ -6,19 +6,13 @@ public class CheckSolutionButton{
 	public Rect position = new Rect(30,0,60,40);
 	public bool enable = true;
 	
-	private Control control;
-	
-	public CheckSolutionButton(Control c){
-		control = c;
-	}
-	
 	public bool PrintGUI(){
 		bool buttonDown = false;
 		if(enable){
-			if(control.playerDone && GUI.Button( position, "Check\nSolution")){
+			if(Control.cState.playerDone && GUI.Button( position, "Check\nSolution")){
 				buttonDown = true;
 				if(SolutionChecker.CheckSolution(Tutorial.chapter, Tutorial.towerTut)) Debug.Log ("Solution is correct!"); //Added for debugging.
-			}else if(!control.playerDone){
+			}else if(!Control.cState.playerDone){
 				Color old = GUI.contentColor;
 				if(Control.cState.activePlayer == 0)
 					GUI.contentColor = Color.red;

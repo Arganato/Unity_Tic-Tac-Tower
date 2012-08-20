@@ -9,12 +9,6 @@ public class GraphicalEffectFactory : MonoBehaviour {
 	
 	private Color silenceFlashColor = new Color(0.3f,0.4f,1,1);
 	
-
-	void Start () {
-	}
-	
-	void Update () {
-	}
 	
 	public void BuildingConstructionEffect(List<Tower> towers){			
 		if(towers.Count > 0){
@@ -22,6 +16,7 @@ public class GraphicalEffectFactory : MonoBehaviour {
 			tmp.GetComponent<ConstructBuildingEffect>().Init(towers);
 		}
 	}
+	
 	
 	public void SilenceEffect(){
 		StartCoroutine("SilenceEnumerator");

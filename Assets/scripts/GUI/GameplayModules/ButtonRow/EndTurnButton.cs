@@ -14,9 +14,9 @@ public class EndTurnButton{
 	
 	public void PrintGUI(){
 		if(enable){
-			if(control.playerDone && Stats.gameRunning && GUI.Button( position, "End\nTurn")){
+			if(Control.cState.playerDone && Stats.gameRunning && GUI.Button( position, "End\nTurn")){
 				control.UserEndTurn();
-			}else if(!control.playerDone){
+			}else if(!Control.cState.playerDone){
 				Color old = GUI.contentColor;
 				if(Control.cState.activePlayer == 0)
 					GUI.contentColor = Color.red;

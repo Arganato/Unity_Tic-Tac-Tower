@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-public enum SoundType {onClick, error, undo, shoot, build, silence, newTower, defeat, victory}
-
 public class Sound : MonoBehaviour {
 	
 	public static Vector3 position = new Vector3(0f,100f,-10.6f); 

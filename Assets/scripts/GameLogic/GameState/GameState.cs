@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameState {
 
@@ -9,6 +10,11 @@ public class GameState {
 	public int globalSkillCap;
 	public int placedPieces; 
 	public Player[] player = new Player[2];
+	public SkillContainer skillsUsed; //skill used this turn by activePlayer
+	public VictoryType victory = VictoryType.noVictory;
+	public bool playerDone = false;
+	public EffectInterface effectInterface = null; //if this is set to a value other than null, 
+	 									//the GameState is assumed to be the playing game state
 	
 	public GameState(){
 		field = new Field<Route>(Route.empty);
@@ -18,6 +24,7 @@ public class GameState {
 		globalSkillCap = 0;
 		player[0] = new Player();
 		player[1] = new Player();
+		skillsUsed = new SkillContainer();
 	}
 	
 	public GameState(GameState copy){
@@ -28,6 +35,8 @@ public class GameState {
 		placedPieces = copy.placedPieces;
 		player[0] = new Player(copy.player[0]);
 		player[1] = new Player(copy.player[1]);
+		skillsUsed = copy.skillsUsed;
+		effectInterface = copy.effectInterface;
 	}
 	
 	public void SetDefault(){
@@ -36,174 +45,7 @@ public class GameState {
 		placedPieces = 2;
 	}
 	
-	public void SetTutorialBuild1(){	//Win during this round (red)
-		field[5,4] = Route.red;
-		field[3,4] = Route.blue;
-		field[5,5] = Route.red;
-		field[5,3] = Route.blue;
-		field[4,6] = Route.red;
-		field[6,3] = Route.blue;
-		field[7,3] = Route.red;
-		field[4,5] = Route.blue;
-		field[7,4] = Route.red;
-		field[7,5] = Route.blue;
-		field[3,6] = Route.red;
-		field[4,3] = Route.blue;
-		field[3,3] = Route.red;
-		field[3,5] = Route.blue;
-		field[2,6] = Route.red;
-		field[1,6] = Route.blue;
-		player[0].playerSkill.skillCap = 1;
-		player[1].playerSkill.skillCap = 1;
-		placedPieces = 16;
-	}
-	
-	public void SetTutorialBuild2(){	//Win during this round (red)
-		field[5,4] = Route.red;
-		field[3,4] = Route.blue;
-		field[4,5] = Route.red;
-		field[3,6] = Route.blue;
-		field[3,5] = Route.red;
-		field[2,5] = Route.blue;
-		field[2,6] = Route.red;
-		field[2,4] = Route.blue;
-		field[4,6] = Route.red;
-		field[5,2] = Route.blue;
-		field[3,3] = Route.red;
-		field[6,1] = Route.blue;
-		field[1,3] = Route.red;
-		field[2,2] = Route.blue;
-		field[2,1] = Route.red;
-		field[3,2] = Route.blue;
-		field[2,1] = Route.red;
-		field[6,1] = Route.blue;
-		field[1,0] = Route.red;
-		field[5,5] = Route.blue;
-		field[1,1] = Route.red;
-		field[3,1] = Route.blue;
-		player[0].playerSkill.skillCap = 1;
-		player[1].playerSkill.skillCap = 1;
-		placedPieces = 22;
-	}
-	
-	public void SetTutorialShoot1(){	//Stop red from winning next round (blue)
-		field[5,4] = Route.blue;
-		field[5,5] = Route.blue;
-		field[5,6] = Route.blue;
-		field[5,3] = Route.blue;
-		field[3,4] = Route.red;
-		field[3,5] = Route.red;
-		field[3,6] = Route.red;
-	}
-	
-	public void SetTutorialShoot2(){	//Stop red from winning next round (blue)
-		field[5,4] = Route.blue;
-		field[3,4] = Route.red;
-		field[5,5] = Route.blue;
-		field[5,6] = Route.red;
-		field[4,5] = Route.blue;
-		field[3,5] = Route.red;
-		field[3,6] = Route.blue;
-		field[6,3] = Route.red;
-		field[2,7] = Route.blue;
-		field[1,8] = Route.red;
-		field[7,2] = Route.blue;
-		field[5,3] = Route.red;
-		field[5,2] = Route.blue;
-		field[6,5] = Route.red;
-		field[6,2] = Route.blue;
-		field[4,7] = Route.red;
-		field[3,7] = Route.blue;
-		field[7,3] = Route.red;
-		field[4,2] = Route.blue;
-		field[6,6] = Route.red;
-		field[5,7] = Route.blue;
-		field[2,8] = Route.red;
-		field[5,8] = Route.blue;
-		player[0].playerSkill.skillCap = 1;
-		player[1].playerSkill.skillCap = 1;
-		activePlayer = 0;
-		placedPieces = 21;
-	}
-	
-	public void SetTutorialSilence1(){
-		field[5,4] = Route.blue;
-		field[5,5] = Route.blue;
-		field[5,6] = Route.blue;
-		field[5,3] = Route.blue;
-		field[3,4] = Route.red;
-		field[3,5] = Route.red;
-		field[3,6] = Route.red;
-		field[2,7] = Route.red;
-	}
-	
-	public void SetTutorialSilence2(){
-		field[5,4] = Route.blue;
-		field[3,4] = Route.red;
-		field[5,5] = Route.blue;
-		field[5,6] = Route.red;
-		field[4,6] = Route.blue;
-		field[4,5] = Route.red;
-		field[2,3] = Route.blue;
-		field[6,6] = Route.red;
-		field[6,7] = Route.blue;
-		field[7,6] = Route.red;
-		field[6,3] = Route.blue;
-		field[7,3] = Route.red;
-		field[4,3] = Route.blue;
-		field[6,4] = Route.red;
-		field[2,4] = Route.blue;
-		field[3,7] = Route.red;
-		field[1,3] = Route.blue;
-		field[7,2] = Route.red;
-		field[3,5] = Route.blue;
-	}
-	
-	public void SetTutorialPower1(){
-		field[5,2] = Route.red;
-		field[4,2] = Route.red;
-		field[5,5] = Route.red;
-		field[4,5] = Route.red;
-		field[4,6] = Route.red;
 
-		field[3,3] = Route.blue;
-		field[5,3] = Route.blue;
-		field[4,3] = Route.blue;
-		
-		player[0].playerSkill.build = 2;
-		player[0].playerSkill.skillCap = 0;
-		player[1].playerSkill.build = 2;
-		player[1].playerSkill.skillCap = 1;
-		activePlayer = 0;
-	}	
-	
-	public void SetTutorialPower2(){
-		field[5,4] = Route.blue;
-		field[3,4] = Route.red;
-		field[5,5] = Route.blue;
-		field[4,5] = Route.red;
-		field[6,4] = Route.blue;
-		field[3,6] = Route.red;
-		field[4,6] = Route.blue;
-		field[7,3] = Route.red;
-		field[3,7] = Route.blue;
-		field[8,2] = Route.red;
-		field[4,3] = Route.blue;
-		field[6,5] = Route.red;
-		field[2,4] = Route.blue;
-		field[1,4] = Route.red;
-		field[6,7] = Route.blue;
-		field[1,6] = Route.red;
-		field[1,5] = Route.blue;
-		field[5,7] = Route.red;
-		field[2,7] = Route.blue;
-		field[6,6] = Route.red;
-		field[2,6] = Route.blue;
-		field[7,7] = Route.red;
-		field[8,3] = Route.blue;
-		player[0].playerSkill.build = 1;
-		player[0].playerSkill.skillCap = 1;
-	}
 	
 	public void Reset(){
 		field = new Field<Route>(Route.empty);
@@ -232,14 +74,219 @@ public class GameState {
 		}
 	}
 	
-		public void ChangeActivePlayer(){
+		
+	public void ChangeActivePlayer(){
 		player[activePlayer].EndTurn(player[activePlayer].playerSkill.skillCap);
 		if(activePlayer == 1){
 			turn++;
 		}
 		activePlayer = (activePlayer+1)%2;
 		Skill.skillInUse = 0;
-		Skill.skillsUsed.Reset();
+		skillsUsed.Reset();
+	}
+	
+	public bool EvaluateTurn(Turn t){
+		if(t.IsValid()){
+			bool flag = true;
+			foreach( Order o in t.GetOrderList()){
+				if(!EvaluateOrder(o)){
+					flag = false;
+					break;
+				}
+			}
+			return flag;
+		}
+		return false;
+	}
+	
+	public bool EvaluateOrder(Order o){
+		// Executes an order from the order-format
+		bool validMove = false;
+		switch(o.skill){
+		case SkillType.noSkill:
+			validMove = true;
+			break;
+		case SkillType.place:
+			validMove = PlacePiece(o.position);
+			break;
+		case SkillType.shoot:
+			if(Skill.CanUseShoot(this) == SkillSelectError.NO_ERROR){
+				validMove = Shoot(o.position);
+			}else{
+				validMove = false;
+			}
+			break;
+		case SkillType.build:
+			if(Skill.CanUseBuild(this) == SkillSelectError.NO_ERROR){
+				validMove = ExtraBuild(o.position);
+			}else{
+				validMove = false;
+			}
+			break;
+		case SkillType.silence:
+			if(Skill.CanUseSilence(this) == SkillSelectError.NO_ERROR){
+				validMove = EMP();
+			}else{
+				validMove = false;
+			}
+			break;
+		}
+		return validMove;
+	}
+	
+	private bool CheckCluster(FieldIndex index){ //rename?
+		//Finds a cluster from a field index recursively
+		//calls appropriate FindTower-functions on this cluster
+		//reports found towers
+		//returns true if a piece was placed
+		
+		Field<bool> cluster = new Field<bool>(false); 
+
+		cluster = Tower.FindAllClusterRecurse(index,cluster);
+		List<Tower> foundTowers = Tower.FindTower(cluster);
+
+//			Debug.Log(activePlayer + " silenced: " + player[activePlayer].silenced);
+		if(!this.player[this.activePlayer].silenced){
+			if(foundTowers.Count > 0){
+				this.player[this.activePlayer].AddScore(foundTowers.Count);
+				if(effectInterface != null)
+					effectInterface.PlaySound(SoundType.newTower);
+			}
+			Tower fiveTower = null;
+			foreach( Tower t in foundTowers){
+
+				if(t.type == TowerType.five){
+					fiveTower = t;
+				}				
+				//Coloring the towers:
+				foreach(FieldIndex i in t.GetList()){ 
+
+					if(Stats.rules == Stats.Rules.SOLID_TOWERS){
+						this.field[i] = Field<int>.GetDarkRoute(this.field[i]);
+					}else if(Stats.rules == Stats.Rules.INVISIBLE_TOWERS){
+						this.field[i] = Route.empty;
+					}
+				}
+				//adding skills:
+				ReportTower(t);
+			}
+			if(fiveTower != null){
+				foreach(FieldIndex i in fiveTower.GetList()){ //recoloring five-towers
+					this.field[i] = Field<int>.GetPlayerColor(this.activePlayer);
+				}
+				VictoryToPlayer(activePlayer);
+			}
+			if (effectInterface != null)
+				effectInterface.PlayBuildingConstructionEffect(foundTowers);
+		}else if(foundTowers.Count > 0){ //if a tower was found that was blocked by Silence
+			return false;
+		}
+		return true;
+	}
+	
+	private void VictoryToPlayer(int player){
+		if (player == 0){
+			victory = VictoryType.playerOne;
+		}else if(player == 1){
+			victory = VictoryType.playerTwo;
+		}
+	}
+	
+	
+	private void ReportTower(Tower t){
+		//called from CheckCluster
+		switch(t.type){
+			case TowerType.shoot:
+				this.player[this.activePlayer].playerSkill.shoot++;
+				break;
+			case TowerType.build:
+				this.player[this.activePlayer].playerSkill.build++;
+				break;
+			case TowerType.silence:
+				this.player[this.activePlayer].playerSkill.silence++;
+				break;
+			case TowerType.skillCap:
+				this.player[this.activePlayer].playerSkill.skillCap++;
+				break;
+		}
+	}
+	
+	private bool PlacePiece(FieldIndex index){ //placing piece in a normal turn
+		if (playerDone == false && this.field[index] == Route.empty){
+			field[index] = Field<int>.GetPlayerColor(activePlayer);
+
+			if(CheckCluster(index)){
+				IncPieceCount();
+				playerDone = true;
+				if (effectInterface != null)
+					effectInterface.PlaySound(SoundType.onClick);
+				return true;
+			}else{ //the move is illegal due to silence
+				if (effectInterface != null){
+					effectInterface.PlaySound(SoundType.error);
+					Console.PrintToConsole("You are silenced; You can't build towers",Console.MessageType.ERROR);
+				}
+				this.field[index] = Route.empty;
+			}
+		}
+		else if(effectInterface != null){
+			if(playerDone){
+				Console.PrintToConsole("Can only place one piece each turn",Console.MessageType.ERROR);
+			}else{
+				Console.PrintToConsole("Cannot place there",Console.MessageType.ERROR);
+			}
+			PopupMessage.DisplayMessage("Invalid move",4f);
+			effectInterface.PlaySound(SoundType.error);
+		}
+		return false;
+		
+	}
+	private bool ExtraBuild(FieldIndex index){ //placing an extra piece with the build-skill
+		if (this.field[index] == Route.empty){
+		
+			field[index] = Field<int>.GetPlayerColor(activePlayer);
+			player[activePlayer].playerSkill.build--;
+			skillsUsed.build++;
+			if(CheckCluster(index)){
+				IncPieceCount();
+				if (effectInterface != null)
+					effectInterface.PlaySound(SoundType.build);
+				return true;
+			}
+		}
+		else if (effectInterface != null){
+			Debug.Log("invalid move");
+			PopupMessage.DisplayMessage("Invalid move",4f);
+			effectInterface.PlaySound(SoundType.error);
+		}
+		return false;
+	}
+	private bool Shoot(FieldIndex index){ //select an enemy piece to destroy it
+	
+		if (this.field[index] == Field<int>.GetPlayerColor( (this.activePlayer+1)%2 ) || this.field[index] == Field<int>.GetPlayerColor(this.activePlayer) ){
+			this.field[index] = Route.destroyed;
+			this.player[this.activePlayer].playerSkill.shoot--;
+			skillsUsed.shoot++;
+			if (effectInterface != null)
+				effectInterface.PlaySound(SoundType.shoot);
+			return true;
+		}else if (effectInterface != null){
+			effectInterface.PlaySound(SoundType.error);
+			PopupMessage.DisplayMessage("Invalid move",4);
+		}
+		return false;
+	}	
+	public bool EMP(){
+		Debug.Log("player "+(this.activePlayer+1)+" has used EMP");
+		Console.PrintToConsole("player "+(this.activePlayer+1)+" has used EMP!",Console.MessageType.INFO);
+		skillsUsed.silence++;
+		player[activePlayer].playerSkill.silence--;
+		player[(activePlayer+1)%2].silenced = true;
+		if (effectInterface != null){
+			effectInterface.PlaySound(SoundType.silence);
+			effectInterface.PlaySilenceEffect();
+		}
+		return true;
 	}
 
 }

@@ -10,9 +10,9 @@ public class TutorialButtonRow{
 	private StatusField statusField;
 	
 	public TutorialButtonRow(Control c){
-		checkSolution = new CheckSolutionButton(c);
+		checkSolution = new CheckSolutionButton();
 		undo = new UndoButton(c);
-		statusField = new StatusField(c);
+		statusField = new StatusField();
 		float width = 300f;
 		position = new Rect(Screen.width/2-width/2,Screen.height-110,width,40);
 	}

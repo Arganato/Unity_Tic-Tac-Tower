@@ -13,7 +13,7 @@ public class ButtonRow{
 	
 	public ButtonRow(Control c){
 		endturn = new EndTurnButton(c);
-		statusField = new StatusField(c);
+		statusField = new StatusField();
 		undo = new UndoButton(c);
 		float width = 300f;
 		position = new Rect(Screen.width/2-width/2,Screen.height-110,width,40);

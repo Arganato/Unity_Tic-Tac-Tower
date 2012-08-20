@@ -5,12 +5,6 @@ public class StatusField {
 
 	public Rect position = new Rect(100,0,100,40);
 	
-	private Control control;
-
-	public StatusField(Control c){
-		control = c;
-	}
-	
 	public void PrintGUI(){
 		GUI.BeginGroup(position);
 		GUI.Box(new Rect(10,0,20,20),GetSkillInUseContent());
@@ -31,7 +25,7 @@ public class StatusField {
 	private GUIContent GetSkillInUseContent(){
 		switch(Skill.skillInUse){
 		case 0:
-			if(!control.playerDone)
+			if(!Control.cState.playerDone)
 				return new GUIContent("p","Place");
 			else
 				return new GUIContent("","Skill in use");
