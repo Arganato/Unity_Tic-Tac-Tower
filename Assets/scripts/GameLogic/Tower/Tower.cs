@@ -104,18 +104,18 @@ public class Tower {
 			if(left_tower && right_tower){ //Left and right turn build tower.
 				Tower rightTower = newTower.Copy();
 				newTower.Add(left);
-				Debug.Log(newTower.ToString());
+//				Debug.Log(newTower.ToString());
 				rightTower.Add(right);
-				Debug.Log(rightTower.ToString());
+//				Debug.Log(rightTower.ToString());
 				buildList.Add(newTower);
 				buildList.Add(rightTower);
 			}else if(left_tower){			//Left turn build tower.
 				newTower.Add(left);
-				Debug.Log(newTower.ToString());
+//				Debug.Log(newTower.ToString());
 				buildList.Add(newTower);
 			}else if(right_tower){			//Right turn build tower.
 				newTower.Add(right);
-				Debug.Log(newTower.ToString());
+//				Debug.Log(newTower.ToString());
 				buildList.Add(newTower);
 			}
 		}
@@ -136,7 +136,7 @@ public class Tower {
 		if(left_tower && right_tower){ //Shoot tower found.
 			newTower.Add(left);
 			newTower.Add(right);
-			Debug.Log(newTower.ToString());
+//			Debug.Log(newTower.ToString());
 			buildList.Add(newTower);
 		}
 	}
@@ -167,12 +167,12 @@ public class Tower {
 			
 			if(tmp.index != -1 && taken[tmp]==true){
 				newTower.Add(tmp);
-				Debug.Log(newTower.ToString());
+//				Debug.Log(newTower.ToString());
 				buildList.Add(newTower);
 			}			
 			if(tmpRight.index != -1 && taken[tmpRight]==true){
 				rightTower.Add(tmpRight);
-				Debug.Log(newTower.ToString());
+//				Debug.Log(newTower.ToString());
 				buildList.Add(rightTower);
 			}
 		}			
@@ -182,7 +182,7 @@ public class Tower {
 		
 			if(tmp.index != -1 && taken[tmp]==true){
 				newTower.Add(tmp);
-				Debug.Log(newTower.ToString());
+//				Debug.Log(newTower.ToString());
 				buildList.Add(newTower);
 			}
 		}
@@ -192,7 +192,7 @@ public class Tower {
 			
 			if(tmp.index != -1 && taken[tmp]==true){
 				newTower.Add(tmp);
-				Debug.Log(newTower.ToString());
+//				Debug.Log(newTower.ToString());
 				buildList.Add(newTower);
 			}				
 		}
@@ -215,7 +215,7 @@ public class Tower {
 			
 			if(ind.index != -1 && taken[ind]==true){
 				newTower.Add(ind);
-				Debug.Log(newTower.ToString());
+//				Debug.Log(newTower.ToString());
 				buildList.Add(newTower);
 			}
 		}	
@@ -241,7 +241,7 @@ public class Tower {
 				tmp = ind.Up(direction);
 				if(tmp.index != -1 && taken[tmp] == true){
 					newTower.Add(tmp);
-					Debug.Log(newTower.ToString());
+//					Debug.Log(newTower.ToString());
 					buildList.Add(newTower);
 				}
 			}

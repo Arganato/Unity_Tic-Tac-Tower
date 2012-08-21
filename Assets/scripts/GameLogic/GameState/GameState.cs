@@ -36,7 +36,6 @@ public class GameState {
 		player[0] = new Player(copy.player[0]);
 		player[1] = new Player(copy.player[1]);
 		skillsUsed = copy.skillsUsed;
-		effectInterface = copy.effectInterface;
 	}
 	
 	public void SetDefault(){
@@ -81,7 +80,6 @@ public class GameState {
 			turn++;
 		}
 		activePlayer = (activePlayer+1)%2;
-		Skill.skillInUse = 0;
 		skillsUsed.Reset();
 	}
 	

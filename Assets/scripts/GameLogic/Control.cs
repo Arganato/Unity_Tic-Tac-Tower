@@ -11,6 +11,7 @@ public class Control: MonoBehaviour, EffectInterface {
 	private Turn activeTurn;
 	private Sound sound;
 	private GraphicalEffectFactory graphicalEffectFactory;
+	private AI ai = new AI(); //for debug
 		
 	void Awake () {
 		sound = (Sound)FindObjectOfType(typeof(Sound));
@@ -131,8 +132,12 @@ public class Control: MonoBehaviour, EffectInterface {
 		Console.PrintToConsole(activeTurn.ToString(),Console.MessageType.TURN);
 		activeTurn = new Turn();
 		cState.playerDone = false;
-		
+		Skill.skillInUse = 0;
 		startOfTurn = new GameState(cState);
+		
+		//TEST:
+		Debug.Log("Calling AI");
+		ai.Calculate(); 
 	}
 	
 	public void StartNewGame(){
@@ -160,6 +165,7 @@ public class Control: MonoBehaviour, EffectInterface {
 	public void UndoTurn(){
 		GameTime gt = cState.player[cState.activePlayer].gameTime;
 		cState = new GameState(startOfTurn);
+		cState.effectInterface = (EffectInterface)this;	
 		cState.player[cState.activePlayer].gameTime = gt; // so that you cant undo the time
 		cState.playerDone = false;
 		activeTurn = new Turn();
