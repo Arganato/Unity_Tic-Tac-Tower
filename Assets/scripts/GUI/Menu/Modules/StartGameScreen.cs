@@ -89,7 +89,7 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 				ChatGUI();
 			}
 			if(localGame || !readOnly){
-				if(GUI.Button(new Rect(0,position.height-60,140,60),"Start Game")){
+				if(GUI.Button(new Rect(0,position.height-60,150,45),"Start Game")){
 					if(!localGame)
 						networkInterface.SendStartGame();
 					StartGame();

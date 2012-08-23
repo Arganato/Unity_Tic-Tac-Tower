@@ -30,7 +30,6 @@ public class ConfirmMenu{
 		name = buttonName;
 		positionClosed = pos;
 		positionOpen = posOpen;
-		Debug.Log(buttonName+"-position: "+positionClosed);
 	}
 	
 	public ConfirmMenu(string buttonName, int x, int y){

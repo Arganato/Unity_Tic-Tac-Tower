@@ -4,15 +4,6 @@ using System.Collections.Generic;
 
 public class SingleFrame : Frame{
 	
-//	public string title;
-//	private Rect buttonSize = new Rect(0,0,300,100);
-//	private Rect position = new Rect(200,100,400,800);
-//	private int border = 20;
-//	
-//	private int spacing = 200; 
-//	private int maxSpacing = 200;
-//	private int minSpacing = 50;
-	
 	private List<MenuButton> buttonList = new List<MenuButton>();
 	private Vector2 scrollPosition = Vector2.zero;
 	

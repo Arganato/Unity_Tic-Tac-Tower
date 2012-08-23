@@ -7,7 +7,6 @@ public class MainMenu : MonoBehaviour {
 	public Transform network;
 	public Transform soundObject;
 	
-	private Frame mainMenuFrame;
 	private List<MenuContent> menuStack = new List<MenuContent>();
 	
 	private NetworkInterface nif;
@@ -27,7 +26,7 @@ public class MainMenu : MonoBehaviour {
 			Instantiate(soundObject);
 		
 		
-		
+		Frame mainMenuFrame;
 		mainMenuFrame = Frame.Create("Main Menu");
 
 		mainMenuFrame.AddButton(new LocalGameButton(this));

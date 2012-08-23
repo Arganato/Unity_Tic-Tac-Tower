@@ -115,16 +115,18 @@ public class SkillGUI{
 	}
 	
 	public static Rect GetGameGUIRect(){
-		float guiRatio = 110f/300f;
+		float guiRatio = 110f/300f; //the height/width of the game gui
 		Rect guiPosition = new Rect(0,0,300,110);
 		float pixUnderBoard = (float)(Screen.height-45-Screen.width);
-		float spaceRatio = pixUnderBoard/(float)Screen.width;
-		if(guiRatio > spaceRatio){
-			guiPosition.height = pixUnderBoard;
-			guiPosition.width = pixUnderBoard/guiRatio;
-		}else{
-			guiPosition.width = Screen.width;
-			guiPosition.height = guiPosition.width*guiRatio;
+		if (pixUnderBoard>110){
+			float spaceRatio = pixUnderBoard/(float)Screen.width;
+			if(guiRatio > spaceRatio){
+				guiPosition.height = pixUnderBoard;
+				guiPosition.width = pixUnderBoard/guiRatio;
+			}else{
+				guiPosition.width = Screen.width;
+				guiPosition.height = guiPosition.width*guiRatio;
+			}
 		}
 		guiPosition.x = (Screen.width-guiPosition.width)/2;
 		guiPosition.y = Screen.height-guiPosition.height;

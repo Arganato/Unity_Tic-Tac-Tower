@@ -1,27 +1,27 @@
 using UnityEngine;
 using System.Collections;
 
-public class OptionsGUI : MenuContent {
+public class OptionsPC : OptionsMenu {
 
-	
-	public Rect position = new Rect(0,0,Screen.width,Screen.height-80);
-	
+
+	public Rect position = new Rect(0,0,300,440);
+
 	private bool settingsSaved = false;
-	
+
 	private float masterVolume = 1f;
 	private float musicVolume = 1f;
 	private float effectVolume = 1f;
 	private bool muteMusic = false;
 	private string targetFrameRateString = "15";
-	
+
 	private Sound sound;
-	
-	public OptionsGUI(MainMenu m){
+
+	public OptionsPC(MainMenu m){
 		sound = m.GetSoundScript();
-//		SetUpScreen();
+		SetUpScreen();
 		SetupValues();
 	}
-	
+
 	private void  SetUpScreen(){
 		if( Screen.width >= 300){
 			position.x = Screen.width/2 - position.width/2;
@@ -35,9 +35,9 @@ public class OptionsGUI : MenuContent {
 			position.height = Screen.height-40;
 		}
 	}
-	
+
 	public override void Close (){}
-	
+
 	public override void PrintGUI (){
 		GUILayout.BeginArea(position);
 		if(settingsSaved){
@@ -49,52 +49,49 @@ public class OptionsGUI : MenuContent {
 		Sound();
 		GUILayout.FlexibleSpace();
 		TargetFramerate();
-		
+
 		//-----save and cancel-----//
 		GUILayout.FlexibleSpace();
-		GUILayout.BeginHorizontal(GUILayout.Height(25),GUILayout.Height(60));
-		if(GUILayout.Button("Save",GUILayout.Height(60))){
+		GUILayout.BeginHorizontal(GUILayout.Height(25));
+		if(GUILayout.Button("Save")){
 			SaveSettings();
 		}
-		if(GUILayout.Button("Restore default",GUILayout.Height(60))){
+		if(GUILayout.Button("Restore default")){
 			SetDeafult();
 		}
 		GUILayout.EndHorizontal();
 		GUILayout.EndArea();
 	}
-	
+
 	private void Sound(){
 		GUILayout.BeginVertical("","box");
 		GUILayout.Label("Sound");
 		muteMusic = GUILayout.Toggle(muteMusic,"Mute");
-		GUILayout.FlexibleSpace();
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Master volume");
-		masterVolume = GUILayout.HorizontalSlider(masterVolume,0f,1f,GUILayout.Height(60));
+		masterVolume = GUILayout.HorizontalSlider(masterVolume,0f,1f);
 		GUILayout.EndHorizontal();		
-		GUILayout.FlexibleSpace();
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Music volume");
-		musicVolume = GUILayout.HorizontalSlider(musicVolume,0f,1f,GUILayout.Height(60));
+		musicVolume = GUILayout.HorizontalSlider(musicVolume,0f,1f);
 		GUILayout.EndHorizontal();
-		GUILayout.FlexibleSpace();
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Effect volume");
-		effectVolume = GUILayout.HorizontalSlider(effectVolume,0f,1f,GUILayout.Height(60));
+		effectVolume = GUILayout.HorizontalSlider(effectVolume,0f,1f);
 		GUILayout.EndHorizontal();
 		GUILayout.EndVertical();
 	}
-	
+
 	private void TargetFramerate(){
 		GUILayout.BeginVertical("","box");
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Target Framerate");
-		targetFrameRateString = GUILayout.TextField(targetFrameRateString,GUILayout.Width(100),GUILayout.Height(60));
+		targetFrameRateString = GUILayout.TextField(targetFrameRateString,GUILayout.Width(40));
 		GUILayout.EndHorizontal();
 		GUILayout.Label("A higher framerate takes more CPU. Too low framerate makes the game choppy");
 		GUILayout.EndVertical();
 	}
-	
+
 	private void SaveSettings(){
 		int framerateInt = System.Convert.ToInt32(targetFrameRateString);
 		if(framerateInt >= 5 && framerateInt <= 60){
@@ -104,17 +101,17 @@ public class OptionsGUI : MenuContent {
 		}else{
 			Application.targetFrameRate = 60;
 		}
-		
+
 		//Sound...
 		sound.audio.volume = masterVolume;
 		sound.effectVolume = effectVolume;
 		sound.musicVolume = musicVolume;
 		sound.audio.mute = muteMusic; 
-		
+
 		SetupValues();
 		settingsSaved = true;
 	}
-	
+
 	private void SetupValues(){
 		targetFrameRateString = System.Convert.ToString(Application.targetFrameRate);
 		masterVolume = sound.audio.volume;
@@ -122,7 +119,7 @@ public class OptionsGUI : MenuContent {
 		musicVolume = sound.musicVolume;
 		muteMusic = sound.audio.mute;
 	}
-	
+
 	private void SetDeafult(){
 		Application.targetFrameRate = 15;
 		sound.audio.volume = 1f;
@@ -131,6 +128,6 @@ public class OptionsGUI : MenuContent {
 		sound.audio.mute = false; 
 		SetupValues();
 	}
-	
-	
+
+
 }

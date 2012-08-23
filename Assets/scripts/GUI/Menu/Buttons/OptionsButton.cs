@@ -5,10 +5,10 @@ using System.Collections;
 public class OptionsButton : MenuButton {
 	
 	private MainMenu mainMenu;
-	private OptionsGUI optionsMenu;
+	private OptionsMenu optionsMenu;
 	public OptionsButton(MainMenu m){
 		mainMenu = m;
-		optionsMenu = new OptionsGUI(mainMenu);
+		optionsMenu = OptionsMenu.Create(m);
 	}
 	public override void ButtonDown(){
 		mainMenu.AddMenu(optionsMenu);

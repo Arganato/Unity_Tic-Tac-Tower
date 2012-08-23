@@ -7,7 +7,7 @@ public abstract class Frame : MenuContent{
 	protected Rect position = new Rect(200,100,400,800);
 	protected int border = 20;
 	
-	protected int spacing = (int)(Screen.height*0.2); 
+	protected int spacing = (int)(Screen.height*0.2);
 	protected int maxSpacing = (int)(Screen.height*0.2);
 	protected int minSpacing = (int)(Screen.height*0.12);
 	
