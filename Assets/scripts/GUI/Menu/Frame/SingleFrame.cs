@@ -4,15 +4,6 @@ using System.Collections.Generic;
 
 public class SingleFrame : Frame{
 	
-//	public string title;
-//	private Rect buttonSize = new Rect(0,0,300,100);
-//	private Rect position = new Rect(200,100,400,800);
-//	private int border = 20;
-//	
-//	private int spacing = 200; 
-//	private int maxSpacing = 200;
-//	private int minSpacing = 50;
-	
 	private List<MenuButton> buttonList = new List<MenuButton>();
 	private Vector2 scrollPosition = Vector2.zero;
 	
@@ -56,7 +47,7 @@ public class SingleFrame : Frame{
 	public override void PrintGUI(){
 		GUI.BeginGroup(position);
 		GUI.Box(new Rect(0,0,position.width,20),title);
-		float height = (buttonSize.height+spacing)*buttonList.Count+border-20;
+		float height = (buttonSize.height+spacing)*buttonList.Count+border-spacing-20;
 		scrollPosition = GUI.BeginScrollView(new Rect(0,20,position.width,position.height-20),scrollPosition,new Rect(0,0,position.width-50,height));
 		foreach(MenuButton button in buttonList){
 			if( GUI.Button(button.position,button.Name()) ){
@@ -71,7 +62,7 @@ public class SingleFrame : Frame{
 		buttonList.Add(button);
 		SetSpacing();
 		for(int i=0; i<buttonList.Count; i++){
-			buttonList[i].position = new Rect(border,spacing*(i+1),buttonSize.width,buttonSize.height);
+			buttonList[i].position = new Rect(border,border +(spacing+buttonSize.height)*i,buttonSize.width,buttonSize.height);
 		}
 	}
 }

@@ -10,12 +10,13 @@ public class GameState {
 	public int globalSkillCap;
 	public int placedPieces; 
 	public Player[] player = new Player[2];
+	
 	public SkillContainer skillsUsed; //skill used this turn by activePlayer
 	public VictoryType victory = VictoryType.noVictory;
 	public bool playerDone = false;
 	public EffectInterface effectInterface = null; //if this is set to a value other than null, 
 	 									//the GameState is assumed to be the playing game state
-	
+
 	public GameState(){
 		field = new Field<Route>(Route.empty);
 		turn = 0;
@@ -26,7 +27,7 @@ public class GameState {
 		player[1] = new Player();
 		skillsUsed = new SkillContainer();
 	}
-	
+
 	public GameState(GameState copy){
 		field = new Field<Route>(copy.field);
 		turn = copy.turn;
@@ -37,15 +38,13 @@ public class GameState {
 		player[1] = new Player(copy.player[1]);
 		skillsUsed = copy.skillsUsed;
 	}
-	
+
 	public void SetDefault(){
 		field[5,4] = Route.red;
 		field[3,4] = Route.blue;
 		placedPieces = 2;
 	}
-	
 
-	
 	public void Reset(){
 		field = new Field<Route>(Route.empty);
 		turn = 0;
@@ -54,11 +53,11 @@ public class GameState {
 		globalSkillCap = 0;
 		player[0].Reset();
 		player[1].Reset();
-		
+
 	}
-	
+
 	//----gameplay-related functions----//
-	
+
 	public void IncPieceCount(){
 		// first skill cap increase: after piece nr. 28
 		// second skill cap increase: after piece nr. 54
@@ -72,8 +71,7 @@ public class GameState {
 			}
 		}
 	}
-	
-		
+
 	public void ChangeActivePlayer(){
 		player[activePlayer].EndTurn(player[activePlayer].playerSkill.skillCap);
 		if(activePlayer == 1){

@@ -8,6 +8,7 @@ public static class ResourceFactory{
 	//SkillRelated
 	private static Texture[] towerTextures = new Texture[8]; //fikse denne i en static-klasse
 	private static Texture[] skillIconTextures = new Texture[4];
+	private static Texture[] smallSkillIconTextures = new Texture[4];
 	private static Texture cancelTexture;
 	
 	//Arrows
@@ -17,7 +18,7 @@ public static class ResourceFactory{
 	private static string towerBasepath = "GUI/Towers/"; // relative to the Resources-folder
 	private static string[] towerPaths = new string[8]{ "shoot_rett", "build_rett", "emp_rett", "square_rett", "shoot_skra", "build_skra", "emp_skra", "square_skra"};
 	private static string skillIconsBP = "GUI/Icons/Skills/";
-	private static string[] skillIconpaths = new string[4]{ "Shoot_Icon", "Build_Icon", "Silence_Icon", "SkillCap_Icon"};
+	private static string[] skillIconpaths = new string[4]{ "Shoot", "Build", "Silence", "SkillCap"};
 	private static bool isLoaded = false;
 
 	public static string GetDescription(TowerType tower){
@@ -69,6 +70,16 @@ public static class ResourceFactory{
 		}
 	}
 	
+	public static Texture GetSmallSkillIcon(int i){
+		CheckLoaded();
+		if(i<skillIconTextures.Length && i>=0){
+			return skillIconTextures[i];
+		}else{
+			Debug.LogError("tried to access skillIconTextures["+i+"]; Out of range (L = "+skillIconTextures.Length+")");
+			return null;
+		}		
+	}
+	
 	public static Texture GetCancelTexture(){
 		CheckLoaded();
 		if( cancelTexture == null){
@@ -111,9 +122,10 @@ public static class ResourceFactory{
 	}
 	private static void LoadSkillIcons(){
 		for (int i=0; i<skillIconTextures.Length;i++){
-			skillIconTextures[i] = Resources.Load(skillIconsBP+skillIconpaths[i]) as Texture;
+			skillIconTextures[i] = Resources.Load(skillIconsBP+skillIconpaths[i]+"_Icon") as Texture;
+			smallSkillIconTextures[i] = Resources.Load(skillIconsBP+skillIconpaths[i]+"Small") as Texture;
 			if(towerTextures[i] == null){
-				Debug.LogError("Texture not found: "+skillIconsBP+skillIconpaths[i]);
+				Debug.LogError("Texture not found: "+skillIconsBP+skillIconpaths[i]+"_Icon");
 			}
 
 		}

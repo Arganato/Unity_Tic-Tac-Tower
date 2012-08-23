@@ -25,7 +25,7 @@ public class GUIList {
 		bool valueChanged = false;
 		if(showList){
 			for (int i=0;i<elements.Count;i++){
-				if(GUI.Button(new Rect(position.x,position.y+30*i,position.width-30,25),elements[i])){
+				if(GUI.Button(new Rect(position.x,position.y+position.height*i,position.width-30,position.height),elements[i])){
 					choice = i;
 					showList = false;
 					valueChanged = true;

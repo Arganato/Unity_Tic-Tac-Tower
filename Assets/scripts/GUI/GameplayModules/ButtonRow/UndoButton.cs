@@ -25,12 +25,12 @@ public class UndoButton{
 			GUI.BeginGroup(position);
 			ColoredBox();
 			if( CanUndo() ){
-				if(GUI.Button(new Rect(0,0,position.width,20),"Undo")){
+				if(GUI.Button(new Rect(0,0,position.width,position.height/2),"Undo")){
 				usedUndoCounter[Control.cState.activePlayer]++;
 				control.UndoTurn();
 				}
 			}else{
-				GUI.Box(new Rect(0,0,position.width,20),"Undo");
+				GUI.Box(new Rect(0,0,position.width,position.height/2),"Undo");
 			}
 			GUI.EndGroup();
 		}
@@ -38,9 +38,9 @@ public class UndoButton{
 	private void ColoredBox(){
 		Color old = GUI.contentColor;
 		GUI.contentColor = Color.red;
-		GUI.Box(new Rect(0,20,position.width/2,20),""+usedUndoCounter[0]);
+		GUI.Box(new Rect(0,position.height/2,position.width/2,position.height/2),""+usedUndoCounter[0]);
 		GUI.contentColor = Color.blue;
-		GUI.Box(new Rect(position.width/2,20,position.width/2,20),""+usedUndoCounter[1]);
+		GUI.Box(new Rect(position.width/2,position.height/2,position.width/2,position.height/2),""+usedUndoCounter[1]);
 		GUI.contentColor = old;
 	}
 	

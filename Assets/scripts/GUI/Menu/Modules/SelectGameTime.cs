@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class SelectGameTime{
 
 	public bool enable = true;
-	public Rect position = new Rect(0,100,Screen.width,120);
+	public Rect position = new Rect(0,160,Screen.width,140);
 	
 	private string p1tpt = "";
 	private string p1tt = "";
@@ -20,8 +20,8 @@ public class SelectGameTime{
 			GUI.Box(new Rect(0,10,position.width/2,position.height-20),"Player 1");
 			GUI.Box(new Rect(10,60,100,20),"Time per turn","invisBox");
 			p1tpt = GUI.TextField(new Rect(110,60,40,20),p1tpt);
-			GUI.Box(new Rect(10,80,100,20),"Total time","invisBox");
-			p1tt = GUI.TextField(new Rect(110,80,40,20),p1tt);
+			GUI.Box(new Rect(10,100,100,20),"Total time","invisBox");
+			p1tt = GUI.TextField(new Rect(110,100,40,20),p1tt);
 						
 			GUI.Box(new Rect(position.width/2,10,position.width/2,position.height-20),"Player 2");
 			float rightMargin = position.width/2+10;
@@ -29,8 +29,8 @@ public class SelectGameTime{
 			if(!copyP2Toggle){
 				GUI.Box(new Rect(rightMargin,60,100,20),"Time per turn","invisBox");
 				p2tpt = GUI.TextField(new Rect(rightMargin+100,60,40,20),p2tpt);
-				GUI.Box(new Rect(rightMargin,80,80,20),"Total time","invisBox");
-				p2tt = GUI.TextField(new Rect(rightMargin+100,80,40,20),p2tt);
+				GUI.Box(new Rect(rightMargin,100,80,20),"Total time","invisBox");
+				p2tt = GUI.TextField(new Rect(rightMargin+100,100,40,20),p2tt);
 			}
 
 			GUI.EndGroup();

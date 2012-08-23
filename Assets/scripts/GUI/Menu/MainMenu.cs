@@ -7,13 +7,14 @@ public class MainMenu : MonoBehaviour {
 	public Transform network;
 	public Transform soundObject;
 	
-	private Frame mainMenuFrame;
 	private List<MenuContent> menuStack = new List<MenuContent>();
 	
 	private NetworkInterface nif;
 	private Sound sound;
 		
 	void Start () {
+		
+		Debug.Log("Screen: h = "+Screen.height+", w = "+Screen.width+", h/w = "+((double)Screen.height/(double)Screen.width));
 		Stats.StartUpRoutine(); //should be called once at the beginning of every game (include in loading script or smt)
 
 		nif = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
@@ -25,7 +26,7 @@ public class MainMenu : MonoBehaviour {
 			Instantiate(soundObject);
 		
 		
-		
+		Frame mainMenuFrame;
 		mainMenuFrame = Frame.Create("Main Menu");
 
 		mainMenuFrame.AddButton(new LocalGameButton(this));
@@ -43,11 +44,11 @@ public class MainMenu : MonoBehaviour {
 		
 		menuStack[menuStack.Count-1].PrintGUI();
 		if(menuStack.Count <= 1){
-			if(GUI.Button(new Rect(Screen.width-100,Screen.height-45,60,25),"Quit")){
+			if(GUI.Button(new Rect(Screen.width-150,Screen.height-45,150,45),"Quit")){
 				Quit();
 			}			
 		}else{
-			if(GUI.Button(new Rect(Screen.width-100,Screen.height-35,60,25),"Back")){
+			if(GUI.Button(new Rect(Screen.width-150,Screen.height-45,150,45),"Back")){
 				GoBack();
 			}
 		}

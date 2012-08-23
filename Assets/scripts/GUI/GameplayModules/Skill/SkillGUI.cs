@@ -10,6 +10,8 @@ public class SkillGUI{
 		
 	private bool showHelp = false;
 	private int helpSkill = -1;
+	private int buttonSize = 50;
+	private int borderSize = 9;
 	private SkillButtonGUI[] buttonRow = new SkillButtonGUI[4];
 	private SkillAmountGUI[] textRow = new SkillAmountGUI[4];
 	private SkillDescription[] descriptions = new SkillDescription[4];
@@ -38,6 +40,21 @@ public class SkillGUI{
 			skillEn[i] = true;
 		}
 				
+	}
+	
+	private void AdjustPositions(){
+		buttonSize = (int)(position.width*50f/310f);
+		borderSize = (int)(position.width*10f/310f);
+		int textHeight = (int)(position.height-buttonSize);
+		buttonRow[0].position = new Rect(borderSize,0,buttonSize,buttonSize);
+		buttonRow[1].position = new Rect(borderSize*2+buttonSize,0,buttonSize,buttonSize);
+		buttonRow[2].position = new Rect(borderSize*3+buttonSize*2,0,buttonSize,buttonSize);
+		buttonRow[3].position = new Rect(borderSize*4+buttonSize*3,0,buttonSize,buttonSize);
+		textRow[0].position = new Rect(borderSize,buttonSize,buttonSize,textHeight);
+		textRow[1].position = new Rect(borderSize*2+buttonSize,buttonSize,buttonSize,textHeight);
+		textRow[2].position = new Rect(borderSize*3+buttonSize*2,buttonSize,buttonSize,textHeight);
+		textRow[3].position = new Rect(borderSize*4+buttonSize*3,buttonSize,buttonSize,textHeight);
+
 	}
 	
 	public void PrintGUI(){
@@ -71,7 +88,9 @@ public class SkillGUI{
 				textRow[i].PrintGUI();
 			}
 		}
-		if(GUI.Button(new Rect(265,10,25,25),new GUIContent("?","Help"))){
+		int helpStart = (int)((buttonSize+borderSize)*4+borderSize);
+		int helpSize = (int)(position.width - helpStart -borderSize);
+		if(GUI.Button(new Rect(helpStart,0,helpSize,helpSize),new GUIContent("?","Help"))){
 			showHelp = true;
 			helpSkill = -1;
 		}
@@ -81,16 +100,38 @@ public class SkillGUI{
 	
 	private void HelpGUI(){
 		for( int i=0;i<buttonRow.Length;i++){
-			if(helpSkill != i && GUI.Button(new Rect(10 + i*60,0,50,50),new GUIContent(ResourceFactory.GetSkillIcon(i),ResourceFactory.GetSkillName(i)))){
+			if(helpSkill != i && GUI.Button(buttonRow[i].position,new GUIContent(ResourceFactory.GetSkillIcon(i),ResourceFactory.GetSkillName(i)))){
 				helpSkill = i;
 			}else if(helpSkill == i){
-				GUI.Box(new Rect(10 + i*60,0,50,50),new GUIContent(ResourceFactory.GetSkillIcon(i),ResourceFactory.GetSkillName(i)));
+				GUI.Box(buttonRow[i].position,new GUIContent(ResourceFactory.GetSkillIcon(i),ResourceFactory.GetSkillName(i)));
 			}
 		}
-		GUI.Label(new Rect(0,50,300,20),"select one of the skills above for more info","labelCentered");
+		GUI.Label(new Rect(0,buttonSize,position.width,position.height-buttonSize),"select one of the skills above for more info","labelCentered");
 		
-		showHelp = GUI.Toggle(new Rect(265,10,25,25),showHelp, new GUIContent("?","Close help"),"button");
+		int helpStart = (buttonSize+borderSize)*4+borderSize;
+		int helpSize = (int)(position.width - helpStart -borderSize);
+		showHelp = GUI.Toggle(new Rect(helpStart,0,helpSize,helpSize),showHelp, new GUIContent("?","Close help"),"button");
 		
+	}
+	
+	public static Rect GetGameGUIRect(){
+		float guiRatio = 110f/300f; //the height/width of the game gui
+		Rect guiPosition = new Rect(0,0,300,110);
+		float pixUnderBoard = (float)(Screen.height-45-Screen.width);
+		if (pixUnderBoard>110){
+			float spaceRatio = pixUnderBoard/(float)Screen.width;
+			if(guiRatio > spaceRatio){
+				guiPosition.height = pixUnderBoard;
+				guiPosition.width = pixUnderBoard/guiRatio;
+			}else{
+				guiPosition.width = Screen.width;
+				guiPosition.height = guiPosition.width*guiRatio;
+			}
+		}
+		guiPosition.x = (Screen.width-guiPosition.width)/2;
+		guiPosition.y = Screen.height-guiPosition.height;
+		
+		return guiPosition;
 	}
 	
 	public static SkillGUI Create(){
@@ -99,6 +140,15 @@ public class SkillGUI{
 		float width = 300f;
 		ret.position = new Rect(Screen.width/2-width/2,Screen.height-70,width,70);
 		return ret;
+	}
+	
+	public static SkillGUI CreateAndroid(){
+		Rect gameGUIPosition = GetGameGUIRect();
+		SkillGUI skillgui = new SkillGUI();
+		skillgui.position = new Rect(gameGUIPosition.x,gameGUIPosition.y+gameGUIPosition.height*(40f/110f),gameGUIPosition.width,gameGUIPosition.height*(70f/110f));
+		skillgui.AdjustPositions();
+//		Debug.Log("creating SkillGUI in rect: "+skillgui.position);
+		return skillgui;
 	}
 		
 	public static SkillGUI TutorialCreate(){

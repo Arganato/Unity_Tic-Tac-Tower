@@ -26,6 +26,12 @@ public class ConfirmMenu{
 		Init (buttonName);
 	}
 	
+	public ConfirmMenu(string buttonName, Rect pos, Rect posOpen){
+		name = buttonName;
+		positionClosed = pos;
+		positionOpen = posOpen;
+	}
+	
 	public ConfirmMenu(string buttonName, int x, int y){
 		positionClosed.x = x;
 		positionClosed.y = y;
@@ -48,10 +54,10 @@ public class ConfirmMenu{
 			GUI.Box(positionClosed, name);
 			GUI.Box(positionOpen,"");
 			GUI.BeginGroup(positionOpen);
-			if(GUI.Button(new Rect(0, 0, 60, 25), "confirm")){
+			if(GUI.Button(new Rect(0, 0, positionOpen.width, positionOpen.height/2), "confirm")){
 				confirm = false;
 				return true;
-			}else if(GUI.Button(new Rect(0,25, 60, 25), "cancel")){
+			}else if(GUI.Button(new Rect(0,positionOpen.height/2, positionOpen.width, positionOpen.height/2), "cancel")){
 				confirm = false;
 			}
 			GUI.EndGroup();

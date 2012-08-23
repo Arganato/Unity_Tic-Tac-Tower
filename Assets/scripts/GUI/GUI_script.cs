@@ -11,7 +11,7 @@ public class GUI_script : MonoBehaviour {
 	public bool enable;
 	public bool lockGUI;
 
-	private SkillGUI skillGUI = SkillGUI.Create();
+	private SkillGUI skillGUI;
 	private HeaderBar header;
 	private ButtonRow buttonRow;
 	
@@ -23,9 +23,17 @@ public class GUI_script : MonoBehaviour {
 		control = (Control)FindObjectOfType(typeof(Control));
 		grid = (Grid)FindObjectOfType(typeof(Grid));
 		NetworkInterface netIf = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
-		buttonRow =  new ButtonRow(control);
-		header = new HeaderBar(control, netIf);
-
+		# if UNITY_WEBPLAYER
+			buttonRow = ButtonRow.Create(control);
+			skillGUI = SkillGUI.Create();
+		# elif UNITY_ANDROID
+			buttonRow = ButtonRow.CreateAndroid(control);
+			skillGUI = SkillGUI.CreateAndroid();
+		# else
+			buttonRow = ButtonRow.Create(control);
+			skillGUI = SkillGUI.Create();
+		# endif
+		header = new HeaderBar(control,netIf);
 	}
 	
 	void OnGUI() {

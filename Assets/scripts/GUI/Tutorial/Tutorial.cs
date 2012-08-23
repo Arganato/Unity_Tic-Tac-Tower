@@ -142,14 +142,17 @@ public class Tutorial : MonoBehaviour {
 	}
 	
 	private void TutorialWindow(int windowID){
-		GUILayout.BeginArea(new Rect(0,0,tutorialWindowRect.width,20));
-		GUILayout.BeginHorizontal();
-		GUILayout.FlexibleSpace();
-		if(GUILayout.Button("x")){
+//		GUILayout.BeginArea(new Rect(0,0,tutorialWindowRect.width,20));
+//		GUILayout.BeginHorizontal();
+//		GUILayout.FlexibleSpace();
+//		if(GUILayout.Button("x")){
+//			showTutorialWindow = false;
+//		}
+//		GUILayout.EndHorizontal();
+//		GUILayout.EndArea();
+		if(GUI.Button(new Rect(5,tutorialWindowRect.height-25,tutorialWindowRect.width-110,25),"Close")){
 			showTutorialWindow = false;
 		}
-		GUILayout.EndHorizontal();
-		GUILayout.EndArea();
 		//----end header----//
 		GUI.BeginGroup(new Rect(0,20,tutorialWindowRect.width,tutorialWindowRect.height-45));
 		infoText.PrintTutorialText();
