@@ -6,7 +6,7 @@ public class SkillGUI{
 	public bool enable = true;
 	public Rect position;
 	
-	public bool[] skillEn = new bool[4];
+	private bool[] skillEn = new bool[4];
 		
 	private bool showHelp = false;
 	private int helpSkill = -1;
@@ -15,7 +15,8 @@ public class SkillGUI{
 	private SkillButtonGUI[] buttonRow = new SkillButtonGUI[4];
 	private SkillAmountGUI[] textRow = new SkillAmountGUI[4];
 	private SkillDescription[] descriptions = new SkillDescription[4];
-	private SkillGUI(){
+	
+	private SkillGUI(SkillEnabled buttonsEnabled){
 		buttonRow[0] = SkillButtonGUI.CreateShoot();
 		buttonRow[1] = SkillButtonGUI.CreateBuild();
 		buttonRow[2] = SkillButtonGUI.CreateSilence();
@@ -35,11 +36,8 @@ public class SkillGUI{
 		descriptions[3] = new SkillDescription(TowerType.skillCap);
 		descriptions[3].position = new Rect(0,0,300,200);
 		
-		
-		for(int i=0;i<4;i++){
-			skillEn[i] = true;
-		}
-				
+		SetSkillButtons(buttonsEnabled);
+	
 	}
 	
 	private void AdjustPositions(){
@@ -55,6 +53,17 @@ public class SkillGUI{
 		textRow[2].position = new Rect(borderSize*3+buttonSize*2,buttonSize,buttonSize,textHeight);
 		textRow[3].position = new Rect(borderSize*4+buttonSize*3,buttonSize,buttonSize,textHeight);
 
+	}
+	
+	public void SetSkillButtons(SkillEnabled buttonsEnabled){
+		if(buttonsEnabled.shoot)			
+			skillEn[0] = true;
+		if(buttonsEnabled.build)
+			skillEn[1] = true;
+		if(buttonsEnabled.silence)			
+			skillEn[2] = true;
+		if(buttonsEnabled.skillCap)			
+			skillEn[3] = true;			
 	}
 	
 	public void PrintGUI(){
@@ -134,40 +143,28 @@ public class SkillGUI{
 		return guiPosition;
 	}
 	
-	public static SkillGUI Create(){
-		//Platform-Specific code...
-		SkillGUI ret = new SkillGUI();
+	public static SkillGUI Create(SkillEnabled skillEnabled){
+		SkillGUI ret = new SkillGUI(skillEnabled);
 		float width = 300f;
 		ret.position = new Rect(Screen.width/2-width/2,Screen.height-70,width,70);
 		return ret;
 	}
 	
-	public static SkillGUI CreateAndroid(){
+	public static SkillGUI Create(){
+		return Create(SkillEnabled.AllActive());
+	}
+	
+	public static SkillGUI CreateAndroid(SkillEnabled skillEnabled){
 		Rect gameGUIPosition = GetGameGUIRect();
-		SkillGUI skillgui = new SkillGUI();
+		SkillGUI skillgui = new SkillGUI(skillEnabled);
 		skillgui.position = new Rect(gameGUIPosition.x,gameGUIPosition.y+gameGUIPosition.height*(40f/110f),gameGUIPosition.width,gameGUIPosition.height*(70f/110f));
 		skillgui.AdjustPositions();
 //		Debug.Log("creating SkillGUI in rect: "+skillgui.position);
 		return skillgui;
 	}
-		
-	public static SkillGUI TutorialCreate(){
-		//Platform-Specific code...
-		SkillGUI ret = new SkillGUI();
-		float width = 300f;
-		if(Tutorial.towerTut == TowerType.shoot){
-			for(int i=1;i<4;i++)
-				ret.skillEn[i] = false;
-		}else if(Tutorial.towerTut == TowerType.build){
-			ret.skillEn[0] = false;
-			ret.skillEn[2] = false;
-			ret.skillEn[3] = false;
-		}else if(Tutorial.towerTut == TowerType.silence){
-			ret.skillEn[0] = false;
-			ret.skillEn[3] = false;			
-		}
-		ret.position = new Rect(Screen.width/2-width/2,Screen.height-70,width,70);
-		return ret;
+	
+	public static SkillGUI CreateAndroid(){
+		return CreateAndroid(SkillEnabled.AllActive());
 	}
 	
 	private void UseSkillError(SkillSelectError errorCode){

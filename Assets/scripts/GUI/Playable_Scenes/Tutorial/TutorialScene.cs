@@ -11,8 +11,10 @@ public class TutorialScene : SceneTemplate {
 	private GameGUIFactory gui;
 	protected override void Start () {
 		base.Start();
-		gui = GameGUIFactory.Create(GameGUIOptions.Create(Stats.skillEnabled,false),(IGUIMessages)this);
+		Debug.Log(Tutorial.guiOptions.ToString());
+		gui = GameGUIFactory.Create(Tutorial.guiOptions,(IGUIMessages)this);
 		tutorialWindow = new TutorialWindow(this,gameCamera, control);
+		gui.gameGUIEnabled = false;
 	}
 	
 	public void EnableGameGUI(bool b){

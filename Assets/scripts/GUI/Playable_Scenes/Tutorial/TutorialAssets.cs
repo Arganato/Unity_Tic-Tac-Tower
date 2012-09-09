@@ -4,7 +4,7 @@ using System.Collections;
 public static class TutorialAssets {
 
 	public static string GetTutorialMessage(){
-		switch(Tutorial.towerTut){
+		switch(Tutorial.tutorialType){
 		case TowerType.shoot:
 			return GetShootTutorial(Tutorial.chapter);
 		case TowerType.build:

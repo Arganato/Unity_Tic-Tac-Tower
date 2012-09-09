@@ -29,8 +29,8 @@ public class TutorialWindow {
 	}
 	
 	public void SolutionAccepted(){
-		DoContinue();
 		solutionAccepted = true;
+		DoContinue();
 	}
 	
 	private void Window(int windowID){
@@ -61,7 +61,6 @@ public class TutorialWindow {
 		switch(Tutorial.chapter){
 		case Tutorial.Chapter.intro:
 			Tutorial.chapter = Tutorial.Chapter.textStr;
-			tutorialScene.EnableGameGUI(true);
 			break;
 		case Tutorial.Chapter.textStr:
 			Tutorial.chapter = Tutorial.Chapter.tutStr;

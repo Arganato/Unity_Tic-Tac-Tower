@@ -24,7 +24,7 @@ public class TutorialHeader{
 	
 	private void HeaderText(){
 		string s = "";
-		switch(Tutorial.towerTut){
+		switch(Tutorial.tutorialType){
 		case TowerType.build:
 			s = "Build";
 			break;

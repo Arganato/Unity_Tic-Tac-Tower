@@ -18,4 +18,9 @@ public struct GameGUIOptions{
 		ret.makeNetworkGUI = makeNetworkGUI;
 		return ret;
 	}
+	
+	public override string ToString ()
+	{
+		return ("GameGUIOptions: skillsEnabled: "+skillsEnabled.ToString()+". makeNetworkGUI: "+makeNetworkGUI.ToString());
+	}
 }

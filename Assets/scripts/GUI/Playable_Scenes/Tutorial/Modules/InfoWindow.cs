@@ -28,7 +28,7 @@ public class InfoWindow{
 		
 		if(Tutorial.chapter == Tutorial.Chapter.textStr){
 			GUI.Label(new Rect(10,5,position.width-20,position.height/2-10),TutorialAssets.GetTutorialMessage());
-			skillDescriptions[(int)Tutorial.towerTut].PrintGUI();
+			skillDescriptions[(int)Tutorial.tutorialType].PrintGUI();
 		}else{
 			GUI.Label(new Rect(10,5,position.width-20,position.height-10),TutorialAssets.GetTutorialMessage());
 		}

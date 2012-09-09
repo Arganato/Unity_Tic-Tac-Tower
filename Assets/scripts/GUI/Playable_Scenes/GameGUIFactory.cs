@@ -2,8 +2,8 @@ using UnityEngine;
 using System.Collections;
 
 public class GameGUIFactory{
-	// maybe not exactly a factory... 
-	// but should contain functions to create and call GUI's with different sets of skills enabled, etc
+	/// maybe not exactly a factory... 
+	/// but should contain functions to create and call GUI's with different sets of skills enabled, etc
 	
 
 	
@@ -20,17 +20,21 @@ public class GameGUIFactory{
 		GameGUIFactory ret = new GameGUIFactory();
 		# if UNITY_WEBPLAYER
 			ret.buttonRow = ButtonRow.Create(messageReceiver);
-			ret.skillGUI = SkillGUI.Create();
+			ret.skillGUI = SkillGUI.Create(options.skillsEnabled);
 		# elif UNITY_ANDROID
 			ret.buttonRow = ButtonRow.CreateAndroid(messageReceiver);
-			ret.skillGUI = SkillGUI.CreateAndroid();
+			ret.skillGUI = SkillGUI.CreateAndroid(options.skillsEnabled);
 		# else
 			ret.buttonRow = ButtonRow.Create(messageReceiver);
-			ret.skillGUI = SkillGUI.Create();
+			ret.skillGUI = SkillGUI.Create(options.skillsEnabled);
 		# endif
 		ret.header = new HeaderBar(messageReceiver, options.makeNetworkGUI);
 		
 		return ret;
+	}
+	
+	public void SetSkillButtons(SkillEnabled enabledButtons){
+		skillGUI.SetSkillButtons(enabledButtons);
 	}
 	
 	public void PrintGUI(){
