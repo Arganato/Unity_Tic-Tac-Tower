@@ -8,13 +8,13 @@ public class CreateWindow : MenuContent, INetworkMessage {
 	
 	private string gameName = "new game";
 	private string password = "";
-	private NetworkInterface networkInterface;
+	private IGUIMessages receiver;
 	private NetworkWindow mainMenu; //callback
 	private State state = State.DefaultState;
 	
-	public CreateWindow(NetworkInterface nif, NetworkWindow m){
-		networkInterface = nif;
-		networkInterface.AddMessageRecipient((INetworkMessage)this);
+	public CreateWindow(IGUIMessages receiver, NetworkWindow m){
+		this.receiver = receiver;
+		receiver.AddNetworkMessageRecipient((INetworkMessage)this);
 		mainMenu = m;
 	}
 	
@@ -78,7 +78,7 @@ public class CreateWindow : MenuContent, INetworkMessage {
 		GUILayout.FlexibleSpace();
 		if(GUILayout.Button("Abort",GUILayout.ExpandWidth(false))){
 			state = State.FailedToLaunchServer;
-			networkInterface.Disconnect();
+			receiver.Disconnect();
 			//fancy abort-action here?
 		}
 	}
@@ -92,7 +92,7 @@ public class CreateWindow : MenuContent, INetworkMessage {
 		if(password != ""){
 			Network.incomingPassword = password;
 		}
-		networkInterface.LaunchServer(Network.HavePublicAddress(),gameName);
+		receiver.LaunchServer(Network.HavePublicAddress(),gameName);
 		state = State.LaunchingServer;
 	}
 	

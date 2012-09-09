@@ -8,11 +8,11 @@ public class UndoButton{
 	
 	public int[] usedUndoCounter = new int[2];
 	
-	private Control control;
+	private IGUIMessages receiver;
 	
 	
-	public UndoButton(Control c){
-		control = c;
+	public UndoButton(IGUIMessages receiver){
+		this.receiver = receiver;
 	}
 	
 	public void ResetCounter(){
@@ -26,8 +26,8 @@ public class UndoButton{
 			ColoredBox();
 			if( CanUndo() ){
 				if(GUI.Button(new Rect(0,0,position.width,position.height/2),"Undo")){
-				usedUndoCounter[Control.cState.activePlayer]++;
-				control.UndoTurn();
+				usedUndoCounter[receiver.GetMainGameState().activePlayer]++;
+				receiver.UndoTurn();
 				}
 			}else{
 				GUI.Box(new Rect(0,0,position.width,position.height/2),"Undo");
@@ -45,6 +45,6 @@ public class UndoButton{
 	}
 	
 	private bool CanUndo(){
-		return (!Control.cState.skillsUsed.Empty() || Control.cState.playerDone) && Stats.gameRunning;
+		return (!receiver.GetMainGameState().skillsUsed.Empty() || receiver.GetMainGameState().playerDone) && Stats.gameRunning;
 	}
 }

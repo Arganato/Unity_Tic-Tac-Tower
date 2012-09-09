@@ -8,11 +8,11 @@ public class LobbyWindow : MenuContent {
 	private bool joiningGame = false;
 	private bool failedToJoin = false;
 	
-	private NetworkInterface networkInterface;
+	IGUIMessages receiver;
 	private NetworkWindow networkWindow; 
 	
-	public LobbyWindow(NetworkInterface nif, NetworkWindow networkWin){
-		networkInterface = nif;
+	public LobbyWindow(IGUIMessages receiver, NetworkWindow networkWin){
+		this.receiver = receiver;
 		networkWindow = networkWin;
 	}
 	
@@ -91,7 +91,7 @@ public class LobbyWindow : MenuContent {
 		joiningGame = true;
 		HostData[] hostArray = MasterServer.PollHostList();
 		HostData game = hostArray[gameNumber];
-		networkInterface.ConnectToServer(game,password);
+		receiver.ConnectToServer(game,password);
 	}
 	
 	private void EnterGame(){
@@ -99,7 +99,7 @@ public class LobbyWindow : MenuContent {
 	}
 	
 	private void CreateGame(){
-		CreateWindow create = new CreateWindow(networkInterface,networkWindow);
+		CreateWindow create = new CreateWindow(receiver,networkWindow);
 		networkWindow.AddMenu(create);
 	}
 	

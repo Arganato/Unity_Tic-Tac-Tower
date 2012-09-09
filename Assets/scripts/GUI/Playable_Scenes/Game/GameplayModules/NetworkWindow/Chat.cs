@@ -8,10 +8,10 @@ public class Chat{
 	public Rect togglePos = new Rect(0,0,100,25);
 	private string chatField = "";
 	private string newMessage = "";
-	private NetworkInterface networkIf;
+	private IGUIMessages receiver;
 	
-	public Chat(NetworkInterface netIf){
-		networkIf = netIf;
+	public Chat(IGUIMessages receiver){
+		this.receiver = receiver;
 	}
 	
 	public void PrintGUI(){
@@ -28,7 +28,7 @@ public class Chat{
 		newMessage = GUI.TextField(new Rect(0,position.height-20,position.width-40,20),newMessage);
 		if(GUI.Button(new Rect(position.width-40,position.height-20,40,20),"Send")){
 			AddString("Me: "+newMessage);
-			networkIf.SendChatMessage(newMessage);
+			receiver.SendChatMessage(newMessage);
 			newMessage = "";
 		}
 		GUI.DragWindow();

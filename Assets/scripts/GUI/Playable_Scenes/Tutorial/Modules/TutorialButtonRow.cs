@@ -8,10 +8,12 @@ public class TutorialButtonRow{
 	private CheckSolutionButton checkSolution;
 	private UndoButton undo;
 	private StatusField statusField;
-	
-	public TutorialButtonRow(Control c){
+	private IGUIMessages receiver;
+
+	public TutorialButtonRow(IGUIMessages receiver){
+		this.receiver = receiver;		
 		checkSolution = new CheckSolutionButton();
-		undo = new UndoButton(c);
+		undo = new UndoButton(receiver);
 		statusField = new StatusField();
 		float width = 300f;
 		position = new Rect(Screen.width/2-width/2,Screen.height-110,width,40);
@@ -19,7 +21,7 @@ public class TutorialButtonRow{
 	
 	public bool PrintGUI(){
 		if(enable){
-			if(Stats.playerController[Control.cState.activePlayer] != Stats.PlayerController.localPlayer){
+			if(Stats.playerController[receiver.GetMainGameState().activePlayer] != Stats.PlayerController.localPlayer){
 				GUI.enabled = false;
 			}
 			GUI.BeginGroup(position);

@@ -3,13 +3,13 @@ using System.Collections;
 
 public class AI{
 
-	private MoveInterface receiver;
+//	private MoveInterface receiver;
 	public static AIDatabase database = new AIDatabase();
 	public static GameTreeBuilder gameTreeBuilder = new GameTreeBuilder();
 	
-	public void SetReceiver(MoveInterface rec){
-		receiver = rec;
-	}
+//	public void SetReceiver(MoveInterface rec){
+//		receiver = rec;
+//	}
 	
 	public void Calculate(){
 		Debug.Log("Constructing Gametree");

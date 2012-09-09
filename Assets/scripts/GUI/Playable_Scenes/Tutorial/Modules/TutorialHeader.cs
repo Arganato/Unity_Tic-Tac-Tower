@@ -7,13 +7,13 @@ public class TutorialHeader{
 	
 	private DropdownMenu dropdownMenu;
 	
-	public TutorialHeader(Control c){
+	public TutorialHeader(IGUIMessages receiver){
 		# if UNITY_WEBPLAYER
-			dropdownMenu = DropdownMenu.Create(c,null);
+			dropdownMenu = DropdownMenu.Create(receiver,false);
 		# elif UNITY_ANDROID
-			dropdownMenu = DropdownMenu.CreateAndroid(c,null);
+			dropdownMenu = DropdownMenu.CreateAndroid(receiver,false);
 		# else
-			dropdownMenu = DropdownMenu.Create(c,null);
+			dropdownMenu = DropdownMenu.Create(receiver,false);
 		# endif
 	}
 	

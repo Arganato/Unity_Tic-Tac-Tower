@@ -13,12 +13,12 @@ public class DropdownMenu{
 	private ConfirmMenu resign;
 	private NetworkWindow networkGUI;
 	
-	private Control control;
+	private IGUIMessages receiver;
 	
-	private DropdownMenu( Control c, NetworkInterface nif, int border, int buttonHeight){
-		control = c;
-		if(nif != null){
-			networkGUI = new NetworkWindow(nif);
+	private DropdownMenu(IGUIMessages receiver, int border, int buttonHeight, bool makeNetworkGUI){
+		this.receiver = receiver;
+		if(makeNetworkGUI){
+			networkGUI = new NetworkWindow(receiver);
 		}
 		SetUpButtons(border, buttonHeight);
 	}
@@ -36,11 +36,11 @@ public class DropdownMenu{
 		}
 	}
 	
-	public static DropdownMenu Create(Control c, NetworkInterface nif){
-		return new DropdownMenu(c,nif,10,25);
+	public static DropdownMenu Create(IGUIMessages receiver, bool makeNetworkGUI){
+		return new DropdownMenu(receiver,10,25, makeNetworkGUI);
 	}
-	public static DropdownMenu CreateAndroid(Control c, NetworkInterface nif){
-		DropdownMenu dropdown = new DropdownMenu(c,nif,(int)(Screen.height*0.02),(int)(Screen.height*0.08));
+	public static DropdownMenu CreateAndroid(IGUIMessages receiver, bool makeNetworkGUI){
+		DropdownMenu dropdown = new DropdownMenu(receiver,(int)(Screen.height*0.02),(int)(Screen.height*0.08), makeNetworkGUI);
 		dropdown.positionOpen = new Rect(Screen.width-120,40,120,150);
 		dropdown.positionClosed = new Rect(Screen.width-80,0,80,40);
 		dropdown.SetUpButtons((int)(Screen.height*0.02),(int)(Screen.height*0.08));
@@ -58,10 +58,10 @@ public class DropdownMenu{
 			}
 			GUI.Box(positionOpen,"");
 			if(endGame.PrintGUI()){
-				Control.QuitGame();
+				receiver.QuitGame();
 			}
 			if(Stats.gameRunning && resign.PrintGUI()){
-				control.UserResign();
+				receiver.UserResign();
 			}
 			Console.PrintButton();
 			if(Stats.networkEnabled){

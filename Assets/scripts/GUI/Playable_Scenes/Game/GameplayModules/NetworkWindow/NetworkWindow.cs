@@ -13,11 +13,11 @@ public class NetworkWindow : INetworkMessage{
 	private Chat chat;
 	private List<MenuContent> menus = new List<MenuContent>();
 
-	public NetworkWindow(NetworkInterface nif){
-		chat = new Chat(nif);
+	public NetworkWindow(IGUIMessages receiver){
+		chat = new Chat(receiver);
 		chat.togglePos = new Rect(0,30,togglePos.width,25);
-		nif.AddMessageRecipient((INetworkMessage)this);
-		menus.Add(new MainContent(nif,this));
+		receiver.AddNetworkMessageRecipient((INetworkMessage)this);
+		menus.Add(new MainContent(receiver,this));
 	}
 		
 	public void ToggleGUI(){

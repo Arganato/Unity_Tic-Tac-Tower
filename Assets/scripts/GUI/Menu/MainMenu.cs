@@ -14,7 +14,7 @@ public class MainMenu : MonoBehaviour {
 		
 	void Start () {
 		
-		Debug.Log("Screen: h = "+Screen.height+", w = "+Screen.width+", h/w = "+((double)Screen.height/(double)Screen.width));
+//		Debug.Log("Screen: h = "+Screen.height+", w = "+Screen.width+", h/w = "+((double)Screen.height/(double)Screen.width));
 		Stats.StartUpRoutine(); //should be called once at the beginning of every game (include in loading script or smt)
 
 		nif = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));

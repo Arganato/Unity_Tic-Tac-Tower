@@ -1,26 +1,22 @@
 using UnityEngine;
 using System.Collections;
 
-public class Tutorial : MonoBehaviour {
+public class Tutorial {
 
-	public GUISkin skin;
-	new public Transform camera;
+								 // Str = Straight
+	public enum Chapter {intro, textStr, tutStr, textDiag, tutDiag, end};
 
 	private Control control;
-	private Tutorial_GUI tutorialGUI;
+	private IGUIMessages receiver;
+	private TutorialScene tutorialScene;
 
-								//  Str = Straight
-	public enum Chapter {intro, textStr, tutStr, textDiag, tutDiag, end};
 	public static Chapter chapter;
 	public static TowerType towerTut;	//Used to know which tutorial is run. TowerType.five is used when none is run.
 	public static GameState tutorialState;
 
-	private InfoWindow infoText = new InfoWindow();
 	private TutorialHeader header;
 	
-	private bool solutionAccepted = true;
-	private Rect tutorialWindowRect = new Rect(Screen.width/2-150,40,300,400);
-	private bool showTutorialWindow = true;
+
 	
 	public static TowerType tutorialType{
         get { return towerTut; }
@@ -83,7 +79,7 @@ public class Tutorial : MonoBehaviour {
 		Stats.skillEnabled.SetAll(true);
 		Stats.rules = Stats.Rules.INVISIBLE_TOWERS;
 	}
-	public void SetTutorial(){
+	public static void SetTutorial(){
 		Stats.startState = new GameState();
 		switch(towerTut){
 		case TowerType.build:
@@ -105,143 +101,21 @@ public class Tutorial : MonoBehaviour {
 		default:
 			break;
 		}
-		tutorialGUI.enable = true;
 	}
-	
-	void Start () {
-		control = (Control)FindObjectOfType(typeof(Control));
-		tutorialGUI = (Tutorial_GUI)FindObjectOfType(typeof(Tutorial_GUI));
-		tutorialGUI.enable = false;
-		header = new TutorialHeader(control);
-	}
-	
-	
-	void OnGUI(){
-		
-		GUI.skin = skin;
 
-		if(showTutorialWindow){
-			GUI.Window(5,tutorialWindowRect,TutorialWindow,"Tutorial");
-		}else{
-			if(GUI.Button(new Rect(0,0,100,25),"Open window")){
-				showTutorialWindow = true;
-			}
-
-		}
-		header.PrintGUI();
-		
-	}	
-	
-	public void CheckSolution(){
+	public static bool CheckSolution(){
 		if(SolutionChecker.CheckSolution(chapter,towerTut)){
-			solutionAccepted = true;
-			DoContinue();
+//			solutionAccepted = true;
+			return true;
 		}else{
 			PopupMessage.DisplayMessage("Wrong solution!\nUndo to try again");
+			return false;
 		}
-	}
-	
-	private void TutorialWindow(int windowID){
-//		GUILayout.BeginArea(new Rect(0,0,tutorialWindowRect.width,20));
-//		GUILayout.BeginHorizontal();
-//		GUILayout.FlexibleSpace();
-//		if(GUILayout.Button("x")){
-//			showTutorialWindow = false;
-//		}
-//		GUILayout.EndHorizontal();
-//		GUILayout.EndArea();
-		if(GUI.Button(new Rect(5,tutorialWindowRect.height-25,tutorialWindowRect.width-110,25),"Close")){
-			showTutorialWindow = false;
-		}
-		//----end header----//
-		GUI.BeginGroup(new Rect(0,20,tutorialWindowRect.width,tutorialWindowRect.height-45));
-		infoText.PrintTutorialText();
-		GUI.EndGroup();
-		if(solutionAccepted){
-			if(GUI.Button(new Rect(tutorialWindowRect.width-105,tutorialWindowRect.height-25,100,25),"Continue")){
-				DoContinue();
-			}
-		}
-	}
-	
-	/*
-	private void SimpleChangeChapter(){
-		Debug.Log("simple change chapter");
-		camera.animation.Play("anim1");
-		chapter++;
-	}
-	
-	private IEnumerator ChangeChapter(){
-		//check for end of section
-		Debug.Log("changing chapter...");
-		changeChapter = true;
-
-		switch(chapter){
-		case 0:
-			camera.animation.Play("anim1");			
-			break;
-		case 1:
-			camera.animation.Play("anim2");	
-			GUI_script guis = (GUI_script)gameObject.GetComponent(typeof(GUI_script));
-			guis.enable = true;
-			break;
-		case 2:
-
-			break;
-		}
-
-		yield return new WaitForSeconds(2);
-		changeChapter = false;
-		chapter++;
-	}
-	 */
-
-
-	private void DoContinue(){
-		switch(chapter){
-		case Chapter.intro:
-			chapter = Chapter.textStr;
-			break;
-		case Chapter.textStr:
-			chapter = Chapter.tutStr;
-			camera.animation.Play("anim1");
-			SetTutorial();
-			control.StartNewGame();
-			solutionAccepted = false;
-			break;
-		case Chapter.tutStr:
-			showTutorialWindow = true;
-			camera.animation.Play("anim2");
-			chapter = Chapter.textDiag;
-			tutorialGUI.enable = false;
-			Control.cState.activePlayer = 0;
-			break;
-		case Chapter.textDiag:
-			chapter = Chapter.tutDiag;
-			camera.animation.Play("anim1");
-			SetTutorial();
-			control.StartNewGame();
-			solutionAccepted = false;
-			break;
-		case Chapter.tutDiag:
-			showTutorialWindow = true;
-			camera.animation.Play("anim2");
-			chapter = Chapter.end;
-			tutorialGUI.enable = false;
-			break;
-		case Chapter.end:
-			Application.LoadLevel("MainMenu");
-			break;
-		}
-	}
-	
-	public void OnVictory(){ //event sent from control
-		CheckSolution(); //assumed to check in
-		Stats.gameRunning = true;
 	}
 	
 	//****************Setup-Functions from gamestate***************//
 	
+	//kan disse gjøres private?
 	public static void SetTutorialBuild1(GameState state){	//Win during this round (red)
 		state.field[5,4] = Route.red;
 		state.field[3,4] = Route.blue;

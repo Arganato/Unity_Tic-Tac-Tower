@@ -6,13 +6,13 @@ public class MainContent : MenuContent{
 	private LobbyWindow lobby;
 	private TestWindow test;
 	private NetworkWindow networkWindow;
-	private NetworkInterface networkInterface;
+	private IGUIMessages receiver;
 	
-	public MainContent(NetworkInterface nif, NetworkWindow networkWin){
-		lobby = new LobbyWindow(nif,networkWin);
+	public MainContent(IGUIMessages receiver, NetworkWindow networkWin){
+		lobby = new LobbyWindow(receiver,networkWin);
 		test = new TestWindow();
 		networkWindow = networkWin;
-		networkInterface = nif;
+		this.receiver = receiver;
 	}
 
 	public override void Close (){}
@@ -27,7 +27,7 @@ public class MainContent : MenuContent{
 			}
 		}else{
 			if(GUILayout.Button("Disconnect")){
-				networkInterface.Disconnect();
+				receiver.Disconnect();
 			}
 		}
 		GUILayout.FlexibleSpace();
