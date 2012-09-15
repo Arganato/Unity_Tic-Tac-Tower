@@ -7,12 +7,13 @@ public static class Skill {
 	
 	public static int skillInUse;
 	
-	public static SkillSelectError UseSkill(int skill){
-		SkillSelectError ret = CanUseSkill((SkillType)skill);
-		if( ret == SkillSelectError.NO_ERROR){
+	public static void UseSkill(int skill){
+		SkillSelectError error = CanUseSkill((SkillType)skill);
+		if( error == SkillSelectError.NO_ERROR){
 			skillInUse = skill;
+		}else{
+			UseSkillError(error);
 		}
-		return ret;
 	}
 	
 	public static SkillSelectError CanUseSkill(SkillType skill){
@@ -63,6 +64,21 @@ public static class Skill {
 	public static SkillSelectError CanUseSilence(){
 		return CanUseSilence(Control.cState);
 	}
-
+	
+	private static void UseSkillError(SkillSelectError errorCode){
+		switch(errorCode){
+			case SkillSelectError.NO_ERROR:
+				return;
+			case SkillSelectError.SKILL_AMMO_ERROR:
+				PopupMessage.DisplayMessage("You dont have towers for that skill");
+				return;
+			case SkillSelectError.SKILL_CAP_ERROR:
+				PopupMessage.DisplayMessage("Cannot use that skill that many times");
+				return;
+			case SkillSelectError.UNKNOWN_ERROR:
+				PopupMessage.DisplayMessage("Unknown error occured");
+				return;
+		}
+	}
 
 }

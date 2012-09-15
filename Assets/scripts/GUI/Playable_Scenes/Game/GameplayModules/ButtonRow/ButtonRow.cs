@@ -58,5 +58,12 @@ public class ButtonRow{
 		}
 	}
 	
+	public void FlashUndoButton(){
+		undo.Flash();
+	}
+	
+	public void FlashEndTurnButton(){
+		endturn.Flash();
+	}
 	
 }

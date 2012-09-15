@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class EndTurnButton{
+public class EndTurnButton : FlashingButton{
 
 	public Rect position = new Rect(40,0,60,40);
 	public bool enable = true;
@@ -14,6 +14,7 @@ public class EndTurnButton{
 	
 	public void PrintGUI(){
 		if(enable){
+			GUI.backgroundColor = currentColor;
 			if(receiver.GetMainGameState().playerDone && Stats.gameRunning && GUI.Button( position, "End\nTurn")){
 				receiver.UserEndTurn();
 			}else if(!receiver.GetMainGameState().playerDone){
@@ -26,5 +27,9 @@ public class EndTurnButton{
 				GUI.contentColor=old;
 			}
 		}
+	}
+	
+	public void Flash(){
+		Flash(receiver.GetMonoBehaviour());
 	}
 }

@@ -9,6 +9,7 @@ public interface IGUIMessages{
 	void QuitGame();
 	void UserFieldSelect(FieldIndex position);
 	void TimeOut();
+	void UseSkill(int skill);
 	
 	void AddNetworkMessageRecipient(INetworkMessage recipient);
 	void SendChatMessage(string msg);
@@ -17,6 +18,7 @@ public interface IGUIMessages{
 	void LaunchServer(bool hasPublicAccess,string gameName);
 	
 	GameState GetMainGameState();
+	MonoBehaviour GetMonoBehaviour();
 	
 
 }

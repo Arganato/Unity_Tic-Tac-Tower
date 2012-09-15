@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class SkillButtonGUI {
+public class SkillButtonGUI : FlashingButton {
 
 	
 	public bool enable = true;
@@ -9,6 +9,7 @@ public class SkillButtonGUI {
 	public TowerType type;
 	
 	public bool PrintGUI(){
+		GUI.backgroundColor = currentColor;
 		if(type == TowerType.skillCap){
 			GUI.Box(position,new GUIContent(ResourceFactory.GetSkillIcon(3),ResourceFactory.GetSkillName(type)),"button");
 			return false;
@@ -19,6 +20,10 @@ public class SkillButtonGUI {
 	}
 	
 	private SkillButtonGUI(){}
+	
+	public void FlashButton(MonoBehaviour m){
+		Flash(m);
+	}
 	
 	public static SkillButtonGUI CreateShoot(){
 		SkillButtonGUI ret = new SkillButtonGUI();

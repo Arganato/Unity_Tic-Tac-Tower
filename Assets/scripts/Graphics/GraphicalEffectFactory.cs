@@ -7,8 +7,13 @@ public class GraphicalEffectFactory : MonoBehaviour {
 	public Transform buildingConstruction;
 	public Transform directionalLight;
 	
+	private Grid grid;
+	
 	private Color silenceFlashColor = new Color(0.3f,0.4f,1,1);
 	
+	public void Start(){
+		grid = (Grid)FindObjectOfType(typeof(Grid));
+	}
 	
 	public void BuildingConstructionEffect(List<Tower> towers){			
 		if(towers.Count > 0){
@@ -19,7 +24,7 @@ public class GraphicalEffectFactory : MonoBehaviour {
 	
 	
 	public void SilenceEffect(){
-		StartCoroutine("SilenceEnumerator");
+		StartCoroutine(SilenceEnumerator());
 		SilenceShake();
 	}
 	
@@ -35,5 +40,14 @@ public class GraphicalEffectFactory : MonoBehaviour {
 		yield return new WaitForSeconds(0.25f);
 		directionalLight.light.color = origColor;
 		directionalLight.light.intensity = origIntensity;
+	}
+	
+	public void FlashBoard(FieldIndex index){
+		StartCoroutine(DoFlashBoard(index));
+	}
+	private IEnumerator DoFlashBoard(FieldIndex index){
+		grid.SetFlashLayer(index,true);
+		yield return new WaitForSeconds(1f);
+		grid.SetFlashLayer(index,false);
 	}
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class UndoButton{
+public class UndoButton : FlashingButton{
 	
 	public bool enable = true;
 	public Rect position = new Rect(200,0,60,40);
@@ -22,6 +22,7 @@ public class UndoButton{
 	
 	public void PrintGUI(){
 		if( enable ){
+			GUI.backgroundColor = currentColor;
 			GUI.BeginGroup(position);
 			ColoredBox();
 			if( CanUndo() ){
@@ -35,6 +36,12 @@ public class UndoButton{
 			GUI.EndGroup();
 		}
 	}
+	
+	public void Flash ()
+	{
+		Flash(receiver.GetMonoBehaviour());
+	}
+	
 	private void ColoredBox(){
 		Color old = GUI.contentColor;
 		GUI.contentColor = Color.red;

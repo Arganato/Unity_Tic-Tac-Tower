@@ -19,7 +19,7 @@ public class Grid : MonoBehaviour {
 	private Control control;
 	
 	
-	private Field<GridUnit> playFieldTransforms = new Field<GridUnit>();
+	private Field<GridUnit> playFieldTransforms = new Field<GridUnit>(); //this is the actual playfield as it appears to the players.
 	
 	void Awake () {
 		control = (Control)FindObjectOfType(typeof(Control));
@@ -87,7 +87,14 @@ public class Grid : MonoBehaviour {
 		}
 	}
 	
-	
+	public void SetFlashLayer(FieldIndex index, bool active){
+		//changes the layer of the piece
+		if(active){
+			playFieldTransforms[index].gameObject.layer = 10;
+		}else{
+			playFieldTransforms[index].gameObject.layer = 0;
+		}
+	}
 	
 	private void PlaceTransform(Route type, FieldIndex pos){
 		Transform theTransform = null;

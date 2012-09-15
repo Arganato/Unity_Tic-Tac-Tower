@@ -24,7 +24,6 @@ public abstract class SceneTemplate : MonoBehaviour, IGUIMessages {
 	}
 	
 	// **Implementation of IGUIMessages functions** 
-	//kanksje jeg må lage disse virtual?
 	public virtual void UserEndTurn(){
 		control.UserEndTurn();
 	}
@@ -42,6 +41,10 @@ public abstract class SceneTemplate : MonoBehaviour, IGUIMessages {
 	}
 	public virtual void TimeOut(){
 		control.TimeOut();
+	}
+	
+	public virtual void UseSkill (int skill){
+		Skill.UseSkill(skill);
 	}
 	
 	public virtual void AddNetworkMessageRecipient(INetworkMessage recipient){
@@ -62,5 +65,9 @@ public abstract class SceneTemplate : MonoBehaviour, IGUIMessages {
 	
 	public virtual GameState GetMainGameState(){
 		return Control.cState;
+	}
+	public MonoBehaviour GetMonoBehaviour ()
+	{
+		return (MonoBehaviour) this;
 	}
 }

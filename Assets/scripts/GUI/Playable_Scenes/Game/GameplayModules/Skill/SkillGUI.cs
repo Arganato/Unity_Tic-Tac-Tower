@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class SkillGUI{
+public class SkillGUI : FlashingButton{
 
 	public bool enable = true;
 	public Rect position;
@@ -16,7 +16,9 @@ public class SkillGUI{
 	private SkillAmountGUI[] textRow = new SkillAmountGUI[4];
 	private SkillDescription[] descriptions = new SkillDescription[4];
 	
-	private SkillGUI(SkillEnabled buttonsEnabled){
+	private IGUIMessages receiver;
+	
+	private SkillGUI(SkillEnabled buttonsEnabled, IGUIMessages receiver){
 		buttonRow[0] = SkillButtonGUI.CreateShoot();
 		buttonRow[1] = SkillButtonGUI.CreateBuild();
 		buttonRow[2] = SkillButtonGUI.CreateSilence();
@@ -37,7 +39,8 @@ public class SkillGUI{
 		descriptions[3].position = new Rect(0,0,300,200);
 		
 		SetSkillButtons(buttonsEnabled);
-	
+		
+		this.receiver = receiver;
 	}
 	
 	private void AdjustPositions(){
@@ -92,11 +95,12 @@ public class SkillGUI{
 		for( int i=0;i<buttonRow.Length;i++){
 			if(skillEn[i]){
 				if(buttonRow[i].PrintGUI() ){
-					UseSkillError(Skill.UseSkill(i+1));
+					receiver.UseSkill(i+1);
 				}
 				textRow[i].PrintGUI();
 			}
 		}
+		GUI.backgroundColor = currentColor;
 		int helpStart = (int)((buttonSize+borderSize)*4+borderSize);
 		int helpSize = (int)(position.width - helpStart -borderSize);
 		if(GUI.Button(new Rect(helpStart,0,helpSize,helpSize),new GUIContent("?","Help"))){
@@ -123,6 +127,15 @@ public class SkillGUI{
 		
 	}
 	
+	public void FlashSkillButton(int i){
+		buttonRow[i].FlashButton(receiver.GetMonoBehaviour());
+	}
+	
+	public void FlashHelpButton(){
+		Flash(receiver.GetMonoBehaviour());
+	}
+
+	
 	public static Rect GetGameGUIRect(){
 		float guiRatio = 110f/300f; //the height/width of the game gui
 		Rect guiPosition = new Rect(0,0,300,110);
@@ -143,43 +156,29 @@ public class SkillGUI{
 		return guiPosition;
 	}
 	
-	public static SkillGUI Create(SkillEnabled skillEnabled){
-		SkillGUI ret = new SkillGUI(skillEnabled);
+	public static SkillGUI Create(SkillEnabled skillEnabled, IGUIMessages receiver){
+		SkillGUI ret = new SkillGUI(skillEnabled, receiver);
 		float width = 300f;
 		ret.position = new Rect(Screen.width/2-width/2,Screen.height-70,width,70);
 		return ret;
 	}
 	
-	public static SkillGUI Create(){
-		return Create(SkillEnabled.AllActive());
+	public static SkillGUI Create(IGUIMessages receiver){
+		return Create(SkillEnabled.AllActive(), receiver);
 	}
 	
-	public static SkillGUI CreateAndroid(SkillEnabled skillEnabled){
+	public static SkillGUI CreateAndroid(SkillEnabled skillEnabled, IGUIMessages receiver ){
 		Rect gameGUIPosition = GetGameGUIRect();
-		SkillGUI skillgui = new SkillGUI(skillEnabled);
+		SkillGUI skillgui = new SkillGUI(skillEnabled, receiver);
 		skillgui.position = new Rect(gameGUIPosition.x,gameGUIPosition.y+gameGUIPosition.height*(40f/110f),gameGUIPosition.width,gameGUIPosition.height*(70f/110f));
 		skillgui.AdjustPositions();
 //		Debug.Log("creating SkillGUI in rect: "+skillgui.position);
 		return skillgui;
 	}
 	
-	public static SkillGUI CreateAndroid(){
-		return CreateAndroid(SkillEnabled.AllActive());
+	public static SkillGUI CreateAndroid(IGUIMessages receiver){
+		return CreateAndroid(SkillEnabled.AllActive(), receiver);
 	}
 	
-	private void UseSkillError(SkillSelectError errorCode){
-		switch(errorCode){
-			case SkillSelectError.NO_ERROR:
-				return;
-			case SkillSelectError.SKILL_AMMO_ERROR:
-				PopupMessage.DisplayMessage("You dont have towers for that skill");
-				return;
-			case SkillSelectError.SKILL_CAP_ERROR:
-				PopupMessage.DisplayMessage("Cannot use that skill that many times");
-				return;
-			case SkillSelectError.UNKNOWN_ERROR:
-				PopupMessage.DisplayMessage("Unknown error occured");
-				return;
-		}
-	}
+
 }
