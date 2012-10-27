@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class TutorialScene : SceneTemplate, IScenarioDescription {
+public class TutorialScene : SceneTemplate{
 	
 	public GUISkin customSkin;
 	public bool enable;
@@ -10,13 +10,17 @@ public class TutorialScene : SceneTemplate, IScenarioDescription {
 //	private TutorialWindow tutorialWindow;
 	private GameGUIFactory gui;
 	private ScenarioDescriptionGUI scenarioWindow;
+	private BasicTutorial tutorialPropagator;
 	
 	protected override void Start () {
 		base.Start();
-		Debug.Log(Tutorial.guiOptions.ToString());
+		tutorialPropagator = new BasicTutorial();
+		scenarioWindow = new ScenarioDescriptionGUI((IScenarioDescription)tutorialPropagator);
+		tutorialPropagator.SetGUI(scenarioWindow);
 		gui = GameGUIFactory.Create(Tutorial.guiOptions,(IGUIMessages)this);
 //		tutorialWindow = new TutorialWindow(this,gameCamera, control);
 		gui.gameGUIEnabled = false;
+		tutorialPropagator.Start();
 	}
 	
 	public void EnableGameGUI(bool b){
@@ -28,17 +32,6 @@ public class TutorialScene : SceneTemplate, IScenarioDescription {
 		Stats.gameRunning = true;
 	}
 	
-	//IScenarioDescription
-	
-	public void OnContinue ()
-	{
-		throw new System.NotImplementedException ();
-	}
-	
-	public void OnFinished ()
-	{
-		throw new System.NotImplementedException ();
-	}
 	
 	//IGUIMessages
 	
