@@ -11,11 +11,15 @@ public class TutorialScene : SceneTemplate{
 	private GameGUIFactory gui;
 	private ScenarioDescriptionGUI scenarioWindow;
 	private BasicTutorial tutorialPropagator;
+	private TutorialConditionChecker conditionChecker;
+	
+	public int tutorialStep = 0;
 	
 	protected override void Start () {
 		base.Start();
-		tutorialPropagator = new BasicTutorial();
+		tutorialPropagator = new BasicTutorial(this);
 		scenarioWindow = new ScenarioDescriptionGUI((IScenarioDescription)tutorialPropagator);
+		conditionChecker = new TutorialConditionChecker((IScenarioDescription)tutorialPropagator,this);
 		tutorialPropagator.SetGUI(scenarioWindow);
 		gui = GameGUIFactory.Create(Tutorial.guiOptions,(IGUIMessages)this);
 //		tutorialWindow = new TutorialWindow(this,gameCamera, control);
@@ -38,6 +42,13 @@ public class TutorialScene : SceneTemplate{
 	public override void UserEndTurn (){
 		if(Tutorial.CheckSolution()){
 //			tutorialWindow.SolutionAccepted();
+		}
+	}
+	
+	public override void UserFieldSelect (FieldIndex position)
+	{
+		if(control.UserFieldSelect(position)){
+			conditionChecker.Calculate();
 		}
 	}
 

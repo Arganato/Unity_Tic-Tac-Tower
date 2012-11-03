@@ -30,8 +30,10 @@ public class Control: MonoBehaviour, EffectInterface {
 		StartNewGame();
 	}
 	
-	public void UserFieldSelect(FieldIndex index){
-		//Called when the user clicks on the field
+	public bool UserFieldSelect(FieldIndex index){
+		// Called when the user clicks on the field
+		// Returns true if a the click resulted in the execution of a (valid) move
+		bool validmove = false;
 		if(Stats.playerController[cState.activePlayer] == Stats.PlayerController.localPlayer){
 			Order o = new Order();
 			o.endTurn = false;
@@ -52,10 +54,11 @@ public class Control: MonoBehaviour, EffectInterface {
 					o.skill = SkillType.silence;
 					break;
 			}
-			ExecuteOrder(o);
+			validmove = ExecuteOrder(o);
 			if(cState.victory != VictoryType.noVictory)
 				Victory();
 		}
+		return validmove;
 	}
 	
 	public void UserEndTurn(){
