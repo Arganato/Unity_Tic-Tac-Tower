@@ -24,6 +24,7 @@ public class Field<T>{
 		}if(i == 1){
 			return Route.blue;
 		}else{
+			Debug.LogError("Player "+i+" not found");
 			return Route.outOfBounds;
 		}
 	}

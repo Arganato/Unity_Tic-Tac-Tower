@@ -36,7 +36,7 @@ public struct FieldIndex {
 
 	public FieldIndex up{
 		get{ 
-			if (y<8)
+			if (y<Stats.fieldSize-1)
 				return new FieldIndex(x,y+1);
 			else
 				return new FieldIndex(-1);
@@ -60,7 +60,7 @@ public struct FieldIndex {
 		}
 	public FieldIndex right{
 		get{ 
-			if (x<8)
+			if (x<Stats.fieldSize-1)
 				return new FieldIndex(x+1,y);
 			else
 				return new FieldIndex(-1);
@@ -68,7 +68,7 @@ public struct FieldIndex {
 		}
 	public FieldIndex upLeft{
 		get{ 
-			if (y<8 && x>0)
+			if (y<Stats.fieldSize-1 && x>0)
 				return new FieldIndex(x-1,y+1);
 			else
 				return new FieldIndex(-1);
@@ -84,7 +84,7 @@ public struct FieldIndex {
 		}
 	public FieldIndex downRight{
 		get{ 
-			if (x<8 && y>0)
+			if (x<Stats.fieldSize-1 && y>0)
 				return new FieldIndex(x+1,y-1);
 			else
 				return new FieldIndex(-1);
@@ -92,7 +92,7 @@ public struct FieldIndex {
 		}
 	public FieldIndex upRight{
 		get{ 
-			if (x<8 && y<8 )
+			if (x<Stats.fieldSize-1 && y<Stats.fieldSize-1 )
 				return new FieldIndex(x+1,y+1);
 			else
 				return new FieldIndex(-1);

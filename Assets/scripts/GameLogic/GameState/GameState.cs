@@ -39,11 +39,11 @@ public class GameState {
 		skillsUsed = copy.skillsUsed;
 	}
 
-	public void SetDefault(){
-		field[5,4] = Route.red;
-		field[3,4] = Route.blue;
-		placedPieces = 2;
-	}
+//	public void SetDefault(){
+//		field[5,4] = Route.red;
+//		field[3,4] = Route.blue;
+//		placedPieces = 2;
+//	}
 
 	public void Reset(){
 		field = new Field<Route>(Route.empty);

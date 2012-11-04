@@ -64,7 +64,9 @@ public class Grid : MonoBehaviour {
 		
 	
 	public void InitField(){
-		Instantiate(frame);//Vector3.zero
+		if(Stats.fieldSize == 9){
+			Instantiate(frame);//Vector3.zero
+		}
 		for( int i = 0; i < Stats.fieldSize*Stats.fieldSize; i++){
 			//create new transform 
 			if( playFieldTransforms[i] != null ){
@@ -88,7 +90,7 @@ public class Grid : MonoBehaviour {
 	}
 	
 	public void SetFlashLayer(FieldIndex index, bool active){
-		//changes the layer of the piece
+		//changes the layer of the piece, so that that piece is hit by the flashing directional light (Tutorial-function)
 		if(active){
 			playFieldTransforms[index].gameObject.layer = 10;
 		}else{

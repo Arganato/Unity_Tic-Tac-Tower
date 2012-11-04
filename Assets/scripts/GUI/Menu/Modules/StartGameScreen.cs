@@ -11,15 +11,23 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 	private bool lostConnection = false;
 	
 	private SelectGameTime selectGameTime = new SelectGameTime();
-	private GUIList selectRules;
+	//private GUIList selectRules;
 	private GUIList selectTowers;
+	private GUIList selectBoard;
 	private NetworkInterface networkInterface = null;
 	
 	private void SetUp(){
 //		selectRules = new GUIList(new Rect(100,50,180,25));
 //		selectRules.AddElement("Consumed towers");
 //		selectRules.AddElement("Persistent towers");
-		selectTowers = new GUIList(new Rect((int)(Screen.width/4),100,(int)(Screen.width/2),(int)(Screen.height*0.08)));
+		
+		selectBoard = new GUIList(new Rect((int)(Screen.width/4),100,(int)(Screen.width/2),(int)(Screen.height*0.08)));
+		selectBoard.AddElement("Square Board");
+		selectBoard.AddElement("Large Square Board");
+		selectBoard.AddElement("Circle Board");
+		selectBoard.AddElement("Donut Board");
+		
+		selectTowers = new GUIList(new Rect((int)(Screen.width/4),20,(int)(Screen.width/2),(int)(Screen.height*0.08)));
 		selectTowers.AddElement("All towers");
 		selectTowers.AddElement("Straight only");
 		selectGameTime.position.y = 180;
@@ -76,6 +84,10 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 					towers = "Towers: Straight only";
 				GUI.Label(selectTowers.position,towers);
 			}else{
+				
+				if(selectBoard.PrintGUI())
+					UpdateStats();
+				
 //				if(selectRules.PrintGUI())
 //					UpdateStats();
 		
@@ -144,6 +156,21 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 			Stats.skillEnabled.SetStraight(true);
 			break;
 		}
+		switch(selectBoard.choice){
+		case 0:
+			Stats.boardType = BoardType.square;
+			break;
+		case 1:
+			Stats.boardType = BoardType.largeSquare;
+			break;
+		case 2:
+			Stats.boardType = BoardType.circular;
+			Debug.Log("circular board set");
+			break;
+		case 3:
+			Stats.boardType = BoardType.donut;
+			break;
+		}
 		if(!localGame && networkInterface != null){
 			networkInterface.SendGameStats();
 		}
@@ -157,6 +184,7 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 		if(selectGameTime.enable){
 			selectGameTime.SetGameTime();
 		}
+		Stats.StartGame();
 		Application.LoadLevel("game");
 	}
 	

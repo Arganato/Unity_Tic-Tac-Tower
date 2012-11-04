@@ -149,8 +149,9 @@ public class Control: MonoBehaviour, EffectInterface {
 		Console.Clear();
 		if (tmp == null){
 			tmp = new GameState();
-			tmp.SetDefault();
+			tmp.field = GameBoardFactory.SquareBoard();
 			Stats.SetDefaultSettings();
+			Stats.StartGame();
 			Debug.Log("No settings found. Using default settings");
 		}
 		

@@ -18,6 +18,7 @@ public static class Stats{
 	public static GameState startState = new GameState();
 	public static SkillEnabled skillEnabled = SkillEnabled.AllActive();
 	public static Rules rules;
+	public static BoardType boardType = BoardType.square;
 	public static bool gameRunning = true;
 	//network-related
 	public static bool hasConnection = false; //set to true when a network connection is established
@@ -32,13 +33,15 @@ public static class Stats{
 	}
 	
 	public static void SetDefaultSettings(){
-		fieldSize = 9;
-		startState = new GameState();
-		startState.SetDefault();
+		boardType = BoardType.square;
 		skillEnabled.SetAll(true);
 		rules = Rules.INVISIBLE_TOWERS;
+		 
 	}
-	
+	public static void StartGame(){
+		startState = new GameState();
+		startState.field = GameBoardFactory.MakeBoard(boardType);		
+	}
 	public static void StartUpRoutine(){
 		if(!hasRanStartupRoutine){
 			Application.targetFrameRate = 15;
