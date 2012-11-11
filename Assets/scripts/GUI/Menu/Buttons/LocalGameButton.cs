@@ -5,14 +5,14 @@ using System.Collections;
 public class LocalGameButton : MenuButton {
 	
 	private MainMenu mainMenu;
-	private StartGameScreen startGame = new StartGameScreen();
+	//private StartGameScreen startGame = new StartGameScreen();
 	
 	public LocalGameButton(MainMenu m){
 		mainMenu = m;
 	}
 
 	public override void ButtonDown(){
-		mainMenu.AddMenu(startGame);
+		mainMenu.AddMenu(new StartGameScreen());
 		Stats.networkEnabled = false;
 	}
 	

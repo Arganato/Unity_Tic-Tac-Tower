@@ -38,26 +38,31 @@ public class SelectGameTime{
 	}
 	
 	public void SetGameTime(){
-		float p1tptNr = 0;
-		float p1ttNr = 0;
-		if (p1tpt != ""){
-			p1tptNr = (float)System.Convert.ToInt32(p1tpt);
-		}if (p1tt != ""){
-			p1ttNr = (float)System.Convert.ToInt32(p1tt);
-		}
-		GameTime tmp = new GameTime(p1tptNr,p1ttNr);
-		Stats.startState.player[0].gameTime = tmp;
-		if(copyP2Toggle){
-			Stats.startState.player[1].gameTime = tmp;
-		}else{
-			float p2tptNr = 0;
-			float p2ttNr = 0;
-			if (p2tpt != ""){
-				p2tptNr = (float)System.Convert.ToInt32(p2tpt);
-			}if (p2tt != ""){
-				p2ttNr = (float)System.Convert.ToInt32(p2tt);
+		if(enable){
+			float p1tptNr = 0;
+			float p1ttNr = 0;
+			if (p1tpt != ""){
+				p1tptNr = (float)System.Convert.ToInt32(p1tpt);
+			}if (p1tt != ""){
+				p1ttNr = (float)System.Convert.ToInt32(p1tt);
 			}
-			Stats.startState.player[1].gameTime = new GameTime(p2tptNr,p2ttNr);
+			GameTime tmp = new GameTime(p1tptNr,p1ttNr);
+			Stats.startState.player[0].gameTime = tmp;
+			if(copyP2Toggle){
+				Stats.startState.player[1].gameTime = tmp;
+			}else{
+				float p2tptNr = 0;
+				float p2ttNr = 0;
+				if (p2tpt != ""){
+					p2tptNr = (float)System.Convert.ToInt32(p2tpt);
+				}if (p2tt != ""){
+					p2ttNr = (float)System.Convert.ToInt32(p2tt);
+				}
+				Stats.startState.player[1].gameTime = new GameTime(p2tptNr,p2ttNr);
+			}
+		}else{
+			Stats.startState.player[1].gameTime = new GameTime(0,0);
+			Stats.startState.player[1].gameTime = new GameTime(0,0);
 		}
 	}
 	

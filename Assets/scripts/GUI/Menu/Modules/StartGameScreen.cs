@@ -30,6 +30,7 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 		selectTowers = new GUIList(new Rect((int)(Screen.width/4),20,(int)(Screen.width/2),(int)(Screen.height*0.08)));
 		selectTowers.AddElement("All towers");
 		selectTowers.AddElement("Straight only");
+
 		selectGameTime.position.y = 180;
 		selectGameTime.position.x = 0;
 		selectGameTime.enable = false; //spill uten tid er default
@@ -181,9 +182,8 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 //		if(!readOnly)
 //			networkInterface.SendStartGame();
 		
-		if(selectGameTime.enable){
-			selectGameTime.SetGameTime();
-		}
+		selectGameTime.SetGameTime();
+		
 		Stats.StartGame();
 		Application.LoadLevel("game");
 	}
@@ -193,7 +193,7 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 	public void ChatMessage (string msg)
 	{
 		chatField += msg+"\n";
-		Debug.Log("chat message received!!");
+		Debug.Log("chat message received");
 	}
 	
 	public void ConnectionStatus (ConnectionMessage msg)
@@ -209,7 +209,7 @@ public class StartGameScreen : MenuContent, INetworkMessage {
 			
 	}
 	
-	public void StartGameMessage (){
+	public void StartGameMessage (){ //this is used in networking
 		StartGame();
 	}
 }

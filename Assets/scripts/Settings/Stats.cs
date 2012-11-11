@@ -33,13 +33,13 @@ public static class Stats{
 	}
 	
 	public static void SetDefaultSettings(){
+		startState = new GameState();
 		boardType = BoardType.square;
 		skillEnabled.SetAll(true);
 		rules = Rules.INVISIBLE_TOWERS;
 		 
 	}
 	public static void StartGame(){
-		startState = new GameState();
 		startState.field = GameBoardFactory.MakeBoard(boardType);		
 	}
 	public static void StartUpRoutine(){
