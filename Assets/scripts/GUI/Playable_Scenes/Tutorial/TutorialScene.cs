@@ -12,18 +12,19 @@ public class TutorialScene : SceneTemplate{
 	private ScenarioDescriptionGUI scenarioWindow;
 	private BasicTutorial tutorialPropagator;
 	private TutorialConditionChecker conditionChecker;
+	private GraphicalEffectFactory graphicalEffects;
 	
 	public int tutorialStep = 0;
+	public bool enableControl = false;
 	
 	protected override void Start () {
 		base.Start();
-		tutorialPropagator = new BasicTutorial(this);
+		graphicalEffects = (GraphicalEffectFactory)FindObjectOfType(typeof(GraphicalEffectFactory));
+		tutorialPropagator = new BasicTutorial(this, control);
 		scenarioWindow = new ScenarioDescriptionGUI((IScenarioDescription)tutorialPropagator);
 		conditionChecker = new TutorialConditionChecker((IScenarioDescription)tutorialPropagator,this);
 		tutorialPropagator.SetGUI(scenarioWindow);
 		gui = GameGUIFactory.Create(Tutorial.guiOptions,(IGUIMessages)this);
-//		tutorialWindow = new TutorialWindow(this,gameCamera, control);
-		gui.gameGUIEnabled = false;
 		tutorialPropagator.Start();
 	}
 	
@@ -32,23 +33,47 @@ public class TutorialScene : SceneTemplate{
 	}
 	
 	public void OnVictory(){ //event sent from control
-//		tutorialWindow.SolutionAccepted();
 		Stats.gameRunning = true;
+	}
+	
+	public void FlashEndTurnButton(){
+		gui.FlashEndTurnButton();
+	}
+	public void FlashUndoButton(){
+		gui.FlashUndoButton();
+	}
+	public void FlashSkillButton(int skill){
+		gui.FlashSkillButton(skill);
+	}
+	public void FlashHelpButton(){
+		gui.FlashHelpButton();
+	}
+	public void FlashBoard(FieldIndex ind){
+		if(graphicalEffects == null){
+			Debug.LogError("no graphical effects factory found");
+			return;
+		}
+		graphicalEffects.FlashBoard(ind);
 	}
 	
 	
 	//IGUIMessages
 	
 	public override void UserEndTurn (){
-		if(Tutorial.CheckSolution()){
-//			tutorialWindow.SolutionAccepted();
+		if(enableControl){
+			//end turn and reset to player 1's turn
+			control.UserEndTurn();
+			Control.cState.activePlayer = 0;
+			conditionChecker.Calculate();
 		}
 	}
 	
 	public override void UserFieldSelect (FieldIndex position)
 	{
-		if(control.UserFieldSelect(position)){
-			conditionChecker.Calculate();
+		if(enableControl){
+			if(control.UserFieldSelect(position)){
+				conditionChecker.Calculate();
+			}
 		}
 	}
 
@@ -59,16 +84,8 @@ public class TutorialScene : SceneTemplate{
 		GUI.skin = customSkin;
 		
 		gui.PrintGUI();
-//		tutorialWindow.PrintGUI();
 		scenarioWindow.PrintGUI();
 		
-//		if(Tutorial.chapter == Tutorial.Chapter.tutStr || Tutorial.chapter == Tutorial.Chapter.tutDiag){
-//			skillGUI.PrintGUI();
-//		}
-//		if(buttonRow.PrintGUI()){
-//			tutorial.CheckSolution();
-//		}
-
 		base.HandleMouseInput();
 	}
 }

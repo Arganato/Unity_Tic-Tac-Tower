@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ScenarioDescriptionGUI{
 
 	private string headerText; //short description which is updated for every new mission
 	private string fullText; //the full text contained in the window
+	private List<GUIContent> fullContent =  new List<GUIContent>();
 	
 	private bool showContinue = false;
 	private bool showFinish = false; //overrides continue
@@ -17,7 +19,7 @@ public class ScenarioDescriptionGUI{
 	private IScenarioDescription receiver;
 	
 	private Vector2 scrollPos = Vector2.zero;
-	private int scrollHeight = 20;
+	private int boxheight = 80;
 	
 	public ScenarioDescriptionGUI(IScenarioDescription receiver){
 		this.receiver = receiver;
@@ -25,28 +27,27 @@ public class ScenarioDescriptionGUI{
 	
 	public void AddNote(string note){
 		//adds a note to the full text
-		fullText += note+"\n"; //add bullet points or something
-		scrollHeight += 30;
+		fullContent.Add(new GUIContent(note));
+		scrollPos.y += boxheight;
 	}
 	
 	public void AddMission(string header, string longDescr){
 		headerText = header;
-		fullText += longDescr + '\n';
-		scrollHeight += 30;
+		fullContent.Add(new GUIContent(longDescr));
+		scrollPos.y += boxheight;
 	}
 	
 	public void ClearWindow(){
-		fullText = "";
+		fullContent = new List<GUIContent>();
 		headerText = "";
-		scrollHeight = 20;
 	}
 	
 	public void PrintGUI(){
 		//draw the actual window here...
 		if(isMaximized){
-			GUI.Window(6,windowRect,MaximizedWindow,"Mission Description");
+			GUI.Window(124,windowRect,MaximizedWindow,"Mission Description");
 		}else{
-			GUI.Window(6,windowRect,MinimizedWindow,"Mission Description");			
+			GUI.Window(123,windowRect,MinimizedWindow,"Mission Description");			
 		}
 	}
 	
@@ -75,8 +76,12 @@ public class ScenarioDescriptionGUI{
 		if(GUI.Button(new Rect(windowRect.width-25,20,25,20),ResourceFactory.GetArrowUp())){
 			Minimize();
 		}
-		GUI.BeginScrollView(new Rect(0,45,windowRect.width,windowRect.height-6),scrollPos,new Rect(0,0,windowRect.width-60,scrollHeight));
-		GUI.Label(new Rect(0,45,windowRect.width-60,scrollHeight),fullText);
+		scrollPos = GUI.BeginScrollView(new Rect(0,45,windowRect.width,windowRect.height-80),scrollPos,new Rect(0,0,windowRect.width-60,boxheight*fullContent.Count));
+		for(int i=0;i<fullContent.Count;i++){
+			GUI.Box(new Rect(5,i*boxheight,windowRect.width-60,boxheight),"");
+			GUI.Label(new Rect(5,i*boxheight,windowRect.width-60,boxheight),fullContent[i]);
+		}
+		//GUI.Label(new Rect(5,0,windowRect.width-65,scrollHeight),fullText);
 		GUI.EndScrollView();
 		if(showFinish){
 			if(GUI.Button(new Rect(windowRect.width-150,windowRect.height-25,150,25),"Finish")){
@@ -90,7 +95,7 @@ public class ScenarioDescriptionGUI{
 	}
 	
 	private void MinimizedWindow(int windowID){
-		GUI.Label(new Rect(0,20,windowRect.width,windowRect.height-20),headerText);
+		GUI.Label(new Rect(5,20,windowRect.width-5,windowRect.height-20),headerText);
 		if(GUI.Button(new Rect(windowRect.width-25,windowRect.height-20,25,20),ResourceFactory.GetArrowDown())){
 			Maximize();
 		}	

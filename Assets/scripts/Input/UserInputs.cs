@@ -3,25 +3,26 @@ using System.Collections;
 
 public class UserInputs : MonoBehaviour {
 	private Control control;
+	private SceneTemplate gui;
 
 	// Use this for initialization
 	void Start () {
 		control = (Control)FindObjectOfType(typeof(Control));
-	
+		gui = (SceneTemplate)FindObjectOfType(typeof(SceneTemplate));
 	}
 	
 	void Update () {
 		//keyboard input
 		if(Stats.gameRunning){
 			if(Input.GetButton("End Turn") && Control.cState.playerDone){
-				control.UserEndTurn();
+				gui.UserEndTurn();
 			}
 			if(Input.GetButton("shoot")){
-				Skill.UseSkill(1);
+				gui.UseSkill(1);
 			}if(Input.GetButton("build")){
-				Skill.UseSkill(2);
+				gui.UseSkill(2);
 			}if(Input.GetButton("emp")){
-				Skill.UseSkill(3);
+				gui.UseSkill(3);
 			}
 		}	
 	}

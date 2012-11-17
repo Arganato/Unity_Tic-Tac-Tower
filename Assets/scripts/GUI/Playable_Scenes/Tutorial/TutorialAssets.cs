@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public static class TutorialAssets {
+public static class TutorialAssets { //Outdated!!
 
 	public static string GetTutorialMessage(){
 		switch(Tutorial.tutorialType){

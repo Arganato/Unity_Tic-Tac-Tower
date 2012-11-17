@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public static class Tutorial {
+public static class Tutorial { //Outdated??
 
 								 // Str = Straight
 	public enum Chapter {intro, textStr, tutStr, textDiag, tutDiag, end};

@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-// OBSOLETE!
 
-public static class SolutionChecker {
+
+public static class SolutionChecker {// OBSOLETE!
 
 	public static bool CheckSolution(Tutorial.Chapter chapter, TowerType tower){
 		switch(tower){

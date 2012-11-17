@@ -7,12 +7,13 @@ public class TutorialShootButton : MenuButton {
 	}
 	
 	public override void ButtonDown(){
+		Stats.SetDefaultSettings();
 		Tutorial.tutorialType = TowerType.shoot;
 		Tutorial.StartTutorial();
 		Application.LoadLevel("Tutorial");
 	}
 	
 	public override string Name(){
-		return "Shoot Tutorial";
+		return "Start Tutorial";
 	}
 }

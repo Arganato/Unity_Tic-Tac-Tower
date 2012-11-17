@@ -7,13 +7,13 @@ public class TutorialSkillCapButton : MenuButton {
 	}
 	
 	public override void ButtonDown(){
-		Tutorial.tutorialType = TowerType.skillCap;
-		Tutorial.StartTutorial();
-		Application.LoadLevel("Tutorial");
+//		Tutorial.tutorialType = TowerType.skillCap;
+//		Tutorial.StartTutorial();
+//		Application.LoadLevel("Tutorial");
 	}
 	
 	public override string Name(){
-		return "Power Tutorial";
+		return "[NOT IMPLEMENTED]";
 	}
 	
 }

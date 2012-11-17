@@ -7,12 +7,12 @@ public class TutorialBuildButton : MenuButton {
 	}
 	
 	public override void ButtonDown(){
-		Tutorial.tutorialType = TowerType.build;
-		Tutorial.StartTutorial();
-		Application.LoadLevel("Tutorial");
+//		Tutorial.tutorialType = TowerType.build;
+//		Tutorial.StartTutorial();
+//		Application.LoadLevel("Tutorial");
 	}
 	
 	public override string Name(){
-		return "Build Tutorial";
+		return "[NOT IMPLEMENTED]";
 	}
 }

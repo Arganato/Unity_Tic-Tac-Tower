@@ -23,13 +23,13 @@ public class AdustCamera : MonoBehaviour {
 		float screenBoardPercentage = boardPixHeight/Screen.height;
 		//the screen height in world coords is camera.orthographicSize*2:
 		camera.orthographicSize = Stats.fieldSize*10/screenBoardPercentage/2;
-		Debug.Log("BoardP = "+screenBoardPercentage+", ortSize = "+camera.orthographicSize+".");
+		//Debug.Log("BoardP = "+screenBoardPercentage+", ortSize = "+camera.orthographicSize+".");
 		
 		float center = (Stats.fieldSize*10-90)/2;
 		Vector3 newPos = camera.transform.position;
 		newPos.x = center;
 		newPos.z = center -11.6f; //(Screen.height/2-110-(Screen.height-110)/2)*camera.orthographicSize*2/Screen.height;
-		Debug.Log("new position = "+newPos);
+		//Debug.Log("new position = "+newPos);
 		camera.transform.position = newPos;
 //		float ratio = (float)Screen.height/(float)Screen.width;
 //		if( ratio > 1.5f){

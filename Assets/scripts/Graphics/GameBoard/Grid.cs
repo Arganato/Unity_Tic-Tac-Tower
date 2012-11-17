@@ -16,22 +16,23 @@ public class Grid : MonoBehaviour {
 	public Transform outOfBoundsPiece;
 	public Transform frame;
 
-	private Control control;
+	private SceneTemplate gui;
 	
 	
 	private Field<GridUnit> playFieldTransforms = new Field<GridUnit>(); //this is the actual playfield as it appears to the players.
 	
 	void Awake () {
-		control = (Control)FindObjectOfType(typeof(Control));
 		playFieldTransforms = new Field<GridUnit>((GridUnit)null);
 	}
-	
+	void Start(){
+		gui = (SceneTemplate)FindObjectOfType(typeof(SceneTemplate));
+	}	
 	
 	public void MouseDown(Vector3 mousePosition){
 		if( Stats.gameRunning){
 			FieldIndex ind = ScreenPointToBoard(mousePosition);
 			if ( ind.index != -1){
-				control.UserFieldSelect(ind);
+				gui.UserFieldSelect(ind);
 			}
 		}
 	}
