@@ -49,5 +49,17 @@ public class GraphicalEffectFactory : MonoBehaviour {
 		grid.SetFlashLayer(index,true);
 		yield return new WaitForSeconds(1f);
 		grid.SetFlashLayer(index,false);
+		yield return new WaitForSeconds(0.5f);
+		grid.SetFlashLayer(index,true);
+		yield return new WaitForSeconds(0.5f);
+		grid.SetFlashLayer(index,false);
+		yield return new WaitForSeconds(0.5f);
+		grid.SetFlashLayer(index,true);
+		yield return new WaitForSeconds(0.5f);
+		grid.SetFlashLayer(index,false);
+		yield return new WaitForSeconds(0.5f);
+		grid.SetFlashLayer(index,true);
+		yield return new WaitForSeconds(0.5f);
+		grid.SetFlashLayer(index,false);		
 	}
 }

@@ -60,13 +60,11 @@ public class BasicTutorial : IScenarioDescription{
 				"for now, lets look at the shoot-skill as an example.");
 			break;
 		case 3:
-			//picture of shoot-tower
-			tutorialWindow.AddNote("Above you can see the tower you need to " +
+			tutorialWindow.AddPicture(ResourceFactory.GetSkillTexture(0));
+			tutorialWindow.FlashArrow((MonoBehaviour)control);
+			tutorialWindow.AddMission("Build shoot-tower","Above you can see the tower you need to " +
 				"construct to get the shoot-skill. Now, minimize this window by pressing " +
-				"the arrow on the top of the window, and build a shoot tower on the board below");
-			//Flash arrow-button
-			tutorialWindow.AddMission("Build shoot-tower","Build a shoot-tower by placing " +
-				"pieces on the board in the given pattern");
+				"the arrow on the top of the window, and build a shoot tower on the board below.");
 			tutorialWindow.ShowContinue(false);
 			tutorialScene.enableControl = true;
 			break;
@@ -79,7 +77,7 @@ public class BasicTutorial : IScenarioDescription{
 			Control.cState.field[4,4] = Route.empty; //making sure 4,4 is empty, so that a blue piece can be placed there
 			control.UserFieldSelect(new FieldIndex(4,4));
 			control.UserEndTurn();
-			tutorialWindow.AddNote("Congratulations, you built the shoot-tower, The tower is " +
+			tutorialWindow.AddMission("Mission Completed!","Congratulations, you built the shoot-tower, The tower is " +
 				"consumed, and a skill is added to your skill list. You can build the shoot-tower " +
 				"in any rotation, or even diagonally.");
 			tutorialWindow.ShowContinue(true);
@@ -88,20 +86,20 @@ public class BasicTutorial : IScenarioDescription{
 			break;
 		case 6:
 			tutorialWindow.AddNote("The shoot-skill we just aquired can be used to destroy a piece on the board. " +
-				"The skill is symbolized by its icon [picture pending]");
-			//picture of shoot-icon
+				"The skill is symbolized by its icon");
+			tutorialWindow.AddPicture(ResourceFactory.GetSkillIcon(0));
 			break;
 		case 7:
 
 			tutorialScene.enableControl = true;
 			tutorialWindow.ShowContinue(false);
-			tutorialWindow.AddNote("Now select the shoot skill by pressing the button with the " +
+			tutorialWindow.AddMission("Shoot the blue piece", "Now select the shoot skill by pressing the button with the " +
 				"shoot-icon, and then shoot the blue piece on the board by clicking it.");
 			tutorialScene.FlashSkillButton(0);
 			tutorialScene.FlashBoard(new FieldIndex(4,4));
 			break;
 		case 8:
-			tutorialWindow.AddNote("Well done! If you forget what a skill does, or how its tower looks, " +
+			tutorialWindow.AddMission("Mission Completed!","Well done! If you forget what a skill does, or how its tower looks, " +
 				"you can always get a description by clicking the \"?\"-button."); 
 				tutorialWindow.AddNote("This turns all the " +
 				"skill-buttons into a menu where you can read about all the skills.");

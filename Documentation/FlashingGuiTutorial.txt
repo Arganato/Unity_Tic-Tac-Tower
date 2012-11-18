@@ -1,0 +1,39 @@
+
+********************************************
+* Tutorial - How to make a flashing button *
+********************************************
+
+Flashing buttons are used in the tutorial to draw the attention towards a specific part of the GUI. Any button can be a flashing button.
+
+**instructions**
+1. the class containing the button that shall be flashing must inherit from the abstract class FlashingButton
+
+NOTE: only one flashing button can be made pr class. If you need more, make more subclasses
+
+2. Make a function that calls the Flash-function from FlashingButton. The Flash-function needs an instance of Monobehaviour (see the example below). Give it an appropriate name.
+
+
+<Example code>
+	public void FlashButton(MonoBehaviour m){
+		Flash(m);
+	}
+</Example code>
+
+NOTE: You can call this function with any class that inherits from Monobehaviour, like Control, like this: FlashButton( (Monobehaviour)control);
+
+
+3. Set the GUI-backgroundColor to the FlashButton's color in the PrintGUI-function. If you only want to flash a part of the GUi, set the color only when calling those GUI-functions:
+
+
+<Example code>
+	public void PrintGUI(){
+		Color tmp = GUI.backgroundColor;
+		GUI.backgroundColor = currentColor; //<-- This call make GUI flashy
+		//Flashing GUI calls
+		GUI.backgroundColor = tmp;
+		//Non-flashing GUI calls
+	}
+
+</Example code>
+
+NOTE: currentColor is a protected variable declared in FlashingButton

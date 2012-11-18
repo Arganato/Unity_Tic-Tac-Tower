@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ScenarioDescriptionGUI{
+public class ScenarioDescriptionGUI : FlashingButton{
 
 	private string headerText; //short description which is updated for every new mission
 	private string fullText; //the full text contained in the window
@@ -28,6 +28,11 @@ public class ScenarioDescriptionGUI{
 	public void AddNote(string note){
 		//adds a note to the full text
 		fullContent.Add(new GUIContent(note));
+		scrollPos.y += boxheight;
+	}
+	
+	public void AddPicture(Texture pic){
+		fullContent.Add(new GUIContent(pic));
 		scrollPos.y += boxheight;
 	}
 	
@@ -60,6 +65,10 @@ public class ScenarioDescriptionGUI{
 		showFinish = show;
 	}
 	
+	public void FlashArrow(MonoBehaviour m){
+		Flash(m);
+	}
+	
 	public void Maximize(){
 		windowRect.width = maximizedSize.width;
 		windowRect.height = maximizedSize.height;
@@ -73,20 +82,23 @@ public class ScenarioDescriptionGUI{
 	}
 	
 	private void MaximizedWindow(int windowID){
+		Color tmp = GUI.backgroundColor;
+		GUI.backgroundColor = currentColor;
 		if(GUI.Button(new Rect(windowRect.width-25,20,25,20),ResourceFactory.GetArrowUp())){
 			Minimize();
 		}
-		scrollPos = GUI.BeginScrollView(new Rect(0,45,windowRect.width,windowRect.height-80),scrollPos,new Rect(0,0,windowRect.width-60,boxheight*fullContent.Count));
+		GUI.backgroundColor = tmp;
+		scrollPos = GUI.BeginScrollView(new Rect(0,45,windowRect.width,windowRect.height-80),scrollPos,new Rect(0,0,windowRect.width-25,boxheight*fullContent.Count));
 		for(int i=0;i<fullContent.Count;i++){
-			GUI.Box(new Rect(5,i*boxheight,windowRect.width-60,boxheight),"");
-			GUI.Label(new Rect(5,i*boxheight,windowRect.width-60,boxheight),fullContent[i]);
+			GUI.Box(new Rect(5,i*boxheight,windowRect.width-25,boxheight),"");
+			GUI.Label(new Rect(5,i*boxheight,windowRect.width-25,boxheight),fullContent[i]);
 		}
 		//GUI.Label(new Rect(5,0,windowRect.width-65,scrollHeight),fullText);
 		GUI.EndScrollView();
 		if(showFinish){
 			if(GUI.Button(new Rect(windowRect.width-150,windowRect.height-25,150,25),"Finish")){
 				receiver.OnFinished();
-			}			
+			}
 		}else if(showContinue){
 			if(GUI.Button(new Rect(windowRect.width-150,windowRect.height-25,150,25),"Continue")){
 				receiver.OnContinue();
@@ -96,8 +108,11 @@ public class ScenarioDescriptionGUI{
 	
 	private void MinimizedWindow(int windowID){
 		GUI.Label(new Rect(5,20,windowRect.width-5,windowRect.height-20),headerText);
+		Color tmp = GUI.backgroundColor;
+		GUI.backgroundColor = currentColor;
 		if(GUI.Button(new Rect(windowRect.width-25,windowRect.height-20,25,20),ResourceFactory.GetArrowDown())){
 			Maximize();
-		}	
+		}
+		GUI.backgroundColor = tmp;
 	}
 }
