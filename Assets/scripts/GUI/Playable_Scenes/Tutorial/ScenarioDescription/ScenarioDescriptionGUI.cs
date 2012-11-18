@@ -10,7 +10,7 @@ public class ScenarioDescriptionGUI : FlashingButton{
 	
 	private bool showContinue = false;
 	private bool showFinish = false; //overrides continue
-	private bool isMaximized = true;
+	public bool isMaximized = true;
 	
 	private Rect windowRect = new Rect(Screen.width/2-150,40,300,300);
 	private Rect minimizedSize = new Rect(0,0,300,50);
@@ -82,6 +82,7 @@ public class ScenarioDescriptionGUI : FlashingButton{
 	}
 	
 	private void MaximizedWindow(int windowID){
+		GUI.Label(new Rect(5,20,windowRect.width-5,windowRect.height-20),headerText);
 		Color tmp = GUI.backgroundColor;
 		GUI.backgroundColor = currentColor;
 		if(GUI.Button(new Rect(windowRect.width-25,20,25,20),ResourceFactory.GetArrowUp())){
@@ -110,7 +111,7 @@ public class ScenarioDescriptionGUI : FlashingButton{
 		GUI.Label(new Rect(5,20,windowRect.width-5,windowRect.height-20),headerText);
 		Color tmp = GUI.backgroundColor;
 		GUI.backgroundColor = currentColor;
-		if(GUI.Button(new Rect(windowRect.width-25,windowRect.height-20,25,20),ResourceFactory.GetArrowDown())){
+		if(GUI.Button(new Rect(windowRect.width-25,20,25,20),ResourceFactory.GetArrowDown())){
 			Maximize();
 		}
 		GUI.backgroundColor = tmp;

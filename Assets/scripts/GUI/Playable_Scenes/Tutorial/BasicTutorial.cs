@@ -77,6 +77,9 @@ public class BasicTutorial : IScenarioDescription{
 			Control.cState.field[4,4] = Route.empty; //making sure 4,4 is empty, so that a blue piece can be placed there
 			control.UserFieldSelect(new FieldIndex(4,4));
 			control.UserEndTurn();
+			if(!tutorialWindow.isMaximized){
+				tutorialWindow.FlashArrow((MonoBehaviour)control);
+			}
 			tutorialWindow.AddMission("Mission Completed!","Congratulations, you built the shoot-tower, The tower is " +
 				"consumed, and a skill is added to your skill list. You can build the shoot-tower " +
 				"in any rotation, or even diagonally.");
@@ -99,6 +102,9 @@ public class BasicTutorial : IScenarioDescription{
 			tutorialScene.FlashBoard(new FieldIndex(4,4));
 			break;
 		case 8:
+			if(!tutorialWindow.isMaximized){
+				tutorialWindow.FlashArrow((MonoBehaviour)control);
+			}
 			tutorialWindow.AddMission("Mission Completed!","Well done! If you forget what a skill does, or how its tower looks, " +
 				"you can always get a description by clicking the \"?\"-button."); 
 				tutorialWindow.AddNote("This turns all the " +
