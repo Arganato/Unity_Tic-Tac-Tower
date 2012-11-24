@@ -13,11 +13,6 @@ public class ConstructBuildingEffect : MonoBehaviour {
 	private bool lightsEnabled = false;
 	private float endTime;
 	
-	private Color buildColor = Color.cyan;
-	private Color shootColor = Color.magenta;
-	private Color silenceColor = Color.green;
-	private Color skillCapColor = Color.yellow;
-	
 	private List<Tower> cluster;
 	
 	private List<Light> lights;
@@ -65,25 +60,10 @@ public class ConstructBuildingEffect : MonoBehaviour {
 				pos.y += 5;
 				Transform tmp = Instantiate(lightTransform,pos,Quaternion.identity) as Transform;
 				Light aLight = tmp.GetComponent<Light>();
-				aLight.color = GetColor(t.type);
+				aLight.color = ResourceFactory.GetSkillColor(t.type);
 				lights.Add(aLight);
 			}
 		}
 	}
 	
-	private Color GetColor(TowerType t){
-		
-		switch(t){
-		case TowerType.shoot:
-			return shootColor;
-		case TowerType.build:
-			return buildColor;
-		case TowerType.silence:
-			return silenceColor;
-		case TowerType.skillCap:
-			return skillCapColor;
-		default:
-			return Color.white;
-		}
-	}
 }

@@ -20,9 +20,9 @@ public class ClockGUI{
 		if (enable){
 			Color old = GUI.contentColor;
 			if(player == 0)
-				GUI.contentColor = Color.red;
+				GUI.contentColor = ResourceFactory.GetPlayer1Color();
 			else
-				GUI.contentColor = Color.blue;
+				GUI.contentColor = ResourceFactory.GetPlayer2Color();
 			switch(Control.cState.player[player].gameTime.state){
 			case GameTime.State.off:
 				OffGUI();

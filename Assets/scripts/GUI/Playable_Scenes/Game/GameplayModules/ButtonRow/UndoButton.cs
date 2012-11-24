@@ -44,9 +44,9 @@ public class UndoButton : FlashingButton{
 	
 	private void ColoredBox(){
 		Color old = GUI.contentColor;
-		GUI.contentColor = Color.red;
+		GUI.contentColor = ResourceFactory.GetPlayer1Color();
 		GUI.Box(new Rect(0,position.height/2,position.width/2,position.height/2),""+usedUndoCounter[0]);
-		GUI.contentColor = Color.blue;
+		GUI.contentColor = ResourceFactory.GetPlayer2Color();
 		GUI.Box(new Rect(position.width/2,position.height/2,position.width/2,position.height/2),""+usedUndoCounter[1]);
 		GUI.contentColor = old;
 	}

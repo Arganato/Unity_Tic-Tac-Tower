@@ -20,9 +20,9 @@ public class EndTurnButton : FlashingButton{
 			}else if(!receiver.GetMainGameState().playerDone){
 				Color old = GUI.contentColor;
 				if(receiver.GetMainGameState().activePlayer == 0)
-					GUI.contentColor = Color.red;
+					GUI.contentColor = ResourceFactory.GetPlayer1Color();
 				else
-					GUI.contentColor = Color.blue;
+					GUI.contentColor = ResourceFactory.GetPlayer2Color();
 				GUI.Box(position,"Player "+(receiver.GetMainGameState().activePlayer+1));
 				GUI.contentColor=old;
 			}

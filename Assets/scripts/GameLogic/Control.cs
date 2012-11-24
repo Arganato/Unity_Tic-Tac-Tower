@@ -11,11 +11,14 @@ public class Control: MonoBehaviour, EffectInterface {
 	private Turn activeTurn;
 	private Sound sound;
 	private GraphicalEffectFactory graphicalEffectFactory;
+	private static NetworkInterface networkInterface;
+	private bool networkSendMessageFlag = true;
 //	private AI ai = new AI(); //for debug
 		
 	void Awake () {
 		sound = (Sound)FindObjectOfType(typeof(Sound));
 		graphicalEffectFactory = (GraphicalEffectFactory)FindObjectOfType(typeof(GraphicalEffectFactory));
+		networkInterface = (NetworkInterface)FindObjectOfType(typeof(NetworkInterface));
 
 		if (sound == null){
 			Debug.LogError("sound-object not found");
@@ -114,25 +117,34 @@ public class Control: MonoBehaviour, EffectInterface {
 	}
 	
 	public void ExecuteTurn(Turn t){
-		bool flag = true;
-		if(!t.IsValid()){
-			flag = true;
-		}else{
+		if(t.IsValid()){
 			foreach( Order o in t.GetOrderList()){
 				if(!ExecuteOrder(o)){
-					flag = false;
+					Debug.LogError("invalid order-code: "+o.ToString());
 					break;
 				}
 			}
+		}else{
+			Debug.LogError("invalid turn-code: "+t.ToString());
 		}
-		if(!flag)
-			Debug.LogError("invalid turn-code");
+	}
+	
+	public void ExecuteNetworkTurn(Turn t){
+		networkSendMessageFlag = false;
+		ExecuteTurn(t);
 	}
 	
 	
 	private void EndTurn(){
 		cState.ChangeActivePlayer();
 		Console.PrintToConsole(activeTurn.ToString(),Console.MessageType.TURN);
+		if(Stats.hasConnection){
+			if(networkSendMessageFlag){
+				networkInterface.SendTurn(activeTurn.ToString());
+			}else{
+				networkSendMessageFlag = true;
+			}
+		}
 		activeTurn = new Turn();
 		cState.playerDone = false;
 		Skill.skillInUse = 0;

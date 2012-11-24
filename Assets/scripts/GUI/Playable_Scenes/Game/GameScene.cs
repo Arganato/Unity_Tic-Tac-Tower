@@ -10,7 +10,7 @@ public class GameScene : SceneTemplate {
 	
 	protected override void Start () {
 		base.Start();
-		gui = GameGUIFactory.Create(GameGUIOptions.Default(), (IGUIMessages)this);
+		gui = GameGUIFactory.Create(GameGUIOptions.Create(Stats.networkEnabled), (IGUIMessages)this);
 	}
 	
 	//Overridden IGUIMessages-functions:

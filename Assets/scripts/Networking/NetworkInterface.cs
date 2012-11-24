@@ -14,7 +14,6 @@ public class NetworkInterface : MonoBehaviour {
 	private string gameName = "";
 	
 	void Start(){
-		Console.Init(this);
 		DontDestroyOnLoad(gameObject);
 	}
 	
@@ -25,6 +24,7 @@ public class NetworkInterface : MonoBehaviour {
 	
 	private void FindControl(){
 		control = (Control)FindObjectOfType(typeof(Control));
+		Debug.Log("Establishing control link");
 	}
 
 	public void AddMessageRecipient(INetworkMessage inst){
@@ -127,23 +127,16 @@ public class NetworkInterface : MonoBehaviour {
 		RelayChatMessage("Player: "+pck);
 		//TODO: add player name
 	}
-//	[RPC]
-//	public void ReceiveHeartbeat(NetworkViewID id, float timestamp){
-//		if(!Network.isServer){
-//			SendHeartbeat();
-//		}
-//		//receive heartbeat somehow
-//	}
+
+	
 	[RPC]
 	public void ReceiveTurn(NetworkViewID id, string pck){
 		Turn turn = Turn.StringToTurn(pck);
-		if(control == null)
+		Debug.Log("Before: <"+pck+"> After <"+turn.ToString()+">.");
+		if(control == null){
 			FindControl();
-		if(control == null)
-			Debug.LogError("script control not found!");
-		else{
-			control.ExecuteTurn(turn);
 		}
+		control.ExecuteNetworkTurn(turn);
 	}
 
 	//Messages	

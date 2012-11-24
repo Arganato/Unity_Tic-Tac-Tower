@@ -20,7 +20,7 @@ public static class ResourceFactory{
 	private static string skillIconsBP = "GUI/Icons/Skills/";
 	private static string[] skillIconpaths = new string[4]{ "Shoot", "Build", "Silence", "SkillCap"};
 	private static bool isLoaded = false;
-
+	
 	public static string GetDescription(TowerType tower){
 		switch(tower){
 		case TowerType.shoot:
@@ -124,10 +124,38 @@ public static class ResourceFactory{
 		for (int i=0; i<skillIconTextures.Length;i++){
 			skillIconTextures[i] = Resources.Load(skillIconsBP+skillIconpaths[i]+"_Icon") as Texture;
 			smallSkillIconTextures[i] = Resources.Load(skillIconsBP+skillIconpaths[i]+"Small") as Texture;
-			if(towerTextures[i] == null){
-				Debug.LogError("Texture not found: "+skillIconsBP+skillIconpaths[i]+"_Icon");
-			}
-
+//			if(skillIconTextures[i] == null){
+//				Debug.LogError("Texture not found: "+skillIconsBP+skillIconpaths[i]+"_Icon");
+//			}
+//			if(smallSkillIconTextures[i] == null){
+//				Debug.LogError("Texture not found: "+skillIconsBP+skillIconpaths[i]+"Small");
+//			}
+		}
+	}
+	
+	//colors
+	public static Color GetPlayer1Color(){
+		return Color.red;
+	}
+	public static Color GetPlayer2Color(){
+		return new Color(0.3f,0.3f,1f,1f);
+	}
+	public static Color GetSkillColor(TowerType skill){
+		switch(skill){
+			
+		case TowerType.shoot:
+			return Color.magenta;
+		case TowerType.build:
+			return Color.cyan;
+		case TowerType.silence:
+			return Color.green;
+		case TowerType.skillCap:
+			return Color.yellow;
+		case TowerType.five:
+			return Color.white;
+		default:
+			Debug.LogError("Skill "+skill+" not found");
+			return Color.clear;
 		}
 	}
 }
