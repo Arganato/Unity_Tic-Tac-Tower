@@ -274,11 +274,11 @@ public class GameState {
 	}	
 	public bool EMP(){
 		Debug.Log("player "+(this.activePlayer+1)+" has used EMP");
-		Console.PrintToConsole("player "+(this.activePlayer+1)+" has used EMP!",Console.MessageType.INFO);
 		skillsUsed.silence++;
 		player[activePlayer].playerSkill.silence--;
 		player[(activePlayer+1)%2].silenced = true;
 		if (effectInterface != null){
+			Console.PrintToConsole("player "+(this.activePlayer+1)+" has used EMP!",Console.MessageType.INFO);
 			effectInterface.PlaySound(SoundType.silence);
 			effectInterface.PlaySilenceEffect();
 		}

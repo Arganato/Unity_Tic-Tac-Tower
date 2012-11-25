@@ -8,8 +8,7 @@ public class TutorialShootButton : MenuButton {
 	
 	public override void ButtonDown(){
 		Stats.SetDefaultSettings();
-		Tutorial.tutorialType = TowerType.shoot;
-		Tutorial.StartTutorial();
+		Tutorial.tutorialType = 1;
 		Application.LoadLevel("Tutorial");
 	}
 	

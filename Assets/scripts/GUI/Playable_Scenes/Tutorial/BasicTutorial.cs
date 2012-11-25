@@ -12,12 +12,18 @@ public class BasicTutorial : IScenarioDescription{
 		this.control = control;
 	}
 	
-	public void SetGUI(ScenarioDescriptionGUI guiwindow){
-		tutorialWindow = guiwindow;
+	public GameGUIOptions GetGUIOptions(){
+		SkillEnabled guiButtonsEnabled = new SkillEnabled();
+		guiButtonsEnabled.SetAll(false);
+		guiButtonsEnabled.shoot = true;
+		GameGUIOptions guiOptions = GameGUIOptions.Create(guiButtonsEnabled,false);
+		Stats.skillEnabled = guiButtonsEnabled;
+		return guiOptions;
 	}
 	
 	public void Start(){
 		Debug.Log("starting tutorialWindow");
+		tutorialWindow = tutorialScene.GetTutorialGUI();
 		PropagateTutorial(tutorialScene.tutorialStep);
 	}
 	

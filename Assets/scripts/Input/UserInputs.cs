@@ -2,12 +2,10 @@ using UnityEngine;
 using System.Collections;
 
 public class UserInputs : MonoBehaviour {
-	private Control control;
 	private SceneTemplate gui;
 
 	// Use this for initialization
 	void Start () {
-		control = (Control)FindObjectOfType(typeof(Control));
 		gui = (SceneTemplate)FindObjectOfType(typeof(SceneTemplate));
 	}
 	

@@ -10,7 +10,7 @@ public class TutorialScene : SceneTemplate{
 //	private TutorialWindow tutorialWindow;
 	private GameGUIFactory gui;
 	private ScenarioDescriptionGUI scenarioWindow;
-	private BasicTutorial tutorialPropagator;
+	private IScenarioDescription tutorialPropagator;
 	private TutorialConditionChecker conditionChecker;
 	private GraphicalEffectFactory graphicalEffects;
 	
@@ -20,16 +20,19 @@ public class TutorialScene : SceneTemplate{
 	protected override void Start () {
 		base.Start();
 		graphicalEffects = (GraphicalEffectFactory)FindObjectOfType(typeof(GraphicalEffectFactory));
-		tutorialPropagator = new BasicTutorial(this, control);
-		scenarioWindow = new ScenarioDescriptionGUI((IScenarioDescription)tutorialPropagator);
+		tutorialPropagator = Tutorial.GetTutorialDescription(this, control);
+		scenarioWindow = new ScenarioDescriptionGUI(tutorialPropagator);
 		conditionChecker = new TutorialConditionChecker((IScenarioDescription)tutorialPropagator,this);
-		tutorialPropagator.SetGUI(scenarioWindow);
-		gui = GameGUIFactory.Create(Tutorial.guiOptions,(IGUIMessages)this);
+		gui = GameGUIFactory.Create(tutorialPropagator.GetGUIOptions(),(IGUIMessages)this);
 		tutorialPropagator.Start();
 	}
 	
 	public void EnableGameGUI(bool b){
 		gui.gameGUIEnabled = b;
+	}
+	
+	public ScenarioDescriptionGUI GetTutorialGUI(){ //needed by tutorialPropagator
+		return scenarioWindow;
 	}
 	
 	public void OnVictory(){ //event sent from control

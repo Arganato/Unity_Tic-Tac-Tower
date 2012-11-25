@@ -132,7 +132,6 @@ public class NetworkInterface : MonoBehaviour {
 	[RPC]
 	public void ReceiveTurn(NetworkViewID id, string pck){
 		Turn turn = Turn.StringToTurn(pck);
-		Debug.Log("Before: <"+pck+"> After <"+turn.ToString()+">.");
 		if(control == null){
 			FindControl();
 		}
