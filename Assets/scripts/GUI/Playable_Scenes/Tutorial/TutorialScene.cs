@@ -11,7 +11,7 @@ public class TutorialScene : SceneTemplate{
 	private GameGUIFactory gui;
 	private ScenarioDescriptionGUI scenarioWindow;
 	private IScenarioDescription tutorialPropagator;
-	private TutorialConditionChecker conditionChecker;
+	private TutorialCondition conditionChecker;
 	private GraphicalEffectFactory graphicalEffects;
 	
 	public int tutorialStep = 0;
@@ -22,7 +22,7 @@ public class TutorialScene : SceneTemplate{
 		graphicalEffects = (GraphicalEffectFactory)FindObjectOfType(typeof(GraphicalEffectFactory));
 		tutorialPropagator = Tutorial.GetTutorialDescription(this, control);
 		scenarioWindow = new ScenarioDescriptionGUI(tutorialPropagator);
-		conditionChecker = new TutorialConditionChecker((IScenarioDescription)tutorialPropagator,this);
+		conditionChecker = tutorialPropagator.GetCondition();
 		gui = GameGUIFactory.Create(tutorialPropagator.GetGUIOptions(),(IGUIMessages)this);
 		tutorialPropagator.Start();
 	}
@@ -33,6 +33,10 @@ public class TutorialScene : SceneTemplate{
 	
 	public ScenarioDescriptionGUI GetTutorialGUI(){ //needed by tutorialPropagator
 		return scenarioWindow;
+	}
+	
+	public void ChangeGUIOptions(GameGUIOptions opt){
+		gui = GameGUIFactory.Create(opt,(IGUIMessages)this);
 	}
 	
 	public void OnVictory(){ //event sent from control

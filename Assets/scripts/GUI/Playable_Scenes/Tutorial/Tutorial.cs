@@ -12,6 +12,8 @@ public static class Tutorial { //Outdated??
 		switch(tutorialType){
 		case 1:
 			return new BasicTutorial(scene, control);
+		case 2:
+			return new SkillTutorial(scene, control);
 		default:
 			return new BasicTutorial(scene, control);
 		}

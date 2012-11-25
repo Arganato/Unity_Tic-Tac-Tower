@@ -9,10 +9,8 @@ public class TutorialButton : MenuButton {
 	public TutorialButton(MainMenu m){
 		mainMenu = m;
 		tutorialFrame = Frame.Create("Tutorial");
-		tutorialFrame.AddButton(new TutorialShootButton());
-		tutorialFrame.AddButton(new TutorialBuildButton());
-		tutorialFrame.AddButton(new TutorialSilenceButton());
-		tutorialFrame.AddButton(new TutorialSkillCapButton());
+		tutorialFrame.AddButton(new TutorialBasicButton());
+		tutorialFrame.AddButton(new TutorialSkillButton());
 	}
 	
 	public override void ButtonDown ()

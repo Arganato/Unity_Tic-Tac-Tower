@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class TutorialShootButton : MenuButton {
+public class TutorialBasicButton : MenuButton {
 	
-	public TutorialShootButton(){
+	public TutorialBasicButton(){
 	}
 	
 	public override void ButtonDown(){

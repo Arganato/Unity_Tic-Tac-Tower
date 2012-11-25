@@ -21,6 +21,11 @@ public class BasicTutorial : IScenarioDescription{
 		return guiOptions;
 	}
 	
+	public TutorialCondition GetCondition()
+	{
+		return new TutorialBasicCondition((IScenarioDescription)this, tutorialScene);
+	}
+	
 	public void Start(){
 		Debug.Log("starting tutorialWindow");
 		tutorialWindow = tutorialScene.GetTutorialGUI();
@@ -36,15 +41,6 @@ public class BasicTutorial : IScenarioDescription{
 	{
 		Application.LoadLevel("mainMenu");
 	}
-	
-//	IEnumerable<int> PropagateTutorial(){
-//		tutorialWindow.AddMission("This is a mission","This is a mission that should be carried out like this");
-//		tutorialWindow.ShowContinue(true);
-//		tutorialWindow.ShowFinish(false);
-////		yield break;
-//		yield return 0;
-//		tutorialWindow.AddNote("This is a note");
-//	}
 	
 	public void PropagateTutorial(int step){
 		switch(step){
