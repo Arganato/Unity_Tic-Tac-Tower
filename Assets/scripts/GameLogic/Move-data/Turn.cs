@@ -8,6 +8,23 @@ public class Turn{
 	private List<Order> orders;
 	private bool valid; // if the turn contains exactly one place-order
 	
+	public Turn(){
+		orders = new List<Order>();
+		valid = false;
+	}
+	
+	public Turn(Order o){
+		orders = new List<Order>();
+		valid = false;
+		Add(o);
+	}
+	public Turn(FieldIndex ind){
+		orders = new List<Order>();
+		valid = false;
+		Order o = Order.Create(ind);
+		Add(o);
+	}
+	
 	public static Turn StringToTurn( string str){
 		//TODO...
 //		Debug.Log("Turn: string recieved: "+str);
@@ -28,10 +45,7 @@ public class Turn{
 		}
 		return s;
 	}
-	public Turn(){
-		orders = new List<Order>();
-		valid = false;
-	}
+
 	
 	public bool IsValid(){
 		return valid;

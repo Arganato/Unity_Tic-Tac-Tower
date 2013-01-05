@@ -36,10 +36,15 @@ public class ScenarioDescriptionGUI : FlashingButton{
 		scrollPos.y += boxheight;
 	}
 	
-	public void AddMission(string header, string longDescr){
+	public void AddMission(string header, string longDescr, bool maximize){
 		headerText = header;
 		fullContent.Add(new GUIContent(longDescr));
 		scrollPos.y += boxheight;
+		if(maximize)
+			Maximize();
+	}
+	public void AddMission(string header, string longDescr){
+		AddMission(header,longDescr,false);
 	}
 	
 	public void ClearWindow(){

@@ -11,7 +11,7 @@ public class TutorialBasicCondition : TutorialCondition{
 		tutorialScene = scene;
 	}
 	
-	public override void Calculate (){
+	public override void Calculate (ConditionEvent e){
 		//called when there is an event
 		if(CheckCondition(tutorialScene.tutorialStep)){
 			receiver.OnContinue();
@@ -27,9 +27,9 @@ public class TutorialBasicCondition : TutorialCondition{
 			return (Control.cState.player[0].playerSkill.shoot >= 1);
 		case 8: //use shoot-skill at (4,4)
 			return Control.cState.field[4,4] == Route.destroyed;
-		case 10: //detect that "?" is pressed somehow
+		case 11: //detect that "?" is pressed somehow
 			return false;
-		case 11: //detect that the shoot-help is open somehow
+		case 12: //detect that the shoot-help is open somehow
 			return false;			
 		default:
 			return false;

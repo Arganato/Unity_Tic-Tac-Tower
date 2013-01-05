@@ -71,7 +71,8 @@ public class TutorialScene : SceneTemplate{
 			//end turn and reset to player 1's turn
 			control.UserEndTurn();
 			Control.cState.activePlayer = 0;
-			conditionChecker.Calculate();
+			conditionChecker.Calculate(TutorialCondition.ConditionEvent.endTurn);
+			Control.SetUndoPoint(Control.cState);
 		}
 	}
 	
@@ -79,7 +80,7 @@ public class TutorialScene : SceneTemplate{
 	{
 		if(enableControl){
 			if(control.UserFieldSelect(position)){
-				conditionChecker.Calculate();
+				conditionChecker.Calculate(TutorialCondition.ConditionEvent.placedPiece);
 			}
 		}
 	}

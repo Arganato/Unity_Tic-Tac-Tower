@@ -6,7 +6,7 @@ public class Control: MonoBehaviour, EffectInterface {
 
 //	public bool playerDone = false; //Is true when player has placed a piece. Allows user to "End Turn".	
 	public static GameState cState; //the current gamestate of the progressing game
-	public static GameState startOfTurn; //the undo-point
+	private static GameState startOfTurn; //the undo-point
 	
 	private Turn activeTurn;
 	private Sound sound;
@@ -32,7 +32,7 @@ public class Control: MonoBehaviour, EffectInterface {
 	void Start(){
 		StartNewGame();
 	}
-	
+
 	public bool UserFieldSelect(FieldIndex index){
 		// Called when the user clicks on the field
 		// Returns true if a the click resulted in the execution of a (valid) move
@@ -199,6 +199,10 @@ public class Control: MonoBehaviour, EffectInterface {
 		Application.LoadLevel("mainMenu");
 	}
 	
+	public static void SetUndoPoint(GameState state){
+		//changes game state and sets undo-point
+		startOfTurn = new GameState(state);
+	}
 
 	public void PlaySilenceEffect ()
 	{

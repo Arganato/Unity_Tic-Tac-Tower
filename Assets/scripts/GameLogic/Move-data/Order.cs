@@ -7,6 +7,18 @@ public struct Order{
 	public FieldIndex position;
 	public bool endTurn;
 	
+	public static Order Create(FieldIndex ind, SkillType skill, bool endTurn){
+		Order ret = new Order();
+		ret.endTurn = endTurn;
+		ret.skill = skill;
+		ret.position = ind;
+		return ret;
+	}
+	
+	public static Order Create(FieldIndex ind){
+		return Create(ind,SkillType.place,true);
+	}
+		
 	public override string ToString ()
 	{
 		string s = "";

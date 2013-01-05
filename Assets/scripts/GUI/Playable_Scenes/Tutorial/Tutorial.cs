@@ -1,9 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-public static class Tutorial { //Outdated??
+public static class Tutorial {
 
-								 // Str = Straight
 	public static int tutorialType = 1;
 	public static GameState tutorialState;
 	public static GameGUIOptions guiOptions;

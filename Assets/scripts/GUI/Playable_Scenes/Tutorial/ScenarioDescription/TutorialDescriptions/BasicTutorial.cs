@@ -84,7 +84,7 @@ public class BasicTutorial : IScenarioDescription{
 			}
 			tutorialWindow.AddMission("Mission Completed!","Congratulations, you built the shoot-tower, The tower is " +
 				"consumed, and a skill is added to your skill list. You can build the shoot-tower " +
-				"in any rotation, or even diagonally.");
+				"in any rotation, or even diagonally.",true);
 			tutorialWindow.ShowContinue(true);
 			tutorialScene.enableControl = false;
 			//animation of shoot-tower
@@ -108,22 +108,24 @@ public class BasicTutorial : IScenarioDescription{
 				tutorialWindow.FlashArrow((MonoBehaviour)control);
 			}
 			tutorialWindow.AddMission("Mission Completed!","Well done! If you forget what a skill does, or how its tower looks, " +
-				"you can always get a description by clicking the \"?\"-button."); 
-				tutorialWindow.AddNote("This turns all the " +
-				"skill-buttons into a menu where you can read about all the skills.");
+				"you can always get a description by clicking the \"?\"-button.",true); 
 			tutorialWindow.ShowContinue(true);
 			break;
 		case 9:
+				tutorialWindow.AddNote("This turns all the " +
+				"skill-buttons into a menu where you can read about all the skills.");
+			break;
+		case 10:
 			tutorialWindow.AddNote("To close the help menu and " +
 				"return the function of the buttons to normal, simply click the \"?\"-" +
 				"button again.");
 			tutorialWindow.AddMission("Open the shoot-help"," Try to open the help for the shoot skill now.");
 			tutorialScene.FlashHelpButton();
 			break;
-		case 10:
+		case 11:
 			tutorialWindow.AddMission("Close the shoot-help","And close it by clicking the \"?\"-button again");
 			break;
-		case 11:
+		case 12:
 			tutorialWindow.AddNote("Congratulations, that completes the first part of the tutorial. The " +
 				"next part will look at each of the four skills of the game in more detail.");
 			tutorialWindow.ShowFinish(true);
