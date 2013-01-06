@@ -149,7 +149,7 @@ public class SkillTutorial : IScenarioDescription{
 		case 1:
 			tutorialWindow.AddPicture(ResourceFactory.GetSkillTexture(0));
 			tutorialWindow.AddMission("Build a shoot-tower", "This shoot-tower is known from the first tutorial, but it is also possible to build the tower up side down, or flipped to the left or right." +
-				" Use this knowledge to finish the tower below");
+				" Use this knowledge to finish the tower below. (End turn when finished)");
 			CreateTriangleState();
 			tutorialScene.enableControl = true;
 			tutorialWindow.ShowContinue(false);
@@ -170,7 +170,7 @@ public class SkillTutorial : IScenarioDescription{
 			CreateDiagTriangleState();
 			tutorialWindow.AddPicture(ResourceFactory.GetSkillTexture(4));
 			tutorialWindow.AddMission("Build a diagonal shoot tower","Above, you can see a diagonal shoot tower. Like the " +
-				"straight tower, this can also be built with any rotation. Build a diagonal tower now.");
+				"straight tower, this can also be built with any rotation. Build a diagonal tower now. (End turn when finished)");
 			tutorialScene.enableControl = true;
 			tutorialWindow.ShowContinue(false);
 			break;
@@ -286,7 +286,7 @@ public class SkillTutorial : IScenarioDescription{
 			tutorialWindow.AddPicture(ResourceFactory.GetSkillTexture(3));
 			tutorialWindow.AddPicture(ResourceFactory.GetSkillTexture(7));
 			tutorialWindow.AddMission("Make power-towers to be able to use builds", "Above you can see the different power-towers. In the following scenario you can have many builds, but " +
-				"power is limiting how many you can use. Make power-towers to be able to use more builds");
+				"power is limiting how many you can use. Use builds and make power-towers to be able to use more builds. (End turn when done)");
 			tutorialScene.enableControl = true;
 			tutorialWindow.ShowContinue(false);
 			break;
@@ -294,7 +294,7 @@ public class SkillTutorial : IScenarioDescription{
 			if(Control.cState.player[0].playerSkill.skillCap == 2){
 				tutorialWindow.AddMission("Mission Completed!", "Good! The last thing we shall look at in this tutorial is that it is possible to " +
 					"combine towers to get more skills from your pieces. In the next scenario, place a piece in the given position " +
-					"to create several skills with one move",true);
+					"to create several skills with one move.",true);
 				tutorialWindow.ShowContinue(true);
 				tutorialScene.enableControl = false;
 			}else{
@@ -305,7 +305,7 @@ public class SkillTutorial : IScenarioDescription{
 			break;
 		case 21:
 			CreateCombTowerState();
-			tutorialWindow.AddMission("Build a combined tower", "place a piece in the given position to create one shoot and two builds in one go.");
+			tutorialWindow.AddMission("Build a combined tower", "Place a piece in the given position to create one shoot and two builds in one go. (End turn when finished)");
 			tutorialScene.FlashBoard(new FieldIndex(4,4));
 			tutorialScene.enableControl = true;
 			tutorialWindow.ShowContinue(false);
@@ -314,7 +314,6 @@ public class SkillTutorial : IScenarioDescription{
 			if(Control.cState.player[0].playerSkill.shoot >= 1 && Control.cState.player[0].playerSkill.build >= 2){
 				tutorialWindow.AddMission("Mission completed!", "Well done! There are almost an infinite number of combinations of towers " +
 					"that exists, many of which brings unique tactical advantages in different situations. Experiment to find more combinations on your own.",true);
-				tutorialScene.enableControl = false;
 				tutorialWindow.ShowContinue(true);
 			}else{
 				CreateCombTowerState();

@@ -13,6 +13,6 @@ public class TutorialBasicButton : MenuButton {
 	}
 	
 	public override string Name(){
-		return "Start Tutorial";
+		return "Basic Tutorial";
 	}
 }
